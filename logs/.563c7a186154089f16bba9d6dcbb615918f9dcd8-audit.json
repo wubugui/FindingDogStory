@@ -1,0 +1,25 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "h:\\FDStory\\FindingDogStory\\logs\\.563c7a186154089f16bba9d6dcbb615918f9dcd8-audit.json",
+    "files": [
+        {
+            "date": 1777040318507,
+            "name": "h:\\FDStory\\FindingDogStory\\logs\\mcp-puppeteer-2026-04-24.log",
+            "hash": "a7da11ac6781b91c521c1d370c9acc292d5065f7321d3dc12425cdd0a65adcef"
+        },
+        {
+            "date": 1777107090718,
+            "name": "h:\\FDStory\\FindingDogStory\\logs\\mcp-puppeteer-2026-04-25.log",
+            "hash": "91cfc8585590da798b3190d6f10dc45f58039b2266e2f535af7d94ec957b5924"
+        },
+        {
+            "date": 1777135672001,
+            "name": "h:\\FDStory\\FindingDogStory\\logs\\mcp-puppeteer-2026-04-26.log",
+            "hash": "984741dc32257178aea302ec37924fa627867f9ce5f859fe1388bc3660aea6b1"
+        }
+    ],
+    "hashType": "sha256"
+}
