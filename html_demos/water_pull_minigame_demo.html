@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>短时水边摸索玩法 · 完整原型</title>
+  <style>
+    :root {
+      --bg: #0b1016;
+      --panel: #141b24;
+      --panel2: #192433;
+      --line: #2b3a4c;
+      --text: #dbe4ef;
+      --muted: #8795a8;
+      --accent: #65aaa7;
+      --gold: #d1aa57;
+      --good: #74bd87;
+      --bad: #d96b61;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 14px;
+      color: var(--text);
+      font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+      background: radial-gradient(circle at 20% 0%, rgba(101,170,167,.14), transparent 34rem), #0b1016;
+      display: flex;
+      justify-content: center;
+    }
+    button, select, input { font-family: inherit; }
+    button {
+      color: var(--text);
+      background: var(--panel2);
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 9px 11px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    button:hover { filter: brightness(1.12); }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    button.active { border-color: var(--accent); background: rgba(101,170,167,.18); }
+    button.primary { border-color: var(--accent); background: rgba(101,170,167,.25); }
+    select {
+      width: 100%;
+      color: var(--text);
+      background: #0e151d;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 13px;
+    }
+    label { display: block; color: var(--muted); font-size: 12px; margin-bottom: 5px; }
+    .app {
+      width: min(1180px, 100%);
+      display: grid;
+      grid-template-columns: 1fr 330px;
+      gap: 12px;
+      align-items: start;
+    }
+    .card {
+      background: rgba(20,27,36,.96);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 18px 42px rgba(0,0,0,.28);
+    }
+    header {
+      padding: 13px 15px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    h1 { margin: 0 0 5px; font-size: 18px; }
+    h2 { margin: 0 0 9px; font-size: 14px; }
+    p { margin: 0; line-height: 1.5; }
+    .sub { color: var(--muted); font-size: 13px; max-width: 690px; }
+    .tabs { display: flex; gap: 8px; flex-shrink: 0; }
+    .main-grid {
+      padding: 12px;
+      display: grid;
+      grid-template-columns: minmax(430px, 1fr) 285px;
+      gap: 12px;
+    }
+    .river {
+      position: relative;
+      height: 438px;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), transparent 14%),
+        linear-gradient(180deg, #152a39, #1d3d50 46%, #081017);
+    }
+    .river::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 22% 18%, rgba(255,255,255,.08), transparent 6rem),
+        radial-gradient(circle at 73% 62%, rgba(0,0,0,.27), transparent 8rem),
+        repeating-linear-gradient(112deg, rgba(255,255,255,.04) 0 2px, transparent 2px 17px);
+      opacity: var(--murk, .46);
+      pointer-events: none;
+    }
+    .river::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,var(--darkness,0));
+      pointer-events: none;
+    }
+    .surface-label {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      z-index: 3;
+      color: var(--muted);
+      background: rgba(8,13,18,.7);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 12px;
+    }
+    /* 每种征兆独立外形与动画：对应「河的语言」 */
+    .cue {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      border: none;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      z-index: 5;
+      pointer-events: auto;
+      width: auto;
+      height: auto;
+      color: rgba(232,246,248,.92);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      text-align: center;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,.45));
+    }
+    .cue:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+      border-radius: 8px;
+    }
+    .cue-cap {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      max-width: 100px;
+      line-height: 1.25;
+      color: rgba(235,243,246,.95);
+      text-shadow: 0 1px 3px rgba(0,0,0,.75);
+    }
+    .cue-sub {
+      font-size: 10px;
+      color: rgba(200,216,226,.82);
+      max-width: 108px;
+      line-height: 1.25;
+      text-shadow: 0 1px 2px rgba(0,0,0,.65);
+    }
+    .cue-hint {
+      font-size: 9px;
+      color: rgba(160,176,190,.95);
+      max-width: 112px;
+      line-height: 1.3;
+      opacity: 0;
+      transition: opacity .15s;
+      padding: 3px 6px;
+      border-radius: 6px;
+      background: rgba(8,13,18,.82);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .cue:hover .cue-hint,
+    .cue:focus-visible .cue-hint { opacity: 1; }
+
+    /* 水草细晃：细长、轻微横向摆动 → 多半小鱼 */
+    .cue-visual-grass {
+      width: 22px;
+      height: 52px;
+      border-radius: 40% 55% 35% 45%;
+      background: linear-gradient(180deg, rgba(90,170,130,.85), rgba(35,72,58,.75));
+      border: 1px solid rgba(120,200,160,.35);
+      transform-origin: 50% 100%;
+      animation: grassSway 1.25s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes grassSway {
+      0%, 100% { transform: rotate(-6deg) skewX(-2deg); }
+      50% { transform: rotate(6deg) skewX(2deg); }
+    }
+
+    /* 大黑影：面积大、缓慢起伏 → 大鱼或水猴子 */
+    .cue-visual-shadow {
+      width: 84px;
+      height: 44px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at 40% 45%, rgba(25,38,52,.92), rgba(5,12,18,.96));
+      border: 1px solid rgba(90,110,130,.35);
+      animation: shadowBreath 2.4s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes shadowBreath {
+      0%, 100% { transform: scale(1); opacity: .88; }
+      50% { transform: scale(1.06); opacity: 1; }
+    }
+
+    /* 气泡串上升 → 箱子、尸体、沉物 */
+    .cue-visual-bubble {
+      width: 56px;
+      height: 56px;
+      position: relative;
+      pointer-events: none;
+    }
+    .cue-visual-bubble span {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 10px;
+      height: 10px;
+      margin-left: -5px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(230,248,255,.7), rgba(120,180,200,.25));
+      border: 1px solid rgba(200,235,245,.35);
+      animation: bubbleRise 1.8s ease-in infinite;
+      opacity: .85;
+    }
+    .cue-visual-bubble span:nth-child(2) { margin-left: -14px; animation-delay: .35s; width: 8px; height: 8px; }
+    .cue-visual-bubble span:nth-child(3) { margin-left: 6px; animation-delay: .65s; width: 12px; height: 12px; }
+    @keyframes bubbleRise {
+      0% { transform: translateY(0) scale(.85); opacity: .75; }
+      70% { opacity: .95; }
+      100% { transform: translateY(-42px) scale(.55); opacity: 0; }
+    }
+
+    /* 浮物漂荡 → 杂物、线索 */
+    .cue-visual-float {
+      width: 48px;
+      height: 28px;
+      border-radius: 30% 40% 35% 45%;
+      background: linear-gradient(135deg, rgba(160,140,110,.55), rgba(60,52,42,.72));
+      border: 1px solid rgba(200,175,140,.28);
+      animation: floatDrift 2.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes floatDrift {
+      0%, 100% { transform: translate(-4px, 0) rotate(-4deg); }
+      50% { transform: translate(6px, -3px) rotate(5deg); }
+    }
+
+    /* 水面死静：波纹极弱、颜色发灰 → 不该摸 */
+    .cue-visual-still {
+      width: 72px;
+      height: 36px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(28,38,48,.55), rgba(12,18,24,.82));
+      border: 1px solid rgba(120,130,145,.22);
+      animation: stillGlass 4s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes stillGlass {
+      0%, 100% { opacity: .65; transform: scale(1); }
+      50% { opacity: .82; transform: scale(1.02); }
+    }
+
+    .cue.fixed .cue-cap {
+      color: #e8d49a;
+    }
+    .cue.fixed .cue-visual-bubble span {
+      animation-duration: 2.1s;
+      border-color: rgba(209,170,87,.42);
+    }
+
+    @media (hover: none) {
+      .cue-hint {
+        opacity: 1;
+        font-size: 8px;
+      }
+    }
+    .river-msg {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      z-index: 4;
+      min-height: 66px;
+      padding: 11px 12px;
+      background: rgba(7,11,15,.84);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 11px;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    .control-panel { display: flex; flex-direction: column; gap: 10px; }
+    .box {
+      padding: 11px;
+      background: rgba(25,36,51,.7);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .checks { display: grid; gap: 7px; margin-top: 9px; }
+    .checks label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin: 0;
+      color: var(--text);
+      font-size: 12px;
+    }
+    .checks input { accent-color: var(--accent); }
+    .meter { margin-top: 9px; }
+    .meter-head { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; margin-bottom: 5px; }
+    .bar { height: 9px; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: #091018; }
+    .fill { height: 100%; width: 0%; background: var(--accent); transition: width .1s linear; }
+    .fill.good { background: var(--good); }
+    .fill.warn { background: var(--gold); }
+    .fill.bad { background: var(--bad); }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 9px; }
+    /* 拉扯阶段叠在河面上，不进侧边栏 */
+    .pull-on-river {
+      display: none;
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 8;
+      width: 138px;
+      padding: 10px 11px;
+      margin: 0;
+      background: rgba(7, 11, 15, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+      pointer-events: auto;
+    }
+    .pull-on-river.active {
+      display: block;
+    }
+    .pull-on-river .pull-title {
+      margin: 0 0 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      text-align: center;
+    }
+    .pull-track {
+      position: relative;
+      width: 74px;
+      height: 168px;
+      margin: 8px auto;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #203b4c, #071017);
+    }
+    .zone {
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      top: 28%;
+      height: 40%;
+      border: 1px dashed var(--good);
+      background: rgba(116,189,135,.16);
+      border-radius: 8px;
+    }
+    .marker {
+      position: absolute;
+      left: 50%;
+      top: 74%;
+      width: 42px;
+      height: 14px;
+      margin-left: -21px;
+      margin-top: -7px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #f1efe5, #8397ae);
+      box-shadow: 0 0 10px rgba(0,0,0,.65);
+    }
+    .hint { color: var(--muted); font-size: 11px; line-height: 1.45; margin: 8px 0 0; text-align: center; }
+    .side { padding: 12px; }
+    .side-section { border-bottom: 1px solid rgba(255,255,255,.07); padding-bottom: 11px; margin-bottom: 11px; }
+    .side-section:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+    .side li, .side p { color: var(--muted); font-size: 12px; line-height: 1.5; }
+    ul { margin: 7px 0 0; padding-left: 18px; }
+    .learned { display: grid; gap: 6px; margin-top: 8px; }
+    .rule {
+      padding: 7px 8px;
+      border: 1px solid rgba(255,255,255,.07);
+      background: rgba(255,255,255,.03);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .rule.on { color: var(--text); border-color: rgba(101,170,167,.46); background: rgba(101,170,167,.1); }
+    .log { list-style: none; padding: 0; margin: 8px 0 0; max-height: 190px; overflow: auto; }
+    .log li { color: var(--muted); font-size: 12px; line-height: 1.45; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .tag { display: inline-block; margin-right: 6px; padding: 1px 7px; border-radius: 999px; color: #081017; background: var(--gold); font-size: 11px; }
+    kbd { border: 1px solid var(--line); background: #0d151e; border-radius: 4px; padding: 1px 5px; font-size: 12px; }
+    @media (max-width: 980px) {
+      .app { grid-template-columns: 1fr; }
+      .main-grid { grid-template-columns: 1fr; }
+      .river { height: 390px; }
+      .side { display: none; }
+      .pull-on-river {
+        right: auto;
+        left: 50%;
+        top: auto;
+        bottom: 92px;
+        transform: translateX(-50%);
+        width: min(260px, calc(100% - 28px));
+      }
+    }
+    @media (max-width: 640px) {
+      body { padding: 8px; }
+      header { flex-direction: column; }
+      .tabs { width: 100%; }
+      .tabs button { flex: 1; }
+      .main-grid { padding: 8px; }
+      .river { height: 350px; }
+      .row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="card">
+      <header>
+        <div>
+          <h1>短时水边摸索玩法</h1>
+          <p class="sub">玩家读水面动静，选择目标，承受短暂拉扯，然后获得鱼、杂物、信息、空手或异常遭遇。码头捞箱是同一套机制的剧情教学版。</p>
+        </div>
+        <div class="tabs">
+          <button id="tabFish" class="active" type="button">日常抓鱼</button>
+          <button id="tabCrate" type="button">码头捞箱教学</button>
+        </div>
+      </header>
+
+      <div class="main-grid">
+        <div class="river">
+          <div class="surface-label" id="surfaceLabel">野河 · 清晨 · 晴</div>
+          <div class="pull-on-river" id="pullBox">
+            <div class="pull-title">水下拉扯</div>
+            <div class="pull-track">
+              <div class="zone"></div>
+              <div id="marker" class="marker"></div>
+            </div>
+            <p class="hint">按住 <kbd>空格</kbd> 或鼠标左键上提，松开下沉。白块停在虚线区内，右侧「目标控制」上涨。</p>
+          </div>
+          <div class="river-msg" id="message">点「开始摸索」，水里会出现 2 到 4 个动静。不同动静对应不同概率，不是纯随机。</div>
+        </div>
+
+        <aside class="control-panel">
+          <div class="box">
+            <h2>探索条件</h2>
+            <div class="row">
+              <div>
+                <label for="locationSelect">水域</label>
+                <select id="locationSelect">
+                  <option value="wild">野外河湾</option>
+                  <option value="dock">雾津码头</option>
+                  <option value="grave">义冢浅滩</option>
+                </select>
+              </div>
+              <div>
+                <label for="timeSelect">时辰</label>
+                <select id="timeSelect">
+                  <option value="morning">清晨</option>
+                  <option value="day">白日</option>
+                  <option value="night">夜里</option>
+                </select>
+              </div>
+            </div>
+            <div class="row" style="margin-top:8px;">
+              <div>
+                <label for="weatherSelect">天气</label>
+                <select id="weatherSelect">
+                  <option value="clear">晴</option>
+                  <option value="rain">雨后</option>
+                  <option value="fog">雾重</option>
+                </select>
+              </div>
+              <div>
+                <label for="daySelect">日期</label>
+                <select id="daySelect">
+                  <option value="1">第 1 天</option>
+                  <option value="2">第 2 天</option>
+                  <option value="3">第 3 天</option>
+                </select>
+              </div>
+            </div>
+            <div class="checks">
+              <label><input id="flagWaterMonkey" type="checkbox" /> 听过水猴子传闻</label>
+              <label><input id="flagForeigner" type="checkbox" /> 洋人箱子已落水</label>
+            </div>
+          </div>
+
+          <div class="box">
+            <h2>次数与风险</h2>
+            <div class="meter">
+              <div class="meter-head"><span>本水域今日有效反馈</span><span id="usesText">0 / 3</span></div>
+              <div class="bar"><div id="usesFill" class="fill warn"></div></div>
+            </div>
+            <div class="meter">
+              <div class="meter-head"><span>耐力</span><span id="staminaText">100</span></div>
+              <div class="bar"><div id="staminaFill" class="fill good"></div></div>
+            </div>
+            <div class="meter">
+              <div class="meter-head"><span>目标控制</span><span id="controlText">0%</span></div>
+              <div class="bar"><div id="controlFill" class="fill"></div></div>
+            </div>
+            <div class="meter">
+              <div class="meter-head"><span>水下不对劲</span><span id="riskText">0%</span></div>
+              <div class="bar"><div id="riskFill" class="fill bad"></div></div>
+            </div>
+            <div class="actions">
+              <button id="startBtn" class="primary" type="button">开始摸索</button>
+              <button id="newDayBtn" type="button">过一天</button>
+              <button id="resetBtn" type="button">重置</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <aside class="card side">
+      <div class="side-section">
+        <h2>覆盖的设计点</h2>
+        <ul>
+          <li>每次出现 2 到 4 个水下动静。</li>
+          <li>水草、黑影、气泡、浮物、死静分别有倾向。</li>
+          <li>正常抓鱼目标会跑；码头捞箱目标不跑，但有东西干扰。</li>
+          <li>不同地点有不同事件池。</li>
+          <li>普通鱼可重复，线索/异常多为一次性。</li>
+          <li>重复摸同一水域会降级为低价值鱼和杂物。</li>
+          <li>天气、时辰、支线 Flag 改变事件池。</li>
+        </ul>
+      </div>
+      <div class="side-section">
+        <h2>读「河的语言」</h2>
+        <div class="learned">
+          <div class="rule" id="ruleGrass">水草细晃：晃得细、碎→多半小鱼或杂鱼。</div>
+          <div class="rule" id="ruleShadow">大黑影：块头大、慢慢拱→可能是大鱼，也可能是水猴子。</div>
+          <div class="rule" id="ruleBubble">一串气泡：往上冒→多半是箱子、尸体、沉物一类。</div>
+          <div class="rule" id="ruleFloat">浮物漂荡：贴着水皮蹭→杂物、线索更多。</div>
+          <div class="rule" id="ruleStill">水面死静：波纹都没了→多半不该继续摸。</div>
+        </div>
+      </div>
+      <div class="side-section">
+        <h2>结算日志</h2>
+        <ul class="log" id="log"></ul>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    (() => {
+      const $ = (id) => document.getElementById(id);
+      const river = document.querySelector('.river');
+      const message = $('message');
+      const surfaceLabel = $('surfaceLabel');
+      const tabFish = $('tabFish');
+      const tabCrate = $('tabCrate');
+      const locationSelect = $('locationSelect');
+      const timeSelect = $('timeSelect');
+      const weatherSelect = $('weatherSelect');
+      const daySelect = $('daySelect');
+      const flagWaterMonkey = $('flagWaterMonkey');
+      const flagForeigner = $('flagForeigner');
+      const usesText = $('usesText');
+      const usesFill = $('usesFill');
+      const staminaText = $('staminaText');
+      const staminaFill = $('staminaFill');
+      const controlText = $('controlText');
+      const controlFill = $('controlFill');
+      const riskText = $('riskText');
+      const riskFill = $('riskFill');
+      const startBtn = $('startBtn');
+      const newDayBtn = $('newDayBtn');
+      const resetBtn = $('resetBtn');
+      const pullBox = $('pullBox');
+      const marker = $('marker');
+      const log = $('log');
+
+      const cueRules = {
+        grass: {
+          label: '水草细晃',
+          hint: '晃得细、碎→多半小鱼或杂鱼',
+          ruleId: 'ruleGrass',
+          visualClass: 'cue-visual-grass'
+        },
+        shadow: {
+          label: '大黑影',
+          hint: '块头大、慢慢拱→可能是大鱼，也可能是水猴子',
+          ruleId: 'ruleShadow',
+          visualClass: 'cue-visual-shadow'
+        },
+        bubble: {
+          label: '一串气泡',
+          hint: '往上冒→多半是箱子、尸体、沉物一类',
+          ruleId: 'ruleBubble',
+          visualClass: 'cue-visual-bubble'
+        },
+        float: {
+          label: '浮物漂荡',
+          hint: '在水皮上蹭→杂物、线索更多',
+          ruleId: 'ruleFloat',
+          visualClass: 'cue-visual-float'
+        },
+        still: {
+          label: '水面死静',
+          hint: '波纹都没了→多半不该继续摸',
+          ruleId: 'ruleStill',
+          visualClass: 'cue-visual-still'
+        }
+      };
+
+      function bubbleSpansHtml(fixed) {
+        const n = fixed ? 4 : 3;
+        let html = '';
+        for (let i = 0; i < n; i++) html += '<span></span>';
+        return html;
+      }
+
+      function buildCueButton(event, posPct) {
+        const meta = cueRules[event.cue];
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'cue' + (event.fixed ? ' fixed' : '');
+        btn.style.left = `${posPct[0]}%`;
+        btn.style.top = `${posPct[1]}%`;
+        btn.title = `${meta.label}：${meta.hint}`;
+        const visInner =
+          meta.visualClass === 'cue-visual-bubble'
+            ? bubbleSpansHtml(!!event.fixed)
+            : '';
+        btn.innerHTML =
+          `<div class="${meta.visualClass}" aria-hidden="true">${visInner}</div>` +
+          `<span class="cue-cap">${meta.label}</span>` +
+          `<small class="cue-sub">${event.label}</small>` +
+          `<span class="cue-hint">${meta.hint}</span>`;
+        btn.addEventListener('click', () => selectCue(event));
+        return btn;
+      }
+
+      function initialRiskForEvent(ev) {
+        if (ev.kind === 'bad' || ev.value === 'danger') return Math.min(18, Math.round(ev.risk * 0.22));
+        return Math.min(8, Math.round(ev.risk * 0.08));
+      }
+
+      const eventPool = [
+        makeEvent('small_fish', 'grass', 'fish', true, 'normal', ['wild','dock','grave'], ['morning','day'], ['clear','rain','fog'], null, '小鱼', ['两条小白条','一条鲫鱼','半篓杂鱼'], .82, 3),
+        makeEvent('big_fish', 'shadow', 'fish', true, 'high', ['wild','dock'], ['morning','night'], ['rain','fog'], null, '大鱼', ['一条黑背大鱼','一条很肥的鲶鱼'], 1.2, 10),
+        makeEvent('junk', 'float', 'junk', true, 'low', ['wild','dock','grave'], ['morning','day','night'], ['clear','rain','fog'], null, '杂物', ['破网片','湿布条','烂竹篓'], .72, 2),
+        makeEvent('coin', 'float', 'junk', false, 'normal', ['dock'], ['morning','day','night'], ['rain','fog'], null, '沉旧铜钱', ['一枚锈蚀铜钱，像是从船底泥里翻出来的'], .9, 8),
+        makeEvent('wet_note', 'float', 'clue', false, 'clue', ['dock'], ['morning','day'], ['rain','fog'], 'foreigner', '湿纸片', ['一张带洋字的湿纸片，墨迹泡开了，但还能看出几个地名'], 1.02, 12),
+        makeEvent('sunken_object', 'bubble', 'item', false, 'clue', ['wild','dock'], ['morning','day','night'], ['rain','fog'], null, '沉物', ['一枚刻着怪纹的铜扣，摸起来凉得不合常理'], 1.06, 16),
+        makeEvent('corpse_hint', 'bubble', 'clue', false, 'clue', ['grave'], ['night'], ['fog'], null, '腥气气泡', ['一阵尸油味从水底翻上来，你确定这里沉过不干净的东西'], 1.15, 28),
+        makeEvent('water_monkey', 'shadow', 'bad', true, 'danger', ['dock','grave'], ['night','morning'], ['fog','rain'], 'waterMonkey', '水猴子影', ['有什么滑腻的东西擦过脚踝，水面一下死静'], 1.42, 45),
+        makeEvent('dead_still', 'still', 'bad', true, 'danger', ['wild','dock','grave'], ['night'], ['fog'], null, '死静', ['你忽然觉得不该再摸。水面一点波纹也没有'], 1.3, 32)
+      ];
+
+      const crateEvent = makeEvent('foreigner_crate', 'bubble', 'crate', false, 'quest', ['dock'], ['morning'], ['fog'], null, '洋人木箱', ['洋人的木箱：罗盘、地图碎片、线装书复印件。任务推进到开箱'], 1.22, 18);
+      crateEvent.fixed = true;
+
+      let mode = 'fish';
+      let phase = 'idle';
+      let selected = null;
+      let stamina = 100;
+      let control = 0;
+      let risk = 0;
+      let markerPos = 74;
+      let pulling = false;
+      let raf = 0;
+      let lastTime = 0;
+      let scriptedGrab = false;
+      let foundOneShots = new Set();
+      let learnedRules = new Set();
+      let usesByDay = {};
+
+      function makeEvent(id, cue, kind, repeatable, value, locations, times, weathers, requireFlag, label, result, strength, riskValue) {
+        return { id, cue, kind, repeatable, value, locations, times, weathers, requireFlag, label, result, strength, risk: riskValue };
+      }
+      function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+      function getFlags() { return { waterMonkey: flagWaterMonkey.checked, foreigner: flagForeigner.checked }; }
+      function getKey() { return `${daySelect.value}:${locationSelect.value}`; }
+      function getUses() { return usesByDay[getKey()] || 0; }
+      function setUses(value) { usesByDay[getKey()] = Math.max(0, value); }
+      function maxUses() { return mode === 'crate' ? 1 : 3; }
+      function weightedPick(list) {
+        const total = list.reduce((sum, item) => sum + (item.weight || 1), 0);
+        let roll = Math.random() * total;
+        for (const item of list) {
+          roll -= item.weight || 1;
+          if (roll <= 0) return item;
+        }
+        return list[0];
+      }
+      function clearCues() { river.querySelectorAll('.cue').forEach(el => el.remove()); }
+      function activeConfigText() {
+        return `${locationSelect.options[locationSelect.selectedIndex].text} · ${timeSelect.options[timeSelect.selectedIndex].text} · ${weatherSelect.options[weatherSelect.selectedIndex].text}`;
+      }
+      function updateEnvironmentStyle() {
+        const weather = weatherSelect.value;
+        const time = timeSelect.value;
+        const loc = locationSelect.value;
+        let murk = .46;
+        let dark = 0;
+        if (weather === 'rain') murk += .2;
+        if (weather === 'fog') murk += .32;
+        if (time === 'night') dark += .24;
+        if (loc === 'dock') murk += .18;
+        if (loc === 'grave') dark += .14;
+        if (mode === 'crate') { murk = .95; dark = .18; }
+        river.style.setProperty('--murk', Math.min(1, murk));
+        river.style.setProperty('--darkness', Math.min(.45, dark));
+        surfaceLabel.textContent = mode === 'crate' ? '雾津码头 · 洋人木箱落水' : activeConfigText();
+      }
+      function updateMeters() {
+        stamina = clamp(stamina, 0, 100);
+        control = clamp(control, 0, 100);
+        risk = clamp(risk, 0, 100);
+        staminaText.textContent = Math.round(stamina);
+        controlText.textContent = `${Math.round(control)}%`;
+        riskText.textContent = `${Math.round(risk)}%`;
+        staminaFill.style.width = `${stamina}%`;
+        controlFill.style.width = `${control}%`;
+        riskFill.style.width = `${risk}%`;
+        staminaFill.className = `fill ${stamina > 55 ? 'good' : stamina > 25 ? 'warn' : 'bad'}`;
+        const used = getUses();
+        usesText.textContent = `${used} / ${maxUses()}`;
+        usesFill.style.width = `${Math.min(100, (used / maxUses()) * 100)}%`;
+      }
+      function updateLearnedRules() {
+        Object.keys(cueRules).forEach(cue => $(cueRules[cue].ruleId).classList.toggle('on', learnedRules.has(cue)));
+      }
+      function logLine(tag, text) {
+        const li = document.createElement('li');
+        li.innerHTML = `<span class="tag">${tag}</span>${text}`;
+        log.prepend(li);
+        while (log.children.length > 10) log.lastElementChild.remove();
+      }
+      function resetRound() {
+        cancelAnimationFrame(raf);
+        phase = 'idle';
+        selected = null;
+        stamina = 100;
+        control = 0;
+        risk = 0;
+        markerPos = 74;
+        pulling = false;
+        scriptedGrab = false;
+        lastTime = 0;
+        clearCues();
+        pullBox.classList.remove('active');
+        startBtn.disabled = false;
+        updateEnvironmentStyle();
+        updateMeters();
+        updateLearnedRules();
+        message.textContent = mode === 'crate'
+          ? '码头捞箱教学：气泡下面是箱子，视觉上比其他征兆「往上冒」。箱子本身不猛逃，但中途会有拽脚干扰。'
+          : '每种征兆的外形不一样：水草细、黑影大、气泡往上窜、浮物漂、死静像镜面。鼠标移到水上可看解读。然后点「开始摸索」。';
+      }
+      function setMode(nextMode) {
+        if (phase === 'pull') return;
+        mode = nextMode;
+        tabFish.classList.toggle('active', mode === 'fish');
+        tabCrate.classList.toggle('active', mode === 'crate');
+        locationSelect.disabled = mode === 'crate';
+        timeSelect.disabled = mode === 'crate';
+        weatherSelect.disabled = mode === 'crate';
+        if (mode === 'crate') {
+          locationSelect.value = 'dock';
+          timeSelect.value = 'morning';
+          weatherSelect.value = 'fog';
+          flagForeigner.checked = true;
+        }
+        resetRound();
+      }
+      function resetAll() {
+        foundOneShots = new Set();
+        learnedRules = new Set();
+        usesByDay = {};
+        log.innerHTML = '';
+        resetRound();
+        logLine('重置', '已清空一次性线索、学习记录与每日次数。');
+      }
+      function nextDay() {
+        daySelect.value = String(Math.min(3, Number(daySelect.value) + 1));
+        resetRound();
+        logLine('时间', `进入第 ${daySelect.value} 天。每日有效反馈次数刷新。`);
+      }
+      function validEvents() {
+        if (mode === 'crate') {
+          const wm = eventPool.find(e => e.id === 'water_monkey');
+          const ds = eventPool.find(e => e.id === 'dead_still');
+          return [
+            crateEvent,
+            wm ? { ...wm, weight: 3 } : null,
+            ds ? { ...ds, weight: 2 } : null
+          ].filter(Boolean);
+        }
+        const loc = locationSelect.value;
+        const time = timeSelect.value;
+        const weather = weatherSelect.value;
+        const flags = getFlags();
+        const used = getUses();
+        if (used >= maxUses()) {
+          return eventPool.filter(e => e.id === 'small_fish' || e.id === 'junk')
+            .map(e => ({ ...e, value: 'low', label: `${e.label}（低价值）`, weight: 1 }));
+        }
+        let pool = eventPool.filter(e => {
+          if (!e.locations.includes(loc) || !e.times.includes(time) || !e.weathers.includes(weather)) return false;
+          if (!e.repeatable && foundOneShots.has(e.id)) return false;
+          if (e.requireFlag && !flags[e.requireFlag]) return false;
+          return true;
+        });
+        if (!pool.length) pool = eventPool.filter(e => e.id === 'small_fish' || e.id === 'junk');
+        return pool.map(e => {
+          let weight = e.value === 'low' ? 3 : e.value === 'normal' ? 4 : e.value === 'high' ? 2 : e.value === 'clue' ? 1.4 : 1.2;
+          if (e.value === 'danger') weight = flags.waterMonkey ? 1.7 : .8;
+          if (used === maxUses() - 1 && e.value === 'clue') weight *= .7;
+          return { ...e, weight };
+        });
+      }
+      function startSearch() {
+        if (phase === 'pull') return;
+        phase = 'search';
+        selected = null;
+        control = 0;
+        risk = 0;
+        stamina = 100;
+        clearCues();
+        pullBox.classList.remove('active');
+        updateEnvironmentStyle();
+        updateMeters();
+        const events = validEvents();
+        const count = mode === 'crate' ? 3 : Math.floor(2 + Math.random() * 3);
+        const chosen = [];
+        if (mode === 'crate') chosen.push(crateEvent);
+        while (chosen.length < count) chosen.push(weightedPick(events));
+        const positions = [[24,33],[52,26],[76,42],[34,64],[64,72]].sort(() => Math.random() - .5);
+        chosen.forEach((event, index) => {
+          river.appendChild(buildCueButton(event, positions[index]));
+        });
+        const exhausted = mode === 'fish' && getUses() >= maxUses();
+        message.textContent = exhausted
+          ? '你今天已经在这片水域摸得够多了。还能摸，但结果会被压到低价值鱼和杂物。'
+          : '先看外形猜一把「河的语言」，再把鼠标挪到征兆上看解读，然后点选一个下水。';
+      }
+      function selectCue(event) {
+        if (phase !== 'search') return;
+        selected = event;
+        learnedRules.add(event.cue);
+        updateLearnedRules();
+        clearCues();
+        phase = 'pull';
+        pullBox.classList.add('active');
+        markerPos = event.kind === 'bad' ? 82 : 72;
+        control = 0;
+        risk = initialRiskForEvent(event);
+        stamina = 100;
+        scriptedGrab = false;
+        updateMeters();
+        const cue = cueRules[event.cue].label;
+        message.textContent = mode === 'crate'
+          ? `你顺着「${cue}」摸过去，指尖碰到木箱边。箱子不逃，但桩影下面还有东西在动。`
+          : `你选择了「${cue}」。现在不是拼反应，而是稳住手劲，看它到底是鱼、杂物、线索，还是不该碰的东西。`;
+        lastTime = performance.now();
+        raf = requestAnimationFrame(tick);
+      }
+      function tick(now) {
+        const dt = Math.min(.04, (now - lastTime) / 1000 || .016);
+        lastTime = now;
+        const strength = selected.strength || 1;
+        const targetRuns = mode === 'fish' && selected.kind === 'fish';
+        const crateNoRun = mode === 'crate' && selected.kind === 'crate';
+        const sink = crateNoRun ? (12 + strength * 11) : (14 + strength * 13);
+        const swim =
+          targetRuns ? Math.sin(now * .008) * 18 * dt :
+          crateNoRun ? Math.sin(now * .004) * 4 * dt :
+          Math.sin(now * .005) * 9 * dt;
+        markerPos += (pulling ? -54 * dt : 0) + sink * dt + swim;
+        if (mode === 'crate' && !scriptedGrab && control > 38) {
+          scriptedGrab = true;
+          markerPos += 24;
+          risk += 22;
+          stamina -= 10;
+          message.textContent = '脚腕忽然一凉，像有细长的手指扣住你往下拖。箱子没跑，但水下有东西在抢你这口气。';
+          logLine('剧情', '码头捞箱触发「水猴子拽脚」：失败惩罚改为体力/伤痕，而不是鱼跑。');
+        }
+        markerPos = clamp(markerPos, 6, 92);
+        const inZone = markerPos >= 30 && markerPos <= 66;
+        if (inZone) {
+          control += (selected.kind === 'bad' ? 13 : 26 / strength) * dt;
+          risk += (selected.kind === 'bad' ? 14 : selected.kind === 'fish' ? 5 : 7) * dt;
+        } else {
+          control -= 8 * dt;
+          risk += (mode === 'crate' ? 16 : selected.kind === 'bad' ? 22 : 11) * dt;
+        }
+        stamina -= (pulling ? 10 : 4.5) * dt;
+        marker.style.top = `${markerPos}%`;
+        updateMeters();
+        if (control >= 100) return finish(true);
+        if (stamina <= 0 || risk >= 100 || markerPos >= 91) return finish(false);
+        raf = requestAnimationFrame(tick);
+      }
+      function finish(success) {
+        cancelAnimationFrame(raf);
+        phase = 'result';
+        pullBox.classList.remove('active');
+        if (mode === 'fish') setUses(getUses() + 1);
+        if (success) {
+          if (!selected.repeatable) foundOneShots.add(selected.id);
+          const result = selected.result[Math.floor(Math.random() * selected.result.length)];
+          const repeatNote = selected.repeatable ? '可重复反馈' : '一次性线索已从事件池移除';
+          message.textContent = `成功：${result}。${repeatNote}。`;
+          logLine(selected.value === 'clue' ? '线索' : selected.kind === 'fish' ? '鱼获' : '收获', result);
+        } else if (mode === 'crate') {
+          message.textContent = '失败：脚腕被什么东西拽了一下，手背多了几道细口。箱子没跑，剧情上可以允许玩家再试。';
+          logLine('伤痕', '码头捞箱失败：多耗体力、多一道抓痕、黑影更近。');
+        } else if (selected.kind === 'fish') {
+          message.textContent = '失败：目标一甩尾，水纹散开，鱼跑了。';
+          logLine('空手', '正常抓鱼失败：鱼跑了。');
+        } else {
+          message.textContent = '失败：你摸了个空，只剩水草从指缝里滑过去。';
+          logLine('空手', '没有拿到有效反馈。');
+        }
+        startBtn.disabled = false;
+        updateMeters();
+      }
+      function updateAfterWorldChange() {
+        if (phase !== 'pull') resetRound();
+      }
+      tabFish.addEventListener('click', () => setMode('fish'));
+      tabCrate.addEventListener('click', () => setMode('crate'));
+      startBtn.addEventListener('click', startSearch);
+      resetBtn.addEventListener('click', resetAll);
+      newDayBtn.addEventListener('click', nextDay);
+      [locationSelect, timeSelect, weatherSelect, daySelect, flagWaterMonkey, flagForeigner].forEach(el => el.addEventListener('change', updateAfterWorldChange));
+      window.addEventListener('keydown', (event) => {
+        if (event.code === 'Space') {
+          event.preventDefault();
+          pulling = true;
+        }
+      });
+      window.addEventListener('keyup', (event) => {
+        if (event.code === 'Space') pulling = false;
+      });
+      window.addEventListener('mousedown', () => {
+        if (phase === 'pull') pulling = true;
+      });
+      window.addEventListener('mouseup', () => {
+        pulling = false;
+      });
+      window.addEventListener('blur', () => pulling = false);
+      resetRound();
+    })();
+  </script>
+</body>
+</html>
