@@ -16,9 +16,14 @@
             "hash": "91cfc8585590da798b3190d6f10dc45f58039b2266e2f535af7d94ec957b5924"
         },
         {
-            "date": 1777135672001,
+            "date": 1777200008177,
             "name": "h:\\FDStory\\FindingDogStory\\logs\\mcp-puppeteer-2026-04-26.log",
-            "hash": "984741dc32257178aea302ec37924fa627867f9ce5f859fe1388bc3660aea6b1"
+            "hash": "966f99b1daa6c0d73e503c5aa0aa9b39a90def0ffc9bbf58c3c8ec3520f5cd4c"
+        },
+        {
+            "date": 1777220859194,
+            "name": "h:\\FDStory\\FindingDogStory\\logs\\mcp-puppeteer-2026-04-27.log",
+            "hash": "fd906dfb01d5cf108c88d1452bf49b303b6366eba586a297925e935f901181d3"
         }
     ],
     "hashType": "sha256"
