@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>叙事因果图与知识作用系统 · 交互说明</title>
+  <style>
+    :root {
+      --bg: #f5efe2;
+      --paper: #fff8ea;
+      --ink: #2f261d;
+      --muted: #756553;
+      --line: #d7c6a6;
+      --accent: #8b5a2b;
+      --accent-2: #426b5a;
+      --danger: #9c3f32;
+      --shadow: rgba(62, 42, 19, .15);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 20% 0%, rgba(255,255,255,.9), transparent 25rem), linear-gradient(135deg, #efe1c2, var(--bg));
+      min-height: 100vh;
+    }
+    header { padding: 34px 24px 20px; max-width: 1240px; margin: 0 auto; }
+    h1 { margin: 0 0 10px; font-size: clamp(28px, 4vw, 46px); line-height: 1.08; letter-spacing: -.04em; }
+    .subtitle { max-width: 900px; color: var(--muted); font-size: 17px; line-height: 1.75; }
+    .layout { max-width: 1240px; margin: 0 auto 40px; padding: 0 24px 30px; display: grid; grid-template-columns: 240px 1fr; gap: 18px; align-items: start; }
+    nav { position: sticky; top: 14px; background: rgba(255,248,234,.82); backdrop-filter: blur(10px); border: 1px solid var(--line); border-radius: 16px; padding: 12px; box-shadow: 0 16px 40px var(--shadow); }
+    nav button { display: block; width: 100%; border: 0; background: transparent; color: var(--ink); text-align: left; padding: 11px 12px; border-radius: 10px; font: inherit; cursor: pointer; }
+    nav button:hover { background: rgba(139, 90, 43, .08); }
+    nav button.active { background: #ecd7af; font-weight: 800; }
+    main { display: grid; gap: 18px; }
+    section { display: none; background: rgba(255,248,234,.92); border: 1px solid var(--line); border-radius: 18px; padding: 22px; box-shadow: 0 16px 40px var(--shadow); }
+    section.active { display: block; }
+    h2 { margin: 0 0 14px; font-size: 25px; letter-spacing: -.02em; }
+    h3 { margin: 18px 0 8px; font-size: 18px; }
+    p, li { line-height: 1.75; color: #3d3329; }
+    .lead { font-size: 18px; line-height: 1.8; color: #3b3026; }
+    .quote { border-left: 5px solid var(--accent); background: #f4e5c8; padding: 14px 16px; border-radius: 12px; font-weight: 800; line-height: 1.8; margin: 16px 0; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .card { background: #fffaf0; border: 1px solid var(--line); border-radius: 14px; padding: 16px; min-height: 120px; }
+    .card strong { display: block; font-size: 18px; margin-bottom: 8px; }
+    .tag { display: inline-flex; align-items: center; gap: 5px; border-radius: 999px; background: rgba(66, 107, 90, .12); color: #34584a; padding: 4px 9px; font-size: 13px; font-weight: 700; margin: 3px 4px 3px 0; }
+    .pill-row { margin: 12px 0; }
+    .states { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px; }
+    .state-card { border: 2px solid transparent; background: #fffaf0; border-radius: 16px; padding: 16px; cursor: pointer; transition: transform .15s ease, border-color .15s ease, background .15s ease; }
+    .state-card:hover { transform: translateY(-2px); }
+    .state-card.active { border-color: var(--accent); background: #f4e0ba; }
+    .state-card h3 { margin-top: 0; }
+    .detail-box { margin-top: 16px; padding: 18px; border-radius: 16px; background: #f1e3c6; border: 1px solid #d2b98b; min-height: 130px; }
+    .flow-wrap { display: grid; grid-template-columns: 1.2fr .8fr; gap: 16px; align-items: stretch; }
+    .diagram { background: #fffaf0; border: 1px solid var(--line); border-radius: 16px; padding: 16px; overflow: auto; min-height: 440px; }
+    svg { width: 100%; min-width: 620px; height: 420px; }
+    .node rect { fill: #fff6e4; stroke: #b99b68; stroke-width: 2; rx: 14; cursor: pointer; }
+    .node:hover rect, .node.active rect { fill: #f1d49d; stroke: var(--accent); stroke-width: 3; }
+    .node text { fill: var(--ink); font-size: 14px; pointer-events: none; font-weight: 700; }
+    .edge { stroke: #9a7b4c; stroke-width: 2.3; marker-end: url(#arrow); fill: none; }
+    .side-panel { background: #fffaf0; border: 1px solid var(--line); border-radius: 16px; padding: 18px; min-height: 440px; }
+    .side-panel h3 { margin-top: 0; }
+    .code { background: #2d261f; color: #f5e7c8; border-radius: 12px; padding: 14px; overflow: auto; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; line-height: 1.55; white-space: pre-wrap; }
+    .switcher { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+    .switcher button { border: 1px solid #b99b68; background: #fff6e4; color: var(--ink); border-radius: 999px; padding: 8px 12px; cursor: pointer; font: inherit; font-weight: 700; }
+    .switcher button.active { background: var(--accent); color: white; border-color: var(--accent); }
+    .compiler-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+    .arrow-card { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; margin: 16px 0; }
+    .arrow-card .box { background: #fffaf0; border: 1px solid var(--line); border-radius: 14px; padding: 14px; min-height: 98px; }
+    .arrow-symbol { color: var(--accent); font-size: 28px; font-weight: 900; }
+    .checklist label { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px dashed #d6c29d; line-height: 1.6; }
+    .checklist input { margin-top: 6px; }
+    .status-bar { margin-top: 14px; height: 14px; border-radius: 999px; background: #ead9b8; overflow: hidden; }
+    .status-bar span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-2), var(--accent)); transition: width .2s ease; }
+    @media (max-width: 880px) {
+      .layout { grid-template-columns: 1fr; }
+      nav { position: relative; top: auto; display: grid; grid-template-columns: repeat(2, 1fr); }
+      .grid, .grid.two, .states, .flow-wrap, .compiler-grid, .arrow-card { grid-template-columns: 1fr; }
+      .arrow-symbol { transform: rotate(90deg); text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>叙事因果图与知识作用系统</h1>
+    <div class="subtitle">这份交互说明面向人类阅读：它把需求文档里的抽象内容拆成几个可点击模块，解释“知识如何改变世界”，以及“如何把上层因果关系显式化、图形化、可校验化，再编译成现有系统”。</div>
+  </header>
+
+  <div class="layout">
+    <nav id="nav">
+      <button class="active" data-section="overview">总览</button>
+      <button data-section="knowledge">知识三态</button>
+      <button data-section="graph">因果图</button>
+      <button data-section="compile">编译到底层</button>
+      <button data-section="example">铁盒第一夜示例</button>
+      <button data-section="check">实施检查表</button>
+    </nav>
+
+    <main>
+      <section id="overview" class="active">
+        <h2>1. 为什么要做这套上层抽象</h2>
+        <p class="lead">当前问题不是缺少 flag、tag、action，而是逻辑上有因果关系的内容散落在不同场景、对话、道具和条件里。内容越多，作者越难回答一个简单问题：<strong>这条传闻到底影响了哪些东西？</strong></p>
+        <div class="quote">核心方向：编辑因果，编译变量。</div>
+        <div class="grid">
+          <div class="card"><strong>过去</strong><p>在场景 A 打听传闻，手动设置变量，再让场景 B 的道具条件读取这个变量。短期能跑，长期会乱。</p></div>
+          <div class="card"><strong>现在要做</strong><p>把“传闻 → 世界变化 → 交互变化 → 阶段推进”的因果链显式画出来。</p></div>
+          <div class="card"><strong>底层不推翻</strong><p>运行时仍然可以使用现有 scenario、phase、flag、condition、action，只是由上层图编译生成。</p></div>
+        </div>
+        <h3>一句话模型</h3>
+        <div class="arrow-card">
+          <div class="box"><strong>作者编辑</strong><p>茶馆听到香灰传闻 → 城隍庙香灰痕迹显形 → 供桌下灰痕可调查。</p></div>
+          <div class="arrow-symbol">→</div>
+          <div class="box"><strong>系统编译</strong><p>生成 flag、condition、action、scenario phase、hotspot state。</p></div>
+        </div>
+      </section>
+
+      <section id="knowledge">
+        <h2>2. 知识如何作用：三态系统</h2>
+        <p>知识不是背包里的道具，也不是菜单上的技能。它是一种认知能力：获得知识后，世界会变得更可读，角色会自然想起传闻，少数关键时刻才出现主动动作。</p>
+        <div class="states">
+          <div class="state-card active" data-state="eye"><h3>入眼</h3><p>世界呈现变化。新线索显形，旧场景变深。</p></div>
+          <div class="state-card" data-state="heart"><h3>入心</h3><p>角色或系统提示变化。帮玩家想起传闻。</p></div>
+          <div class="state-card" data-state="hand"><h3>入手</h3><p>少量关键情境中，玩家主动照规矩办。</p></div>
+        </div>
+        <div class="detail-box" id="stateDetail"></div>
+        <h3>知识分级</h3>
+        <div class="grid">
+          <div class="card"><strong>C 级</strong><p>只改变描述。用于世界厚度和理解变化。</p><span class="tag">高频低成本</span></div>
+          <div class="card"><strong>B 级</strong><p>显形线索。让隐藏痕迹、路径、异常变得可读。</p><span class="tag">调查推进</span></div>
+          <div class="card"><strong>A / S 级</strong><p>触发强提示或主动动作。只给主线关键知识。</p><span class="tag">少而重</span></div>
+        </div>
+      </section>
+
+      <section id="graph">
+        <h2>3. 叙事因果图：把关系显式画出来</h2>
+        <p>点击图中的节点，右侧会显示它在上层编辑中的含义。这个图不是运行时代码，而是作者编辑时看到的因果关系。</p>
+        <div class="flow-wrap">
+          <div class="diagram">
+            <svg viewBox="0 0 760 420" role="img" aria-label="叙事因果图示例">
+              <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#9a7b4c"></path></marker></defs>
+              <path class="edge" d="M 155 80 C 215 80 225 80 285 80"></path>
+              <path class="edge" d="M 435 80 C 495 80 505 80 565 80"></path>
+              <path class="edge" d="M 640 130 C 640 180 640 188 640 238"></path>
+              <path class="edge" d="M 565 290 C 505 290 495 290 435 290"></path>
+              <path class="edge" d="M 285 290 C 225 290 215 290 155 290"></path>
+              <g class="node active" data-node="dialogue" transform="translate(30,45)"><rect width="125" height="70"></rect><text x="62" y="30" text-anchor="middle">茶馆对话</text><text x="62" y="50" text-anchor="middle">听到传闻</text></g>
+              <g class="node" data-node="knowledge" transform="translate(285,45)"><rect width="150" height="70"></rect><text x="75" y="30" text-anchor="middle">Knowledge</text><text x="75" y="50" text-anchor="middle">香灰藏事</text></g>
+              <g class="node" data-node="scene" transform="translate(565,45)"><rect width="150" height="70"></rect><text x="75" y="30" text-anchor="middle">SceneState</text><text x="75" y="50" text-anchor="middle">香灰层显形</text></g>
+              <g class="node" data-node="interaction" transform="translate(565,255)"><rect width="150" height="70"></rect><text x="75" y="30" text-anchor="middle">Interaction</text><text x="75" y="50" text-anchor="middle">灰痕可调查</text></g>
+              <g class="node" data-node="phase" transform="translate(285,255)"><rect width="150" height="70"></rect><text x="75" y="30" text-anchor="middle">Phase</text><text x="75" y="50" text-anchor="middle">发现灰痕</text></g>
+              <g class="node" data-node="outcome" transform="translate(30,255)"><rect width="125" height="70"></rect><text x="62" y="30" text-anchor="middle">Outcome</text><text x="62" y="50" text-anchor="middle">异常确认</text></g>
+            </svg>
+          </div>
+          <aside class="side-panel">
+            <h3 id="nodeTitle">茶馆对话：听到传闻</h3>
+            <p id="nodeText"></p>
+            <div class="pill-row" id="nodeTags"></div>
+            <div class="code" id="nodeCode"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="compile">
+        <h2>4. 从上层因果图编译到现有系统</h2>
+        <p>上层图是给作者看的；底层数据是给运行时吃的。不要让人类长期维护机器变量，机器变量应该由编译器生成。</p>
+        <div class="switcher" id="compileSwitch">
+          <button class="active" data-compile="knowledge">Knowledge 节点</button>
+          <button data-compile="scene">SceneState 节点</button>
+          <button data-compile="interaction">Interaction 节点</button>
+          <button data-compile="phase">Phase 节点</button>
+        </div>
+        <div class="compiler-grid">
+          <div class="card"><strong>上层编辑</strong><div class="code" id="upperCode"></div></div>
+          <div class="card"><strong>底层编译结果</strong><div class="code" id="lowerCode"></div></div>
+        </div>
+        <h3>编译原则</h3>
+        <ul>
+          <li>作者编辑语义节点和因果边，不直接维护自动变量。</li>
+          <li>编译器生成 flag、condition、action、scenario phase。</li>
+          <li>生成数据必须能回溯到上层节点，方便 debug。</li>
+          <li>编译前做校验：孤立节点、死链、循环依赖、重复写入等。</li>
+        </ul>
+      </section>
+
+      <section id="example">
+        <h2>5. 铁盒第一夜：最小验证链路</h2>
+        <p>先不要做完整宏大工具。用一条最小链验证抽象是否成立。</p>
+        <div class="quote">茶馆听到香灰传闻 → 获得香灰藏事 → 城隍庙香灰层显形 → 供桌下灰痕可调查 → 铁盒第一夜阶段推进。</div>
+        <div class="grid two">
+          <div class="card"><strong>玩家体验</strong><p>玩家不会看到“设置变量成功”。他只会感觉茶馆闲话开始影响城隍庙，旧场景显出新线索。</p></div>
+          <div class="card"><strong>作者编辑</strong><p>作者直接看见这条因果链，知道传闻影响哪个场景层、哪个交互点、哪个剧情阶段。</p></div>
+        </div>
+        <h3>三个知识作用示例</h3>
+        <div class="grid">
+          <div class="card"><strong>吊死的人夜里别看脸</strong><p>入眼：脚、影子、绳结成为重点。入心：关二狗想起传闻。入手：侧身看脚、看影子、正面看。</p></div>
+          <div class="card"><strong>香灰不能扫尽</strong><p>入眼：香灰断痕显形。入心：关二狗觉得灰不对。入手：暂不主动使用，先作为调查线索。</p></div>
+          <div class="card"><strong>纸钱可能引人</strong><p>入眼：纸钱方向显形。入心：意识到不是乱撒。入手：决定是否沿纸钱追查。</p></div>
+        </div>
+      </section>
+
+      <section id="check">
+        <h2>6. 实施检查表</h2>
+        <p>这个检查表用于判断一个版本是否已经从“人肉变量驱动”升级到“因果图编辑”。</p>
+        <div class="checklist" id="checklist">
+          <label><input type="checkbox"> 能创建 Knowledge、SceneState、Interaction、Phase 四类节点。</label>
+          <label><input type="checkbox"> 能用 requires 和 triggers 连接节点。</label>
+          <label><input type="checkbox"> 能从任意节点查看上游依赖和下游影响。</label>
+          <label><input type="checkbox"> 能把因果图编译成 flag、condition、action、scenario phase。</label>
+          <label><input type="checkbox"> 能在编辑器里预览编译结果。</label>
+          <label><input type="checkbox"> 能校验孤立节点、死链、循环依赖和重复写入。</label>
+          <label><input type="checkbox"> 能跑通“茶馆传闻 → 城隍庙香灰显形 → 灰痕可调查 → phase done”。</label>
+        </div>
+        <div class="status-bar"><span id="progress"></span></div>
+        <p id="progressText">完成度：0 / 7</p>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const sections = Array.from(document.querySelectorAll('section'));
+    const navButtons = Array.from(document.querySelectorAll('nav button'));
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        navButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        sections.forEach(s => s.classList.remove('active'));
+        document.getElementById(btn.dataset.section).classList.add('active');
+      });
+    });
+
+    const stateData = {
+      eye: { title: '入眼：世界呈现变化', body: '知识获得后，相关物件、痕迹、路径、危险焦点自动显形。玩家不用主动记，也不用选择知识；世界自己变得更可读。例：获得香灰知识后，城隍庙里的香灰断痕、供桌下灰线、地面灰痕成为线索。', tags: ['被动生效', '场景再解释', '低成本高频'] },
+      heart: { title: '入心：系统或角色提示变化', body: '当玩家遇到相关情境，角色自然想起传闻。提示不应像教学 UI，而应像关二狗自己的反应。例：看到吊死女尸时，关二狗想起“吊死的人夜里莫看脸”。', tags: ['降低记忆负担', '角色化提示', '中频使用'] },
+      hand: { title: '入手：玩家主动行动增加', body: '只有关键高压场景才给主动动作。选项写成具体动作，而不是知识名称。例：咬住牙不应声、胡诌假名、侧身看脚、用泥抹掉纸人眼。', tags: ['少而重', '主动决策', '高压场景'] }
+    };
+    const stateDetail = document.getElementById('stateDetail');
+    function renderState(key) {
+      const d = stateData[key];
+      stateDetail.innerHTML = '<h3>' + d.title + '</h3><p>' + d.body + '</p><div class="pill-row">' + d.tags.map(t => '<span class="tag">' + t + '</span>').join('') + '</div>';
+    }
+    renderState('eye');
+    document.querySelectorAll('.state-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.state-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        renderState(card.dataset.state);
+      });
+    });
+
+    const nodeData = {
+      dialogue: { title: 'Dialogue：茶馆听到传闻', text: '玩家在茶馆通过说书、闲聊或打听获得“香灰藏事”的传闻。这是因果链的入口。', tags: ['来源', '可由对话完成触发'], code: '上层节点：Dialogue\nID: teahouse_hear_ash_rumor\n完成后 triggers: Knowledge.ash_trace' },
+      knowledge: { title: 'Knowledge：香灰藏事', text: '这不是一个道具按钮，而是一种认知能力。它会让庙宇类场景中的香灰痕迹变得可读。', tags: ['知识', '入眼', 'B 级'], code: '编译目标示例：\nflag causal.iron_box_night.knowledge.ash_trace.acquired = true' },
+      scene: { title: 'SceneState：城隍庙香灰层显形', text: '知识作用到场景表现层。香灰断痕、供桌下灰线、地面灰痕从背景变成线索。', tags: ['场景层', '世界变化'], code: '编译目标示例：\nflag causal.iron_box_night.scene.temple.layer.ash_trace.visible = true' },
+      interaction: { title: 'Interaction：供桌下灰痕可调查', text: '场景变化进一步启用具体交互点。玩家调查灰痕后，剧情阶段可以推进。', tags: ['交互点', 'condition 控制'], code: 'hotspot condition:\nlayer.ash_trace.visible == true\n\nonInspect:\nsetScenarioPhase(iron_box_night, ash_trace_found, done)' },
+      phase: { title: 'Phase：铁盒第一夜_发现灰痕', text: '交互完成后推进情景状态机中的阶段。这个 phase 可以继续触发后续节点。', tags: ['剧情阶段', 'scenario phase'], code: "setScenarioPhase('iron_box_night', 'ash_trace_found', { status: 'done' })" },
+      outcome: { title: 'Outcome：城隍庙异常确认', text: '阶段性结果。它可以作为对外公开事实，被其他局部因果图引用。', tags: ['结果', '对外事实'], code: 'exposes:\n  iron_box_night.temple_anomaly_confirmed = true' }
+    };
+    const nodeTitle = document.getElementById('nodeTitle');
+    const nodeText = document.getElementById('nodeText');
+    const nodeTags = document.getElementById('nodeTags');
+    const nodeCode = document.getElementById('nodeCode');
+    function renderNode(key) {
+      const d = nodeData[key];
+      nodeTitle.textContent = d.title;
+      nodeText.textContent = d.text;
+      nodeTags.innerHTML = d.tags.map(t => '<span class="tag">' + t + '</span>').join('');
+      nodeCode.textContent = d.code;
+      document.querySelectorAll('.node').forEach(n => n.classList.remove('active'));
+      document.querySelector('.node[data-node="' + key + '"]').classList.add('active');
+    }
+    renderNode('dialogue');
+    document.querySelectorAll('.node').forEach(node => node.addEventListener('click', () => renderNode(node.dataset.node)));
+
+    const compileData = {
+      knowledge: { upper: 'Knowledge\n名称：香灰藏事\n等级：B\n三态：入眼\n作用：让庙宇香灰痕迹显形', lower: 'generated flag:\ncausal.iron_box_night.knowledge.ash_trace.acquired = true\n\nregistry:\nvalueType = bool\nsourceNode = Knowledge.ash_trace' },
+      scene: { upper: 'SceneState\n场景：城隍庙\n层：香灰痕迹显形\nrequires: Knowledge.香灰藏事', lower: 'generated flag:\ncausal.iron_box_night.scene.temple.layer.ash_trace.visible = true\n\ncondition:\nKnowledge.ash_trace.acquired == true' },
+      interaction: { upper: 'Interaction\n交互点：供桌下灰痕\n启用条件：香灰痕迹层显形\n完成后：推进发现灰痕阶段', lower: 'hotspot condition:\ncausal...ash_trace.visible == true\n\nonInspect actions:\nsetScenarioPhase(iron_box_night, ash_trace_found, done)' },
+      phase: { upper: 'Phase\nscenarioId: iron_box_night\nphaseId: ash_trace_found\nstatus: done', lower: 'ScenarioStateManager:\nsetScenarioPhase("iron_box_night", "ash_trace_found", { status: "done" })\n\noptional exposes:\ntemple_anomaly_progress = "ash_trace_found"' }
+    };
+    const upperCode = document.getElementById('upperCode');
+    const lowerCode = document.getElementById('lowerCode');
+    function renderCompile(key) {
+      upperCode.textContent = compileData[key].upper;
+      lowerCode.textContent = compileData[key].lower;
+      document.querySelectorAll('#compileSwitch button').forEach(b => b.classList.toggle('active', b.dataset.compile === key));
+    }
+    renderCompile('knowledge');
+    document.querySelectorAll('#compileSwitch button').forEach(btn => btn.addEventListener('click', () => renderCompile(btn.dataset.compile)));
+
+    const checks = Array.from(document.querySelectorAll('#checklist input'));
+    const progress = document.getElementById('progress');
+    const progressText = document.getElementById('progressText');
+    function updateProgress() {
+      const done = checks.filter(c => c.checked).length;
+      progress.style.width = (done / checks.length * 100) + '%';
+      progressText.textContent = '完成度：' + done + ' / ' + checks.length;
+    }
+    checks.forEach(c => c.addEventListener('change', updateProgress));
+  </script>
+</body>
+</html>
