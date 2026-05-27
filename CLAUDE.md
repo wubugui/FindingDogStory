@@ -28,16 +28,18 @@ git push origin main
 ```
 
 ### 认证方式
-使用 GitHub Personal Access Token（PAT）：
+使用 GitHub Personal Access Token（PAT）环境变量。
+
+**设置方式：**
+`GITHUB_TOKEN` 环境变量已配置在 `~/.bashrc` 中，自动用于 git 推送。
+
+确保已加载：
 ```bash
-git remote set-url origin "https://wubugui:YOUR_TOKEN@github.com/wubugui/FindingDogStory.git"
-git push origin main
+source ~/.bashrc
+echo $GITHUB_TOKEN  # 验证是否设置成功
 ```
 
-重要：推送后应重置 remote URL（移除 token）：
-```bash
-git remote set-url origin "https://github.com/wubugui/FindingDogStory.git"
-```
+**git 推送会自动使用 GITHUB_TOKEN 环境变量进行认证。**
 
 ## 其他说明
 - 仓库可能转换为 private，不影响 PAT 访问
