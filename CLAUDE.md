@@ -14,33 +14,27 @@
 ## Git 工作流程
 
 ### ⚠️ 重要规则
-**直接推送到 `main` 分支，不创建特性分支。**
+**每次提交完成后，必须合并到 `main` 分支，并删除开发分支。**
 
 ### 推送步骤
 ```bash
-# 1. 修改文件
-# 2. 提交
+# 1. 修改文件并提交
 git add <files>
 git commit -m "描述性提交信息"
 
-# 3. 直接推送到 main
+# 2. 合并到 main
+git checkout main
+git merge <开发分支>
 git push origin main
+
+# 3. 删除开发分支
+git branch -d <开发分支>
+git push origin --delete <开发分支>
 ```
 
 ### 认证方式
-使用 GitHub Personal Access Token（PAT）环境变量。
-
-**设置方式：**
-`GITHUB_TOKEN` 环境变量已配置在 `~/.bashrc` 中，自动用于 git 推送。
-
-确保已加载：
-```bash
-source ~/.bashrc
-echo $GITHUB_TOKEN  # 验证是否设置成功
-```
-
-**git 推送会自动使用 GITHUB_TOKEN 环境变量进行认证。**
+GitHub App 已自动处理认证，无需手动配置 Token。
 
 ## 其他说明
-- 仓库可能转换为 private，不影响 PAT 访问
+- 仓库可能转换为 private，不影响访问
 - 确保 Claude Code GitHub App 有正确的仓库访问权限
