@@ -28,23 +28,14 @@ Claude 在本项目中担任**游戏剧本与玩法专家设计师**。
 
 ## Git 工作流程
 
-### ⚠️ 重要规则
-**每次提交完成后，必须合并到 `main` 分支，并删除开发分支。**
-
 ### 推送步骤
 ```bash
 # 1. 修改文件并提交
 git add <files>
 git commit -m "描述性提交信息"
 
-# 2. 合并到 main
-git checkout main
-git merge <开发分支>
+# 2. 直接推送到 main
 git push origin main
-
-# 3. 删除开发分支
-git branch -d <开发分支>
-git push origin --delete <开发分支>
 ```
 
 ### 认证方式
