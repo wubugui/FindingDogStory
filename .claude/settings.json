@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "mcp__web-search__search_web",
-      "mcp__web-search__fetch_url"
+      "mcp__web-search__fetch_url",
+      "Bash(curl -s -H \"Authorization: Bearer jina_400535adadad4c23a197e9776431035bdB_BQ86dDSZ5HvePKB9ecKJheVzc\" \"https://s.jina.ai/民国绣坊学徒女工制度杂活惩罚缠线浆布\")",
+      "Bash(curl -s -H \"Authorization: Bearer jina_400535adadad4c23a197e9776431035bdB_BQ86dDSZ5HvePKB9ecKJheVzc\" \"https://s.jina.ai/民国绣庄学徒规矩女工杂活\" -o /tmp/jina1.txt)",
+      "Read(//tmp/**)",
+      "Read(//c/Users/wubugui/.claude/**)"
     ]
   }
 }
