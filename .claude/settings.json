@@ -6,7 +6,10 @@
       "Bash(curl -s -H \"Authorization: Bearer jina_400535adadad4c23a197e9776431035bdB_BQ86dDSZ5HvePKB9ecKJheVzc\" \"https://s.jina.ai/民国绣坊学徒女工制度杂活惩罚缠线浆布\")",
       "Bash(curl -s -H \"Authorization: Bearer jina_400535adadad4c23a197e9776431035bdB_BQ86dDSZ5HvePKB9ecKJheVzc\" \"https://s.jina.ai/民国绣庄学徒规矩女工杂活\" -o /tmp/jina1.txt)",
       "Read(//tmp/**)",
-      "Read(//c/Users/wubugui/.claude/**)"
+      "Read(//c/Users/wubugui/.claude/**)",
+      "Bash(git push *)",
+      "PowerShell($f = \"h:\\\\FDStory\\\\FindingDogStory\\\\故事设计\\\\调查报告\\\\修改建议.md\"; if \\(Test-Path $f\\) { \"EXISTS, lines=\" + \\(Get-Content $f -Encoding utf8 | Measure-Object -Line\\).Lines } else { \"MISSING\" })",
+      "PowerShell(\"ping\")"
     ]
   }
 }
