@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>山口 · 化身阿秀</title>
+<style>
+  :root{--gold:#d1aa57;--blood:#a8453c;--accent:#65aaa7}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;overflow:hidden;background:#000}
+  body{font-family:"Songti SC","STSong","SimSun","Noto Serif SC",serif;color:#cdd8e6;user-select:none;-webkit-user-select:none}
+
+  /* ===== 影院舞台 ===== */
+  #film{position:fixed;inset:0;overflow:hidden;background:#000}
+  .layer{position:absolute;inset:0;will-change:transform,opacity;transition:opacity 1.2s ease}
+  .hidden{opacity:0!important;pointer-events:none}
+
+  /* 主视角摇晃层（劳累） */
+  #pov{transform-origin:50% 60%;animation:sway 9s ease-in-out infinite}
+  @keyframes sway{0%,100%{transform:translate(0,0) rotate(0)}25%{transform:translate(6px,-3px) rotate(.18deg)}50%{transform:translate(-2px,4px) rotate(-.12deg)}75%{transform:translate(-5px,-2px) rotate(.14deg)}}
+
+  /* 天空 */
+  .sky{position:absolute;inset:0;opacity:0;transition:opacity 5s ease;pointer-events:none}
+  .sky.s0{background:linear-gradient(to bottom,#2a2433,#3a2f36 30%,#4a3a30 55%,#2c2018 80%,#120c0a);opacity:1}
+  .sky.s1{background:linear-gradient(to bottom,#0c0e1c,#10142a 40%,#1a1424 70%,#08060a)}
+  .sky.s2{background:linear-gradient(to bottom,#04060f,#060a18 50%,#0a0810)}
+  .sky.s3{background:linear-gradient(to bottom,#1a1830,#2a2238 35%,#4a2e28 70%,#241410)}
+  .sky.s4{background:linear-gradient(to bottom,#3a3a4e,#5a4458 35%,#7a4838 65%,#3a2418)}
+  .sky.dawn{background:linear-gradient(to bottom,#4a3a2e,#7a5a3e 40%,#a86838 65%,#5a2e1a 85%,#1a0c06)}
+  .sky.storm{background:linear-gradient(to bottom,#0a0a12,#1a141e 40%,#2a1820 70%,#0a0408)}
+  .sky.deep{background:linear-gradient(to bottom,#02030a,#04060f 60%,#000204)}
+  .sky.ash{background:linear-gradient(to bottom,#1a1612,#241e18 50%,#0e0a06)}
+
+  /* SVG 场景 */
+  .svg-scene{position:absolute;inset:0;width:100%;height:100%}
+
+  /* 雾 */
+  .mist{position:absolute;left:-30%;width:160%;pointer-events:none;filter:blur(22px);mix-blend-mode:screen}
+  .mist.m1{top:46%;height:90px;background:radial-gradient(closest-side,rgba(170,180,200,.5),transparent);animation:drift1 38s linear infinite}
+  .mist.m2{top:52%;height:70px;background:radial-gradient(closest-side,rgba(150,160,185,.42),transparent);animation:drift2 52s linear infinite}
+  .mist.m3{top:40%;height:120px;background:radial-gradient(closest-side,rgba(120,135,160,.3),transparent);animation:drift1 70s linear infinite reverse}
+  @keyframes drift1{from{transform:translateX(0)}to{transform:translateX(40%)}}
+  @keyframes drift2{from{transform:translateX(10%)}to{transform:translateX(-30%)}}
+
+  /* 桃溪村落 */
+  .village{position:absolute;left:46%;top:60%;transform:translate(-50%,-50%);pointer-events:none;transition:opacity 2s,transform 4s ease}
+  .village .halo{width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(209,170,87,.55),rgba(209,170,87,.12) 45%,transparent 70%);animation:breathe 5s ease-in-out infinite;filter:blur(2px)}
+  .village .dots{position:absolute;left:28px;top:36px;width:34px;height:18px;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:3px 5px}
+  .village .dots i{width:2px;height:2px;border-radius:50%;background:rgba(240,210,140,.95);box-shadow:0 0 4px rgba(240,210,140,.8);animation:flick 3.2s ease-in-out infinite}
+  .village .dots i:nth-child(2){animation-delay:.7s}.village .dots i:nth-child(3){animation-delay:1.4s}.village .dots i:nth-child(4){animation-delay:2.1s}.village .dots i:nth-child(5){animation-delay:.4s}
+  @keyframes breathe{0%,100%{opacity:.5;transform:scale(.95)}50%{opacity:1;transform:scale(1.08)}}
+  @keyframes flick{0%,100%{opacity:.5}50%{opacity:1}}
+  /* 灯一盏一盏灭 */
+  .village.dying .dots i{animation:die 1.2s forwards}
+  .village.dying .dots i:nth-child(1){animation-delay:0s}.village.dying .dots i:nth-child(2){animation-delay:.4s}.village.dying .dots i:nth-child(3){animation-delay:.9s}.village.dying .dots i:nth-child(4){animation-delay:1.4s}.village.dying .dots i:nth-child(5){animation-delay:2s}
+  @keyframes die{to{opacity:0;background:#5a3030;box-shadow:none}}
+  .village.dying .halo{animation:dieval 3s forwards}
+  @keyframes dieval{to{background:radial-gradient(circle,rgba(80,40,40,.3),transparent 70%)}}
+  /* 立起来的人影（鬼镇成型后） */
+  .village .figures{position:absolute;left:8px;top:24px;width:70px;height:40px;opacity:0;transition:opacity 3s}
+  .village.risen .figures{opacity:.7}
+  .village .figures i{position:absolute;bottom:0;width:5px;height:18px;background:#0a0608;border-radius:3px 3px 0 0;animation:swayfig 6s ease-in-out infinite}
+  .village .figures i:nth-child(1){left:6px;animation-delay:0s}
+  .village .figures i:nth-child(2){left:20px;height:22px;animation-delay:1s}
+  .village .figures i:nth-child(3){left:34px;animation-delay:2s}
+  .village .figures i:nth-child(4){left:50px;height:16px;animation-delay:.5s}
+  @keyframes swayfig{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+
+  /* 粒子 */
+  #fx{position:absolute;inset:0;pointer-events:none}
+
+  /* 草 */
+  .grass{position:absolute;bottom:0;width:100%;height:26%;pointer-events:none}
+  .blade{transform-origin:bottom center;position:absolute;bottom:0;display:inline-block;width:3px;border-radius:3px 3px 0 0;animation:bend 3.4s ease-in-out infinite}
+  @keyframes bend{0%,100%{transform:rotate(7deg)}50%{transform:rotate(26deg)}}
+
+  /* ===== 劳累晕影 ===== */
+  #vignette{position:fixed;inset:0;pointer-events:none;z-index:30;background:radial-gradient(120% 90% at 50% 45%,transparent 30%,rgba(0,0,0,.55) 72%,rgba(0,0,0,.92));animation:breathv 4.6s ease-in-out infinite}
+  @keyframes breathv{0%,100%{opacity:.82}50%{opacity:1}}
+  #desat{position:fixed;inset:0;pointer-events:none;z-index:31;backdrop-filter:grayscale(.35) brightness(.82);opacity:0;transition:opacity 5s}
+  #sleep{position:fixed;inset:0;background:#000;z-index:32;opacity:0;pointer-events:none;transition:opacity .4s}
+  #sleep.shut{opacity:1}
+
+  /* ===== 字幕 / UI ===== */
+  #ui{position:fixed;inset:0;z-index:40;pointer-events:none}
+  #ui>*{pointer-events:auto}
+
+  #ruminate{position:absolute;left:50%;top:30%;transform:translate(-50%,-50%);text-align:center;width:min(720px,88%);pointer-events:none}
+  #ruminate .line{font-size:clamp(18px,3.6vw,32px);letter-spacing:3px;line-height:2;color:#e6ecf3;opacity:0;transform:translateY(10px);transition:opacity 2.4s,transform 2.4s;text-shadow:0 2px 20px rgba(0,0,0,.85)}
+  #ruminate .line.show{opacity:1;transform:none}
+  .ghost{color:#566175}.maybe{color:var(--gold)}.choose{color:#e08070;font-weight:600}.kill{color:#d9655b}
+
+  /* 影院字幕（结局序列用） */
+  #caption{position:absolute;left:50%;bottom:14%;transform:translateX(-50%);text-align:center;width:min(760px,90%);pointer-events:none;opacity:0;transition:opacity 1.6s}
+  #caption.show{opacity:1}
+  #caption p{font-size:clamp(16px,2.6vw,24px);letter-spacing:3px;line-height:2;color:#d6dee8;text-shadow:0 2px 16px rgba(0,0,0,.9);margin:0}
+  #caption p.small{font-size:clamp(13px,2vw,17px);color:#8a98ac;margin-top:10px;letter-spacing:2px}
+  #caption p.gold{color:var(--gold)}
+  #caption p.blood{color:#d9655b}
+
+  /* 左上状态 */
+  #status{position:absolute;left:20px;top:20px;background:rgba(10,16,24,.66);border:1px solid #24344a;border-radius:12px;padding:12px 14px;font-size:12px;color:#7c8aa0;backdrop-filter:blur(4px);width:180px;line-height:1.8;transition:opacity 1s}
+  #status.gone{opacity:0}
+  #status b{color:#cdd8e6;font-weight:normal;display:block;font-size:13px;margin-bottom:8px;letter-spacing:2px}
+  .bar{height:5px;background:#1a2433;border-radius:3px;overflow:hidden;margin-top:3px}
+  .bar i{display:block;height:100%;background:linear-gradient(to right,#65aaa7,#d1aa57);transition:width 2s}
+  .row{display:flex;justify-content:space-between;margin-top:6px}
+  .row span:last-child{color:#aebccd}
+
+  /* 右上 上帝视角 */
+  #god{position:absolute;right:20px;top:20px;max-width:220px;background:rgba(168,69,60,.16);border:1px solid rgba(168,69,60,.5);border-radius:12px;padding:11px 14px;font-size:12px;color:#e6b8b2;line-height:1.7;backdrop-filter:blur(4px);opacity:0;transition:opacity 2s}
+  #god.show{opacity:1}
+  #god b{color:#f3ccc6;display:block;margin-bottom:4px;letter-spacing:1px}
+
+  #barbot{position:absolute;left:0;right:0;bottom:0;padding:14px 22px 16px;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);display:flex;justify-content:space-between;align-items:flex-end;gap:16px;font-size:13px;color:#7c8aa0;transition:opacity 1s}
+  #barbot.gone{opacity:0;pointer-events:none}
+  #barbot .clock{font-size:15px;color:var(--gold);letter-spacing:2px}
+  #barbot .hint{max-width:60%;text-align:right;line-height:1.6}
+
+  /* 抉择 */
+  #choice{position:absolute;left:50%;bottom:130px;transform:translateX(-50%);display:flex;gap:18px;opacity:0;transition:opacity 1.6s;pointer-events:none}
+  #choice.show{opacity:1;pointer-events:auto}
+  #choice button{font-family:inherit;background:rgba(10,16,24,.78);color:#e6ecf3;border:1px solid #2a3a50;border-radius:10px;padding:18px 28px;cursor:pointer;min-width:230px;font-size:16px;letter-spacing:4px;line-height:1.7;transition:all .25s;backdrop-filter:blur(4px)}
+  #choice button:hover{transform:translateY(-2px)}
+  #choice button.flee:hover{border-color:var(--accent);background:rgba(18,40,40,.7)}
+  #choice button.turn:hover{border-color:#c96555;background:rgba(50,24,20,.7)}
+  #choice button .small{display:block;font-size:12px;color:#7c8aa0;margin-top:8px;letter-spacing:2px}
+  #choice button.flee .small{color:var(--accent)}
+  #choice button.turn .small{color:#d9655b}
+
+  /* 终幕文字 */
+  #end{position:fixed;inset:0;z-index:50;background:#000;display:flex;align-items:center;justify-content:center;padding:30px;opacity:0;pointer-events:none;transition:opacity 3s}
+  #end.show{opacity:1;pointer-events:auto}
+  #end .box{max-width:680px}
+  #end h2{font-size:clamp(22px,4vw,32px);font-weight:normal;letter-spacing:8px;margin-bottom:24px;color:var(--gold)}
+  #end p{font-size:16px;line-height:2.1;color:#cdd8e6;margin-bottom:16px}
+  #end p.muted{color:#7c8aa0;font-size:14px;line-height:1.9}
+  #end .echo{margin-top:28px;padding-top:20px;border-top:1px solid #2a3a50;color:#d9655b;font-size:15px;line-height:2}
+  #end .again{margin-top:30px;background:none;border:1px solid #2a3a50;color:#7c8aa0;padding:10px 24px;font-family:inherit;font-size:13px;letter-spacing:3px;cursor:pointer;border-radius:8px}
+  #end .again:hover{color:#cdd8e6;border-color:var(--gold)}
+
+  /* 开场 */
+  #intro{position:fixed;inset:0;z-index:60;background:#000;display:flex;align-items:center;justify-content:center;padding:30px;transition:opacity 1.6s}
+  #intro.gone{opacity:0;pointer-events:none}
+  #intro .box{max-width:560px}
+  #intro h1{font-size:clamp(24px,5vw,38px);font-weight:normal;letter-spacing:10px;margin-bottom:8px;color:var(--gold)}
+  #intro .sub{color:#7c8aa0;font-size:13px;letter-spacing:4px;margin-bottom:28px}
+  #intro p{font-size:15px;line-height:2.1;color:#cdd8e6;margin-bottom:14px}
+  #intro p.muted{color:#7c8aa0;font-size:13px;line-height:1.9}
+  #intro .begin{margin-top:28px;background:rgba(101,170,167,.15);border:1px solid var(--accent);color:var(--accent);padding:14px 32px;font-family:inherit;font-size:15px;letter-spacing:5px;cursor:pointer;border-radius:10px;transition:all .25s}
+  #intro .begin:hover{background:rgba(101,170,167,.3)}
+
+  /* 她的剪影（翻山/下山时用） */
+  .figure-she{position:absolute;pointer-events:none}
+</style>
+</head>
+<body>
+
+<div id="film">
+  <!-- 天空 -->
+  <div class="sky s0" id="skyA"></div>
+  <div class="sky s1" id="skyB"></div>
+  <div class="sky s2" id="skyC"></div>
+  <div class="sky s3" id="skyD"></div>
+  <div class="sky s4" id="skyE"></div>
+  <div class="sky dawn" id="skyDawn"></div>
+  <div class="sky storm" id="skyStorm"></div>
+  <div class="sky deep" id="skyDeep"></div>
+  <div class="sky ash" id="skyAsh"></div>
+
+  <!-- 主山景（默认山口） -->
+  <div id="pov" class="layer">
+    <svg class="svg-scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice">
+      <defs>
+        <linearGradient id="gFar" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#3a4458"/><stop offset="1" stop-color="#1c2434"/></linearGradient>
+        <linearGradient id="gMid" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#222c3e"/><stop offset="1" stop-color="#101824"/></linearGradient>
+        <linearGradient id="gNear" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#141c28"/><stop offset="1" stop-color="#070b12"/></linearGradient>
+        <linearGradient id="gRock" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#0a0e16"/><stop offset="1" stop-color="#03050a"/></linearGradient>
+      </defs>
+      <path d="M0,540 C220,500 380,520 560,485 C740,452 920,505 1100,478 C1290,450 1440,498 1600,480 L1600,900 L0,900 Z" fill="url(#gFar)" opacity=".82"/>
+      <path d="M0,610 C160,555 340,592 500,535 C680,470 880,576 1060,520 C1240,468 1410,548 1600,520 L1600,900 L0,900 Z" fill="url(#gMid)" opacity=".9"/>
+      <path d="M0,700 C120,650 240,685 360,665 C470,648 540,600 640,640 C720,672 780,705 860,690 C960,672 1040,625 1140,650 C1260,680 1380,648 1500,632 C1560,624 1600,640 1600,640 L1600,900 L0,900 Z" fill="url(#gNear)"/>
+      <path d="M0,820 C140,760 280,800 420,775 C500,760 540,735 620,760 C700,784 760,815 860,798 C980,778 1080,742 1200,768 C1320,792 1440,778 1600,800 L1600,900 L0,900 Z" fill="url(#gRock)"/>
+      <path d="M-20,900 L-20,780 C40,762 90,752 130,768 C120,812 70,848 -20,900 Z" fill="#05080e"/>
+      <path d="M1620,900 L1620,770 C1560,752 1500,748 1455,766 C1470,818 1530,858 1620,900 Z" fill="#05080e"/>
+      <ellipse cx="180" cy="828" rx="60" ry="20" fill="#070b12"/>
+      <ellipse cx="1380" cy="820" rx="70" ry="22" fill="#070b12"/>
+    </svg>
+    <div class="mist m3"></div><div class="mist m1"></div><div class="mist m2"></div>
+
+    <div class="village" id="village">
+      <div class="halo"></div>
+      <div class="dots"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="figures"><i></i><i></i><i></i><i></i></div>
+    </div>
+
+    <svg class="svg-scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" style="pointer-events:none">
+      <path d="M760,778 C700,800 660,812 600,830 C540,848 520,858 470,864" stroke="rgba(150,130,90,.18)" stroke-width="14" fill="none" stroke-linecap="round"/>
+      <path d="M760,778 C700,800 660,812 600,830 C540,848 520,858 470,864" stroke="rgba(190,165,110,.10)" stroke-width="5" fill="none" stroke-linecap="round"/>
+    </svg>
+
+    <div class="grass" id="grass"></div>
+    <canvas id="fx"></canvas>
+  </div>
+
+  <!-- 结局专用层：翻山的山脊背影 / 沉尸潭 / 鬼镇 -->
+  <div id="fleeScene" class="layer hidden"></div>
+  <div id="turnScene" class="layer hidden"></div>
+</div>
+
+<div id="desat"></div>
+<div id="vignette"></div>
+<div id="sleep"></div>
+
+<div id="ui">
+  <div id="status">
+    <b>阿 秀 · 月 娘</b>
+    <div>已无眠</div><div class="bar"><i id="b-sleep" style="width:80%"></i></div>
+    <div>体 力</div><div class="bar"><i id="b-stamina" style="width:22%"></i></div>
+    <div class="row"><span>体 温</span><span id="s-temp">骤降</span></div>
+    <div class="row"><span>心 神</span><span id="s-mind">恍惚</span></div>
+  </div>
+
+  <div id="god"><b>上 帝 视 角</b>你知道她不知道的事——她若回头，便再也回不来了。</div>
+
+  <div id="ruminate"></div>
+  <div id="caption"></div>
+
+  <div id="choice">
+    <button class="flee" data-act="flee">翻 山 去 雾 津<span class="small">再 逃 一 次</span></button>
+    <button class="turn" data-act="turn">回 头 下 山<span class="small">不 再 当 逃 兵</span></button>
+  </div>
+
+  <div id="barbot">
+    <span class="clock" id="clock">入 夜 · 风 口</span>
+    <span class="hint" id="hint">她在山口坐下。远处那一簇光，是桃溪。</span>
+  </div>
+</div>
+
+<div id="end">
+  <div class="box">
+    <h2 id="end-title"></h2>
+    <p id="end-1"></p>
+    <p id="end-2" class="muted"></p>
+    <div class="echo" id="end-echo"></div>
+    <button class="again" onclick="location.reload()">重 回 山 口</button>
+  </div>
+</div>
+
+<div id="intro">
+  <div class="box">
+    <h1>山 口</h1>
+    <p class="sub">化 身 阿 秀</p>
+    <p>焚妖夜，她从桃溪挣出来。火光照在背上，她没回头。</p>
+    <p>三天三夜，她穿过禁区，翻到神仙顶的垭口。再往前，就是雾津——活路。</p>
+    <p>她回头，看见山坳里那一簇光。那是桃溪。</p>
+    <p class="muted">十年了。那些没害过她的人，都在底下。她已经四天没合眼。</p>
+    <p class="muted">你坐进她的位置。你什么都知道——她什么都不知道。</p>
+    <button class="begin" onclick="begin()">进 入 山 口</button>
+  </div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+
+/* ===== 草 ===== */
+(()=>{
+  const g=$('#grass');const n=Math.min(90,Math.floor(innerWidth/14));
+  for(let i=0;i<n;i++){
+    const b=document.createElement('span');b.className='blade';
+    b.style.height=(10+Math.random()*26)+'px';
+    b.style.left=(Math.random()*100)+'%';
+    b.style.background='linear-gradient(to top,#0a1018,rgba(70,90,70,.5))';
+    b.style.opacity=.4+Math.random()*.5;
+    b.style.animationDuration=(2.6+Math.random()*2.2)+'s';
+    b.style.animationDelay=(-Math.random()*4)+'s';
+    g.appendChild(b);
+  }
+})();
+
+/* ===== 粒子 ===== */
+const fx=$('#fx');const ctx=fx.getContext('2d');
+let W,H,stars=[],wind=[],snow=[],embers=[],breathP=[],fogWisp=[];
+let phase=0,windStrength=.4,fogDensity=.3,allowSnow=false,allowEmber=true;
+function resize(){W=fx.width=innerWidth;H=fx.height=innerHeight;initStars();}
+addEventListener('resize',resize);
+function initStars(){stars=[];const n=Math.floor(W*H/9000);for(let i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H*.55,r:Math.random()*1.2+.2,t:Math.random()*6.28,s:Math.random()*.4+.3});}
+resize();
+function spawnWind(){wind.push({x:-20,y:Math.random()*H*.8+H*.1,vx:6+Math.random()*8*windStrength,life:1,ox:Math.random()*40-20});}
+function spawnSnow(){snow.push({x:Math.random()*W,y:-5,vx:-(.4+Math.random()*1.2)*windStrength*2,vy:.5+Math.random()*1.1,r:Math.random()*1.6+.6,o:Math.random()*.6+.3});}
+function spawnEmber(){embers.push({x:W*.46+(Math.random()-.5)*40,y:H*.6,vx:(Math.random()-.5)*.6,vy:-(.3+Math.random()*.5),life:1,r:Math.random()*1.4+.6});}
+function spawnBreath(){breathP.push({x:W*.5+(Math.random()-.5)*30,y:H*.86,vx:(Math.random()-.5)*.2,vy:-(.2+Math.random()*.3),life:1,r:6+Math.random()*6});}
+function spawnFog(){fogWisp.push({x:-100,y:H*.5+Math.random()*H*.3,vx:.3+Math.random()*.5*windStrength,w:120+Math.random()*160,life:1,o:.12+Math.random()*.15});}
+
+function loop(){
+  if(W!==fx.width)resize();
+  ctx.clearRect(0,0,W,H);
+  const nightStar=(phase===1?.85:phase===2?1:phase===3?.5:phase===0?.2:0);
+  if(nightStar>0){for(const s of stars){s.t+=.02*s.s;const tw=(Math.sin(s.t)*.5+.5);ctx.globalAlpha=nightStar*tw;ctx.fillStyle='#cfe0ff';ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,6.28);ctx.fill();}}
+  if(Math.random()<.5*windStrength+.15)spawnWind();
+  ctx.strokeStyle='rgba(180,195,210,';ctx.lineWidth=1;
+  for(let i=wind.length-1;i>=0;i--){const p=wind[i];p.x+=p.vx;p.life-=.012;if(p.x>W+40||p.life<=0){wind.splice(i,1);continue}ctx.globalAlpha=p.life*.32;ctx.beginPath();ctx.moveTo(p.x,p.y+p.ox);ctx.lineTo(p.x-26,p.y+p.ox+2);ctx.stroke();}
+  if(allowSnow&&Math.random()<.4*windStrength+.1)spawnSnow();
+  ctx.fillStyle='#dfeaff';
+  for(let i=snow.length-1;i>=0;i--){const p=snow[i];p.x+=p.vx;p.y+=p.vy;if(p.y>H*.85){snow.splice(i,1);continue}ctx.globalAlpha=p.o*.7;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.28);ctx.fill();}
+  if(allowEmber&&Math.random()<.04)spawnEmber();
+  ctx.fillStyle='#e8b65a';
+  for(let i=embers.length-1;i>=0;i--){const p=embers[i];p.x+=p.vx;p.y+=p.vy;p.life-=.006;if(p.life<=0){embers.splice(i,1);continue}ctx.globalAlpha=p.life*.8;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.28);ctx.fill();}
+  if(Math.random()<.02)spawnBreath();
+  ctx.fillStyle='rgba(200,215,230,';
+  for(let i=breathP.length-1;i>=0;i--){const p=breathP[i];p.x+=p.vx;p.y+=p.vy;p.life-=.02;p.r+=.25;if(p.life<=0){breathP.splice(i,1);continue}ctx.globalAlpha=p.life*.18;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.28);ctx.fill();}
+  if(Math.random()<fogDensity*.05)spawnFog();
+  ctx.fillStyle='rgba(120,140,160,';
+  for(let i=fogWisp.length-1;i>=0;i--){const p=fogWisp[i];p.x+=p.vx;p.life-=.004;if(p.life<=0||p.x>W+200){fogWisp.splice(i,1);continue}ctx.globalAlpha=p.life*p.o;ctx.beginPath();ctx.ellipse(p.x,p.y,p.w,p.w*.3,0,0,6.28);ctx.fill();}
+  ctx.globalAlpha=1;requestAnimationFrame(loop);
+}
+loop();
+
+/* ===== 时辰切换 ===== */
+function setSky(name){
+  ['s0','s1','s2','s3','s4','dawn','storm','deep','ash'].forEach(k=>$('#sky'+skyId(k)).style.opacity=0);
+  $('#sky'+skyId(name)).style.opacity=1;
+}
+function skyId(k){return k==='s0'?'A':k==='s1'?'B':k==='s2'?'C':k==='s3'?'D':k==='s4'?'E':k==='dawn'?'Dawn':k==='storm'?'Storm':k==='deep'?'Deep':k==='ash'?'Ash':''}
+function setPhase(p){
+  phase=p;
+  if(p===0){setSky('s0');windStrength=.45;fogDensity=.3;allowSnow=false}
+  else if(p===1){setSky('s1');windStrength=.7;fogDensity=.4;allowSnow=false}
+  else if(p===2){setSky('s2');windStrength=1.0;fogDensity=.5;allowSnow=true}
+  else if(p===3){setSky('s3');windStrength=1.4;fogDensity=.6;allowSnow=true}
+  else if(p===4){setSky('s4');windStrength=.5;fogDensity=.35;allowSnow=false}
+}
+function setSkyName(n){setSky(n)}
+
+/* ===== 劳累：微睡眠 ===== */
+const sleepEl=$('#sleep');
+async function microsleep(){sleepEl.classList.add('shut');await wait(900+Math.random()*700);sleepEl.classList.remove('shut');}
+let sleepTimer=setInterval(()=>{if(Math.random()<.7)microsleep();},16000);
+
+/* ===== 反刍 ===== */
+const ruminate=$('#ruminate');
+function say(html){ruminate.innerHTML=`<p class="line">${html}</p>`;return new Promise(r=>{requestAnimationFrame(()=>{ruminate.querySelector('.line').classList.add('show');wait(2600).then(r)})})}
+function clearSay(){ruminate.innerHTML='';}
+
+/* 字幕（结局序列） */
+const captionEl=$('#caption');
+async function cap(html,small){
+  captionEl.innerHTML='<p>'+html+'</p>'+(small?`<p class="small">${small}</p>`:'');
+  captionEl.classList.add('show');
+}
+async function capClass(html,cls){captionEl.innerHTML=`<p class="${cls}">${html}</p>`;captionEl.classList.add('show');}
+function capHide(){captionEl.classList.remove('show');}
+
+/* 闷响 */
+async function boom(){
+  const pov=$('#pov');
+  pov.style.animation='none';void pov.offsetWidth;
+  const id=setInterval(()=>{pov.style.transform=`translate(${(Math.random()-.5)*8}px,${(Math.random()-.5)*5}px)`;},40);
+  $('#hint').textContent='山底传来一声闷响。脚下的石头在颤。';
+  await wait(700);clearInterval(id);pov.style.animation='';await wait(400);
+}
+
+/* ===== 开场 → 反刍 ===== */
+async function begin(){
+  $('#intro').classList.add('gone');await wait(1600);$('#intro').style.display='none';
+  setPhase(0);
+  $('#hint').textContent='远处那一簇光，是桃溪。她在山口坐下。';
+  await wait(3400);
+
+  $('#clock').textContent='入 夜 · 第 一 遍';
+  await say('<span class="ghost">……又要死人了。</span>');await wait(700);
+  clearSay();await wait(400);
+  await say('<span class="ghost">……跑吧。</span>');await wait(1300);clearSay();
+  await wait(600);await boom();await wait(1000);
+
+  setPhase(1);$('#clock').textContent='深 夜 · 第 二 遍';$('#s-mind').textContent='涣散';$('#b-stamina').style.width='16%';
+  await wait(1200);
+  await say('<span class="ghost">我若下去……告诉他们一声……</span>');await wait(500);
+  clearSay();await wait(300);
+  await say('<span class="ghost">……也许……</span>');await wait(1300);clearSay();await wait(500);
+
+  setPhase(2);$('#clock').textContent='后 半 夜 · 第 三 遍';
+  await say('<span class="ghost">小翠半夜伸过一只又冷又抖的手。</span>');await wait(1900);clearSay();
+  await say('<span class="ghost">我翻身装睡。第二天她就被领走了，没了。</span>');await wait(2100);clearSay();
+  await say('<span class="ghost">我这一辈子，全在逃。</span>');await wait(1800);clearSay();await wait(500);
+
+  setPhase(3);$('#clock').textContent='将 明 · 天 快 亮 了';
+  $('#b-sleep').style.width='94%';$('#s-temp').textContent='冰凉';$('#s-mind').textContent='混沌';$('#desat').style.opacity='.8';
+  await wait(1200);
+  await say('我知道要死人了。');await wait(1200);clearSay();await wait(300);
+  await say('我知道要死人了。我下去告诉他们，<span class="maybe">也许</span>能救。');await wait(1600);clearSay();await wait(300);
+  await say('我知道要死人了，我下去告诉他们也许能救——<span class="choose">而我，选择掉头就走。</span>');await wait(2900);clearSay();
+
+  setPhase(4);$('#clock').textContent='天 明 · 风 停 了';
+  $('#hint').textContent='那句话磨穿了她。她抬起头。';$('#god').classList.add('show');await wait(2800);
+  await say('<span class="kill">我不能再逃了。</span>');await wait(2400);clearSay();await wait(600);
+  $('#hint').textContent='她站起来。她面前是活路。她身后是桃溪。';
+  await wait(1500);$('#choice').classList.add('show');
+}
+
+/* ===== 抉择分流 ===== */
+async function choose(act){
+  $('#choice').classList.remove('show');$('#choice').style.pointerEvents='none';
+  clearInterval(sleepTimer);
+  await wait(700);clearSay();$('#god').classList.remove('show');
+  $('#status').classList.add('gone');$('#barbot').classList.add('gone');
+  if(act==='flee')await playFlee();else await playTurn();
+  showEnd(act);
+}
+
+/* ============================================================
+   结局 A：翻山（她活了，桃溪是场会过去的灾）
+   分镜：起身背影 → 沿山脊前行（视差移动）→ 回头一瞥桃溪 →
+        转身没入山脊 → 远处坟被刨（土包裂开）→ 阴煞散去、
+        天光渐亮 → 灯火依旧（普通村镇）
+   ============================================================ */
+async function playFlee(){
+  // 镜头 1：她起身，背对桃溪，向山脊另一侧走
+  await cap('她没有回头。','她顺着山脊，往雾津那边去了。');
+  // 整个 pov 层向右平移 + 缩小，制造"她往前走、桃溪在后退"的感觉
+  const pov=$('#pov');
+  pov.style.animation='none';void pov.offsetWidth;
+  pov.style.transition='transform 9s ease-in-out';
+  pov.style.transform='translateX(8%) scale(1.05)';
+  $('#village').style.transition='opacity 4s ease, transform 9s ease';
+  $('#village').style.opacity='.4';
+  $('#village').style.transform='translate(-50%,-50%) scale(.7)';
+  await wait(5000);
+
+  // 镜头 2：闪一下"回头"——桃溪光晕变大一瞬，又远去
+  capHide();await wait(600);
+  await capClass('——但她停了一下。','gold');await wait(1500);
+  $('#village').style.transform='translate(-50%,-50%) scale(.85)';$('#village').style.opacity='.6';
+  await wait(1400);
+  capHide();
+  // 转身继续走
+  await cap('……不。','她转过头，没再回。');
+  $('#village').style.transform='translate(-50%,-50%) scale(.5)';$('#village').style.opacity='.2';
+  pov.style.transform='translateX(16%) scale(1.12)';
+  await wait(4000);
+  capHide();
+
+  // 镜头 3：桃溪方向——坟被刨（土包裂开）
+  // 切换到 turnScene 复用为"远处坟地"
+  pov.style.opacity='0';
+  const fs=$('#fleeScene');fs.classList.remove('hidden');
+  fs.innerHTML=graveyardHTML();
+  setSkyName('storm');windStrength=.6;allowSnow=false;fogDensity=.5;
+  await wait(800);
+  await cap('山坳里，周疤子的人来了。','小翠的坟。那些无名女人的坟。');
+  await wait(2400);
+  // 土包裂开动画
+  animateGraveDig(fs);
+  await wait(4200);
+  capHide();
+
+  // 镜头 4：阴煞淡淡散去（雾变薄），天色由 storm 渐转 s4（明亮些）
+  fogDensity=.2;windStrength=.35;
+  setSkyName('s4');
+  fs.style.transition='opacity 3s';fs.style.opacity='0';
+  await wait(2000);
+  await cap('桃溪遭了一场阴煞。','死人会烂。活人四散。熬了几年，过去了。');
+  await wait(4200);
+  capHide();
+
+  // 镜头 5：远处的桃溪灯火还在（普通村镇，没成鬼镇）
+  $('#pov').style.opacity='1';
+  $('#pov').style.transition='transform 1s';
+  $('#pov').style.transform='translateX(0) scale(1)';
+  $('#village').style.transition='opacity 2s, transform 2s';
+  $('#village').style.opacity='.9';$('#village').style.transform='translate(-50%,-50%) scale(1)';
+  // 移除"dying"状态确保灯亮
+  $('#village').classList.remove('dying','risen');
+  await wait(1500);
+  await capClass('灯火还在。','gold');
+  await wait(3000);capHide();await wait(800);
+}
+
+function graveyardHTML(){
+  return `<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" style="position:absolute;inset:0;width:100%;height:100%">
+    <defs><linearGradient id="gd" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#161018"/><stop offset="1" stop-color="#060406"/></linearGradient></defs>
+    <path d="M0,560 C300,520 600,580 900,540 C1200,505 1400,560 1600,540 L1600,900 L0,900Z" fill="url(#gd)"/>
+    <path d="M0,640 C260,600 540,650 820,615 C1100,582 1380,632 1600,610 L1600,900 L0,900Z" fill="#0a0608"/>
+    <g id="graves">
+      <g class="grave" data-x="380" data-y="690"><ellipse cx="380" cy="690" rx="55" ry="18" fill="#1a0e08"/><path d="M325,690 q55,-40 110,0" fill="#0e0806"/></g>
+      <g class="grave" data-x="640" data-y="665"><ellipse cx="640" cy="665" rx="48" ry="16" fill="#1a0e08"/><path d="M592,665 q48,-36 96,0" fill="#0e0806"/></g>
+      <g class="grave" data-x="920" data-y="700"><ellipse cx="920" cy="700" rx="60" ry="19" fill="#1a0e08"/><path d="M860,700 q60,-44 120,0" fill="#0e0806"/></g>
+      <g class="grave" data-x="1180" data-y="675"><ellipse cx="1180" cy="675" rx="50" ry="17" fill="#1a0e08"/><path d="M1130,675 q50,-38 100,0" fill="#0e0806"/></g>
+    </g>
+    <!-- 刨土的人影 -->
+    <g id="diggers" opacity="0">
+      <ellipse cx="430" cy="720" rx="8" ry="20" fill="#000"/><ellipse cx="690" cy="695" rx="8" ry="20" fill="#000"/>
+    </g>
+  </svg>`;
+}
+function animateGraveDig(container){
+  const svg=container.querySelector('svg');
+  const diggers=svg.querySelector('#diggers');
+  diggers.style.transition='opacity 1s';diggers.setAttribute('opacity','1');
+  // 让土包裂开
+  setTimeout(()=>{
+    const graves=svg.querySelectorAll('.grave path');
+    graves.forEach((p,i)=>{
+      p.style.transition='all 1.4s ease';p.style.transitionDelay=(i*0.3)+'s';
+      p.setAttribute('fill','#1a0606');
+      p.style.transform='translateY(6px) scaleY(.5)';
+    });
+  },800);
+}
+
+/* ============================================================
+   结局 B：回头（坠潭 → 沉底 → 魂魄散 → 不化骨 → 游尸 → 鬼镇）
+   ============================================================ */
+async function playTurn(){
+  const pov=$('#pov');
+
+  // —— 镜头 1：起身，背对活路，面向桃溪，往下走（视野前倾下沉）
+  await cap('她回过了头。','她背对活路，往桃溪走。');
+  pov.style.animation='none';void pov.offsetWidth;
+  pov.style.transition='transform 6s ease-in';
+  pov.style.transform='translateY(6%) scale(1.08)';
+  $('#village').style.transition='opacity 3s, transform 6s ease';
+  $('#village').style.opacity='1';
+  $('#village').style.transform='translate(-50%,-50%) scale(1.25)';
+  await wait(5000);capHide();
+
+  // —— 镜头 2：进村，慌乱（灯火剧烈跳动、人影晃动、画面震动）
+  await capClass('她把话传了出去。','kill');
+  setSkyName('storm');windStrength=1.6;fogDensity=.7;allowSnow=false;
+  // 灯火剧烈闪
+  $('#village').classList.add('panic');
+  const shakePov=setInterval(()=>{pov.style.transform=`translate(${(Math.random()-.5)*10}px,${6+(Math.random()-.5)*6}%) scale(1.08)`;},60);
+  await wait(2600);
+  clearInterval(shakePov);
+  capHide();
+
+  // —— 镜头 3：拉扯 → 失足坠潭（画面急坠 + 黑）
+  await capClass('——她失足了。','blood');
+  // 急坠动画
+  pov.style.transition='transform .9s cubic-bezier(.4,0,.9,1), filter .9s';
+  pov.style.transform='translateY(40%) scale(1.3)';
+  pov.style.filter='blur(6px)';
+  await wait(700);
+  // 全黑
+  $('#sleep').classList.add('shut');
+  await wait(900);
+  pov.style.opacity='0';
+  await wait(400);
+
+  // —— 镜头 4：沉尸潭底（切到 turnScene）
+  setSkyName('deep');windStrength=0;allowSnow=false;allowEmber=false;fogDensity=0;
+  const ts=$('#turnScene');ts.classList.remove('hidden');
+  ts.innerHTML=pondHTML();
+  $('#sleep').classList.remove('shut');
+  await wait(800);
+  await cap('沉尸潭。','终年冰寒。阴煞凝如实质。');
+  await wait(3200);capHide();
+
+  // —— 镜头 5：她的尸沉在潭底（慢慢出现）
+  showBodyInPond(ts);
+  await wait(1500);
+  await cap('她那具纯阴无名之尸，沉在潭底。','没有人来收。');
+  await wait(3400);capHide();
+
+  // —— 镜头 6：三魂散（三缕白光从尸身升起，无名可招，散）
+  await capClass('三魂散。','gold');
+  await wait(1200);
+  soulScatter(ts,'soul');
+  await wait(3200);capHide();
+
+  // —— 镜头 7：七魄散尽（七点幽蓝，按 49 天节奏一颗颗灭）
+  await cap('七魄，按四十九天，一颗，一颗，散尽。',' ');
+  await wait(1000);
+  await poScatter(ts);
+  await wait(3000);capHide();
+
+  // —— 镜头 8：不化骨成形（那双手——黑如磐石，在潭底亮起）
+  await capClass('只剩那双手。','kill');
+  await wait(1500);
+  bonesForm(ts);
+  await wait(3800);capHide();
+
+  // —— 镜头 9：游尸出潭（黑影从潭底上升、漫出）
+  await cap('游尸，应节而移。','那双手，认得回桃溪的路。');
+  corpseRise(ts);
+  await wait(4200);capHide();
+
+  // —— 镜头 10：切回山口视角，桃溪的灯一盏一盏灭，人影立起（鬼镇成型）
+  ts.style.transition='opacity 2s';ts.style.opacity='0';
+  await wait(1500);
+  pov.style.opacity='1';pov.style.filter='none';
+  pov.style.transition='transform 2s';
+  pov.style.transform='translateX(0) translateY(0) scale(1)';
+  setSkyName('ash');windStrength=.8;fogDensity=.8;allowEmber=false;allowSnow=true;
+  $('#village').classList.remove('panic');
+  await wait(1200);
+  await cap('桃溪。',' ');
+  // 灯一盏一盏灭
+  $('#village').classList.add('dying');
+  await wait(2600);
+  // 人影立起
+  $('#village').classList.add('risen');
+  await capClass('死的，立起来了。不腐。','blood');
+  await wait(3200);
+  capHide();
+  await cap('活的，走不掉。',' ');
+  await wait(3200);capHide();
+  await wait(600);
+}
+
+function pondHTML(){
+  return `<div style="position:absolute;inset:0">
+    <div style="position:absolute;inset:0;background:radial-gradient(80% 60% at 50% 40%,#06101c,#02060c 70%,#000 100%)"></div>
+    <!-- 水面反光（顶部一条） -->
+    <div style="position:absolute;left:0;right:0;top:0;height:30%;background:linear-gradient(to bottom,rgba(20,40,60,.25),transparent)"></div>
+    <!-- 沉在潭底的旧尸（黑影） -->
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" style="position:absolute;inset:0;width:100%;height:100%">
+      <g id="bodies" opacity=".5">
+        <ellipse cx="300" cy="780" rx="60" ry="14" fill="#000"/><ellipse cx="520" cy="810" rx="70" ry="16" fill="#000"/>
+        <ellipse cx="1080" cy="800" rx="65" ry="15" fill="#000"/><ellipse cx="1300" cy="775" rx="55" ry="13" fill="#000"/>
+      </g>
+      <!-- 气泡 -->
+      <g id="bubbles"></g>
+    </svg>
+    <!-- 她的尸身容器 -->
+    <div id="sheBody" style="position:absolute;left:50%;top:70%;transform:translate(-50%,-50%);opacity:0;transition:opacity 2s"></div>
+    <!-- 魂魄容器 -->
+    <div id="souls" style="position:absolute;left:50%;top:65%;transform:translate(-50%,-50%);width:300px;height:300px"></div>
+    <!-- 不化骨容器 -->
+    <div id="bones" style="position:absolute;left:50%;top:68%;transform:translate(-50%,-50%);opacity:0;transition:opacity 2s"></div>
+  </div>`;
+}
+
+function showBodyInPond(container){
+  const b=container.querySelector('#sheBody');
+  b.innerHTML=`<svg width="200" height="80" viewBox="0 0 200 80"><ellipse cx="100" cy="40" rx="90" ry="22" fill="#040608"/><ellipse cx="100" cy="40" rx="90" ry="22" fill="none" stroke="rgba(40,50,60,.3)"/></svg>`;
+  b.style.opacity='.7';
+}
+
+function soulScatter(container,cls){
+  const s=container.querySelector('#souls');
+  s.innerHTML='';
+  for(let i=0;i<3;i++){
+    const e=document.createElement('div');
+    e.style.cssText='position:absolute;left:50%;top:50%;width:6px;height:6px;border-radius:50%;background:rgba(220,230,255,.9);box-shadow:0 0 12px 4px rgba(220,230,255,.6);opacity:0';
+    s.appendChild(e);
+    setTimeout(()=>{
+      e.style.transition='all 4s ease-out';
+      e.style.opacity='.9';
+      const ang=-Math.PI/2+(i-1)*0.5;
+      e.style.transform=`translate(${Math.cos(ang)*120}px,${Math.sin(ang)*160}px)`;
+      setTimeout(()=>{e.style.opacity='0';},2400);
+    },i*300);
+  }
+  // "无名可招"——光散开后，几道"招魂的衣"飘过但抓不住
+  setTimeout(()=>{
+    for(let i=0;i<2;i++){
+      const c=document.createElement('div');
+      c.style.cssText='position:absolute;left:50%;top:40%;width:40px;height:60px;background:linear-gradient(to bottom,rgba(180,180,180,.15),transparent);opacity:0';
+      s.appendChild(c);
+      setTimeout(()=>{c.style.transition='all 3s';c.style.opacity='.4';c.style.transform=`translateX(${(i?60:-60)}px) translateY(-40px)`;setTimeout(()=>c.style.opacity='0',2000);},500+i*600);
+    }
+  },1000);
+}
+
+async function poScatter(container){
+  const s=container.querySelector('#souls');
+  s.innerHTML='';
+  for(let i=0;i<7;i++){
+    const e=document.createElement('div');
+    const x=(i-3)*22;
+    e.style.cssText=`position:absolute;left:50%;top:50%;transform:translate(${x}px,0);width:5px;height:5px;border-radius:50%;background:rgba(80,140,180,.95);box-shadow:0 0 10px 3px rgba(80,140,180,.7);`;
+    s.appendChild(e);
+    await wait(420);
+    e.style.transition='opacity 2s';e.style.opacity='0';
+  }
+  await wait(1500);
+  s.innerHTML='';
+}
+
+function bonesForm(container){
+  const b=container.querySelector('#bones');
+  b.innerHTML=`<svg width="240" height="120" viewBox="0 0 240 120">
+    <g id="handGroup" style="opacity:0;transition:opacity 2s">
+      <!-- 两只手骨，黑如磐石 -->
+      <g fill="#0a0a0a" stroke="#1a1a1a">
+        <ellipse cx="70" cy="80" rx="40" ry="14"/>
+        <rect x="35" y="62" width="8" height="28" rx="3"/><rect x="48" y="56" width="8" height="34" rx="3"/>
+        <rect x="61" y="58" width="8" height="32" rx="3"/><rect x="74" y="62" width="8" height="28" rx="3"/>
+        <ellipse cx="170" cy="80" rx="40" ry="14"/>
+        <rect x="158" y="62" width="8" height="28" rx="3"/><rect x="171" y="58" width="8" height="32" rx="3"/>
+        <rect x="184" y="56" width="8" height="34" rx="3"/><rect x="197" y="62" width="8" height="28" rx="3"/>
+      </g>
+      <!-- 一点幽光（不化骨的"贯注精气"） -->
+      <circle cx="120" cy="80" r="3" fill="#3a2a1a" opacity=".8"/>
+    </g>
+  </svg>`;
+  const hg=b.querySelector('#handGroup');
+  // 缓慢从潭底浮出 + 亮起
+  b.style.opacity='1';
+  setTimeout(()=>{hg.style.opacity='1';},300);
+  // 微微悬浮动画
+  let t=0;
+  const id=setInterval(()=>{t+=.05;b.style.transform=`translate(-50%,${-50+Math.sin(t)*1.5}%)`;},33);
+  container.dataset.boneAnim=id;
+}
+
+function corpseRise(container){
+  const bones=container.querySelector('#bones');
+  const id=container.dataset.boneAnim?+container.dataset.boneAnim:0;
+  if(id)clearInterval(id);
+  // 整体上升 + 放大 + 漫出（黑雾）
+  bones.style.transition='transform 4s ease-in, opacity 1s';
+  bones.style.transform='translate(-50%,-180%) scale(2)';
+  // 漫出黑雾
+  const fog=document.createElement('div');
+  fog.style.cssText='position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:0;height:0;border-radius:50%;background:radial-gradient(circle,rgba(20,10,15,.7),transparent 70%);transition:all 4s ease;pointer-events:none';
+  container.appendChild(fog);
+  setTimeout(()=>{fog.style.width='160%';fog.style.height='160%';},50);
+}
+
+/* 终幕 */
+function showEnd(act){
+  const t=$('#end-title'),e1=$('#end-1'),e2=$('#end-2'),echo=$('#end-echo');
+  if(act==='flee'){
+    t.textContent='她 翻 过 了 山';
+    e1.textContent='她顺着山脊往下走，没有回头。三天后，她到了雾津。她又活了下来。';
+    e2.textContent='山坳里，周疤子的人把那几座坟刨了。小翠的、那些无名女人的骨头，当货卖了。桃溪遭了一场阴煞——死人会烂，活人四散，熬了几年，过去了。';
+    echo.innerHTML='她活着。活成她最恨的那种人。<br>她到死都不知道，这一次，她其实是对的。<br>她到死都以为——自己又逃了一次。';
+  }else{
+    t.textContent='她 回 了 头';
+    e1.textContent='她下山，进村，把话传了出去。人群慌乱，洋人的打手涌上来。拉扯间，她失足，坠进了沉尸潭。';
+    e2.textContent='她那具纯阴无名之尸，沉进百年阴煞里。三魂散，无名可招；七魄四十九天散尽。她那双"生前精神贯注最多"的手，成了不化骨。';
+    echo.innerHTML='桃溪的死人，一个一个立起来，不腐。<br>活的，走不掉。<br>鬼镇里立着的尸，有几具，是从她后门来过的女人。<br><br>她接住了所有人。包括她自己都不知道的那些。<br>可她没有魂了，她什么都不知道了。<br>她忘了桃溪，忘了小翠，忘了所有人。<br><br>这桩天大的灾，跟恨，一点关系也没有。';
+  }
+  $('#end').classList.add('show');
+}
+
+document.querySelectorAll('#choice button').forEach(b=>b.addEventListener('click',()=>choose(b.dataset.act)));
+
+/* 桃溪慌乱：灯火剧烈闪 */
+const oldFlick='.village .dots i';
+const styleAdd=document.createElement('style');
+styleAdd.textContent='.village.panic .dots i{animation:panicf .25s ease-in-out infinite!important}.village.panic .halo{animation:panicb .25s ease-in-out infinite!important}@keyframes panicf{0%,100%{opacity:.2}50%{opacity:1}}@keyframes panicb{0%,100%{opacity:.3;transform:scale(.9)}50%{opacity:1;transform:scale(1.2)}}';
+document.head.appendChild(styleAdd);
+</script>
+</body>
+</html>
