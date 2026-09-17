@@ -1042,7 +1042,9 @@ function renderGuide(v) {
  *  手机（浏览器不能读写硬盘）：直接读写数据分支，本机只留草稿防丢。
  *  判断谁改了靠「上次同步时的远端 sha + 内容指纹」；两边都改过就弹冲突框，绝不静默覆盖。
  * ==================================================================== */
-const LOCAL_MODE = FS_OK;
+/* 本机模式＝能读写硬盘 且 绑过项目目录。没绑就和手机一样直接读写 GitHub——绑定是可选的，不强制 */
+let LOCAL_MODE = false;
+function refreshMode() { LOCAL_MODE = FS_OK && !!projDir; }
 const IS_MOBILE_UA = /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent);
 const EXT = '.拆拍.json';
 let curName = null;               // 当前任务文件名（xxx.拆拍.json）；新建还没保存时为 null
@@ -1238,16 +1240,34 @@ async function ensureProject() {
   }
   return bindProject();
 }
-function afterProjectReady() { liveErr = ''; writeLive(); }
+async function afterProjectReady() {
+  refreshMode();
+  liveErr = '';
+  // 绑定前正开着一个 GitHub 上的任务：落一份到本机，之后就走本机存盘 + 后台同步
+  if (curName && !fileHandle && await localWritable()) {
+    try { fileHandle = await localWrite(curName, docText(doc)); } catch (e) { toast('写到本机失败：' + e.message, 'err'); }
+  }
+  updateStatus();
+  writeLive();
+}
 function updateProj() {
   const b = $('#bProj');
-  if (!LOCAL_MODE) { b.hidden = true; return; }
+  if (!FS_OK) { b.hidden = true; return; }
   b.style.color = '';
-  if (!projDir) { b.textContent = '项目：未绑定（点此选 FindingDogStory）'; b.style.color = 'var(--warn)'; b.title = '只需选一次。之后打开、保存都在项目的 编排 目录里，agent 也能通过 chaipai 看到这个页面'; return; }
+  if (!projDir) { b.textContent = '本机项目：未绑定（可选）'; b.title = '可选。绑定 FindingDogStory 后：任务同时存本机 编排 目录，agent 能通过 chaipai 实时看到这个页面。不绑也能用，直接存 GitHub'; return; }
   if (projState !== 'ok') { b.textContent = '项目：点一下继续使用'; b.style.color = 'var(--warn)'; b.title = '浏览器收回了上次的授权，点一下恢复（不用重新选目录）'; return; }
   if (liveErr) { b.textContent = '现场同步：' + liveErr; b.style.color = 'var(--warn)'; b.title = '点一下重试'; return; }
   b.textContent = '项目已绑定 · 现场 ' + (liveAt ? liveAt.toLocaleTimeString() : '…');
   b.title = `读写都在项目的 ${projDir.name} 目录；agent 通过 chaipai 只读感知本页（序号 ${liveSeq}）`;
+}
+/* 电脑上两样都没设时：让制作人选，不硬塞绑定 */
+function chooseStorage() {
+  showModal('任务存哪儿？',
+    h('p', {}, '两种都行，也可以两种都设：'),
+    h('div', { class: 'toolbar' },
+      btn('设置 GitHub 同步（手机电脑都能用）', () => { finishModal(); openSettings(true); }, 'primary'),
+      btn('绑定本机项目目录（存本机文件）', async () => { finishModal(); if (await bindProject()) saveFile(false); })),
+    h('p', { class: 'hint' }, '绑定本机项目目录还有个好处：agent 能通过 chaipai 实时看到你正在页面里写什么。'));
 }
 async function onProjButton() {
   if (projDir && projState === 'ok' && !liveErr) { if (confirm('项目已经绑定。要改绑到别的目录吗？')) await bindProject(); return; }
@@ -1398,8 +1418,12 @@ async function saveFile(as) {
   saving = true; b.disabled = true; b.textContent = '保存中…';
   let ok = false;
   try {
-    if (LOCAL_MODE && !(await ensureProject())) { toast('没保存：还没绑定项目目录（右上角「项目」按钮）', 'err'); return; }
-    if (!LOCAL_MODE && !ghReady()) { openSettings(true); toast('没保存：先填 GitHub 同步设置', 'err'); return; }
+    if (LOCAL_MODE && !(await ensureProject())) { toast('没保存：本机项目目录没授权（点右上角「本机项目」恢复）', 'err'); return; }
+    if (!LOCAL_MODE && !ghReady()) {
+      if (FS_OK) chooseStorage(); else openSettings(true);
+      toast('没保存：先选存哪儿', 'info');
+      return;
+    }
     let name = curName;
     if (as || !name) {
       const input = await askText(as ? '另存为（任务名）' : '保存（任务名）', docName(), LOCAL_MODE ? '存到本机 编排 目录' : '存到 GitHub 数据分支');
@@ -1471,7 +1495,7 @@ async function openFile() {
   if (LOCAL_MODE) {
     if (!(await ensureProject())) return;
     for await (const [n, hd] of projDir.entries()) if (hd.kind === 'file' && n.endsWith(EXT)) items.set(n, { local: (await hd.getFile()).lastModified });
-  } else if (!ghReady()) { openSettings(true); return; }
+  } else if (!ghReady()) { if (FS_OK) chooseStorage(); else openSettings(true); return; }
   let remoteErr = '';
   if (ghReady()) {
     try { for (const r of await remoteList()) { const it = items.get(r.name) || {}; it.remote = true; items.set(r.name, it); } }
@@ -1618,23 +1642,23 @@ updateProj();
   // 上次没保存的新任务草稿，优先恢复
   const nd = await idbGet(draftKey(null));
   const ndHasContent = nd && nd.doc && ((nd.doc.stages && nd.doc.stages.length) || (nd.doc.meta && nd.doc.meta.title && nd.doc.meta.title !== '未命名任务') || C.filled(nd.doc.synopsis));
-  if (LOCAL_MODE) {
+  if (FS_OK) {
     const d = await idbGet('projDir');
     if (d) {
       projDir = d;
       try { projState = (await d.queryPermission({ mode: 'readwrite' })) === 'granted' ? 'ok' : 'need-permission'; }
       catch (e) { projDir = null; projState = 'none'; }
-      if (projState === 'ok') afterProjectReady();
     }
-    updateProj();
-    if (ndHasContent) { startupOpened = true; loadDoc(nd.doc); dirty = true; updateStatus(); toast('恢复了上次没保存的新任务', 'info'); return; }
+    refreshMode();
+    if (projState === 'ok') await afterProjectReady();
+    updateProj(); updateStatus();
+  }
+  if (ndHasContent) { startupOpened = true; loadDoc(nd.doc); dirty = true; updateStatus(); toast('恢复了上次没保存的新任务', 'info'); return; }
+  if (LOCAL_MODE) {
     if (projState === 'ok') await openLastIfIdle();
     else if (await idbGet('lastName')) { const b = $('#bReopen'); b.hidden = false; b.textContent = '打开上次：' + baseName(await idbGet('lastName')); }
-  } else {
-    if (!ghReady()) { openSettings(true); return; }
-    if (ndHasContent) { startupOpened = true; loadDoc(nd.doc); dirty = true; updateStatus(); toast('恢复了上次没保存的新任务', 'info'); return; }
-    await openLastIfIdle();
-  }
+  } else if (ghReady()) await openLastIfIdle();
+  else if (!FS_OK) openSettings(true);   // 手机：必须先设 GitHub；电脑：不打扰，保存或打开时再让你选
 })();
 </script>
 </body>
