@@ -81,11 +81,35 @@
       },
       "laneExclude": [],
       "collapsed": false,
-      "beats": []
+      "beats": [
+        {
+          "id": "4xs5w1rvb9",
+          "text": "开始开始上课上课",
+          "reaction": "",
+          "result": "",
+          "source": "",
+          "map": "",
+          "kind": "",
+          "formula": {
+            "verb": "",
+            "object": "",
+            "resistance": ""
+          },
+          "cells": {
+            "see": "",
+            "act": "",
+            "respond": "",
+            "wrong": ""
+          },
+          "stuck": "",
+          "cuttable": false,
+          "lanes": {}
+        }
+      ]
     },
     {
       "id": "03c797r70w",
-      "title": "实际上就是空间",
+      "title": "实际上就是空间斯卡",
       "goal": "",
       "start": "",
       "end": "",
@@ -102,7 +126,11 @@
         "backward": "",
         "summary": ""
       },
-      "laneExclude": [],
+      "laneExclude": [
+        "emotion",
+        "2web49itnf",
+        "puyhi4itnf"
+      ],
       "collapsed": false,
       "beats": []
     },
