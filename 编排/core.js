@@ -40,7 +40,7 @@
   ];
   const FIELD_LABELS = {
     title: '标题', summary: '这段讲什么', changeFrom: '关二狗从', changeTo: '关二狗到', goal: '关二狗的目的', endCondition: '结束条件',
-    start: '开始时局面', end: '结束时局面', loopExit: '退出条件', parallelGroup: '并行组',
+    start: '开始时局面', end: '结束时局面', parallelGroup: '并行组',
     text: '发生了什么', reaction: '关二狗怎么反应', result: '结果', source: '原文摘句', map: '地图',
     'formula.verb': '公式·动词', 'formula.object': '公式·对象', 'formula.resistance': '公式·阻力',
     'cells.see': '四格·玩家看到什么', 'cells.act': '四格·玩家做什么', 'cells.respond': '四格·游戏怎么回应', 'cells.wrong': '四格·做错了会怎样',
@@ -57,21 +57,35 @@
       meta: { title: '未命名任务', summary: '', changeFrom: '', changeTo: '', goal: '', endCondition: '', design: newDesign() },
       synopsis: '',
       lanes: [{ id: 'emotion', name: '情绪', kind: 'curve' }, { id: uid(), name: '三把火', kind: 'trend' }, { id: uid(), name: '玩家知道什么', kind: 'text' }],
-      stages: [], mechanics: [], mapVisits: {}, parking: []
+      stages: [], mechanics: [], mapVisits: {}, parking: [],
+      facts: []   // 状态：一件已经成立的事（撂过尸、拿了帕子包）。选项／拍让它成立，前置条件读它
     };
   }
-  const newStage = () => ({ id: uid(), title: '', goal: '', start: '', end: '', endCondition: '', mode: 'normal', loopExit: '', parallelGroup: '', mergeTo: '', requires: [], design: newDesign(), laneExclude: [], collapsed: false, beats: [] });
-  const newBeat = () => ({ id: uid(), text: '', reaction: '', result: '', source: '', map: '', kind: '', formula: { verb: '', object: '', resistance: '' }, cells: { see: '', act: '', respond: '', wrong: '' }, stuck: '', cuttable: false, lanes: {}, options: [], requires: [] });
+  const newStage = () => ({ id: uid(), title: '', goal: '', start: '', end: '', endCondition: '', mode: 'normal', loopExitWhen: [], parallelGroup: '', mergeTo: '', requires: [], design: newDesign(), laneExclude: [], collapsed: false, beats: [] });
+  const newBeat = () => ({ id: uid(), text: '', reaction: '', result: '', source: '', map: '', kind: '', formula: { verb: '', object: '', resistance: '' }, cells: { see: '', act: '', respond: '', wrong: '' }, stuck: '', cuttable: false, lanes: {}, options: [], requires: [], sets: [] });
   /* 选项（「选」的拍）/ 做法（「做」的拍）。goto：next 继续下一拍 / stage 跳到某子阶段 / end 这条线结束 */
-  const newOption = () => ({ id: uid(), choice: '', works: '', reaction: '', result: '', effect: '', goto: { type: 'next', stageId: '' } });
-  /* 前置条件：kind = stage（子阶段走完）/ beat（某拍发生过）/ option（某拍选过某选项）/ free（只写文字） */
-  const newRequire = () => ({ id: uid(), kind: 'free', id2: '', optionId: '', note: '' });
+  const newOption = () => ({ id: uid(), choice: '', works: '', reaction: '', result: '', effect: '', goto: { type: 'next', stageId: '' }, sets: [] });
+  /* 让某状态成立（value:true）或不再成立（value:false） */
+  const newSet = factId => ({ factId, value: true });
+  const newFact = name => ({ id: uid(), name: name || '' });
+  /* 条件（前置条件、循环退出条件共用）：kind = fact（某状态成立；negate 为 true 时＝不成立）/ stage（子阶段走完）/ beat（某拍发生过）/ option（某拍选过某选项）。
+   * 没有纯文字条件：指不到具体东西的，就新建一个状态。 */
+  const newRequire = () => ({ id: uid(), kind: 'fact', id2: '', optionId: '', negate: false });
   const newMechanic = () => ({ id: uid(), name: '', ok: '', wrong: '', note: '', arc: { qi: [], cheng: [], zhuan: [], he: [] } });
 
   function normalize(d) {
     if (!d || typeof d !== 'object') throw new Error('不是拆拍台文件');
     const base = newDoc();
     const out = Object.assign(base, d);
+    out.facts = (Array.isArray(d.facts) ? d.facts : []).map(f => Object.assign(newFact(), f));
+    const factByName = name => { const n = (name || '').trim() || '未命名状态'; let f = out.facts.find(x => x.name.trim() === n); if (!f) { f = newFact(n); out.facts.push(f); } return f; };
+    const normReq = r => {
+      const nr = Object.assign(newRequire(), r); nr.negate = !!nr.negate;
+      if (r && r.kind === 'free') { nr.kind = 'fact'; nr.id2 = factByName(r.note).id; nr.optionId = ''; }
+      delete nr.note;
+      return nr;
+    };
+    const normSets = list => (Array.isArray(list) ? list : []).filter(x => x && x.factId).map(x => ({ factId: x.factId, value: x.value !== false }));
     out.meta = Object.assign(newDoc().meta, d.meta || {});
     out.meta.design = Object.assign(newDesign(), (d.meta || {}).design || {});
     out.lanes = Array.isArray(d.lanes) && d.lanes.length ? d.lanes : base.lanes;
@@ -80,15 +94,19 @@
       const ns = Object.assign(newStage(), s);
       ns.design = Object.assign(newDesign(), s.design || {});
       ns.laneExclude = s.laneExclude || [];
-      ns.requires = (s.requires || []).map(r => Object.assign(newRequire(), r));
+      ns.requires = (s.requires || []).map(normReq);
+      ns.loopExitWhen = (s.loopExitWhen || []).map(normReq);
+      if (typeof s.loopExit === 'string' && s.loopExit.trim()) ns.loopExitWhen.push(Object.assign(newRequire(), { id2: factByName(s.loopExit).id }));
+      delete ns.loopExit;
       ns.mergeTo = s.mergeTo || '';
       ns.beats = (s.beats || []).map(b => {
         const nb = Object.assign(newBeat(), b);
         nb.formula = Object.assign(newBeat().formula, b.formula || {});
         nb.cells = Object.assign(newBeat().cells, b.cells || {});
         nb.lanes = b.lanes || {};
-        nb.options = (b.options || []).map(o => { const no = Object.assign(newOption(), o); no.goto = Object.assign({ type: 'next', stageId: '' }, o.goto || {}); return no; });
-        nb.requires = (b.requires || []).map(r => Object.assign(newRequire(), r));
+        nb.options = (b.options || []).map(o => { const no = Object.assign(newOption(), o); no.goto = Object.assign({ type: 'next', stageId: '' }, o.goto || {}); no.sets = normSets(o.sets); return no; });
+        nb.requires = (b.requires || []).map(normReq);
+        nb.sets = normSets(b.sets);
         return nb;
       });
       return ns;
@@ -141,18 +159,43 @@
     return '汇合到 ' + stageRefText(d, s.mergeTo);
   }
   /* 前置条件是否还指得到东西 */
+  const findFact = (d, id) => (d.facts || []).find(f => f.id === id) || null;
+  function setsText(d, sets) {
+    return (sets || []).map(x => { const f = findFact(d, x.factId); return `「${f ? f.name || '未命名状态' : '已删除的状态'}」${x.value ? '成立' : '不再成立'}`; }).join('、');
+  }
+  /* 状态在哪被设、在哪被用 */
+  function factUsage(d, factId) {
+    const setBy = [], usedBy = [];
+    allBeats(d).forEach(x => {
+      x.b.sets.forEach(st => { if (st.factId === factId) setBy.push({ where: 'beat', value: st.value, si: x.si, bi: x.bi, b: x.b, s: x.s }); });
+      x.b.options.forEach(o => o.sets.forEach(st => { if (st.factId === factId) setBy.push({ where: 'option', value: st.value, si: x.si, bi: x.bi, b: x.b, s: x.s, o }); }));
+      x.b.requires.forEach(r => { if (r.kind === 'fact' && r.id2 === factId) usedBy.push({ where: 'beat', negate: r.negate, si: x.si, bi: x.bi, b: x.b, s: x.s }); });
+    });
+    d.stages.forEach((st, si) => {
+      st.requires.forEach(r => { if (r.kind === 'fact' && r.id2 === factId) usedBy.push({ where: 'stage', negate: r.negate, si, s: st }); });
+      st.loopExitWhen.forEach(r => { if (r.kind === 'fact' && r.id2 === factId) usedBy.push({ where: 'loopExit', negate: r.negate, si, s: st }); });
+    });
+    return { setBy, usedBy };
+  }
+  function usageText(u) {
+    if (u.where === 'stage') return `子阶段 ${u.si + 1} 的前置条件`;
+    if (u.where === 'loopExit') return `子阶段 ${u.si + 1} 的循环退出条件`;
+    if (u.where === 'option') return `拍 ${u.si + 1}.${u.bi + 1} 选「${short(u.o.choice, 10)}」`;
+    return `拍 ${u.si + 1}.${u.bi + 1}`;
+  }
   function requireTarget(d, r) {
+    if (r.kind === 'fact') { const f = findFact(d, r.id2); return f ? { ok: true, text: `状态「${f.name || '未命名状态'}」${r.negate ? '不成立' : '成立'}` } : { ok: false, text: '（已删除的状态）' }; }
     if (r.kind === 'stage') { const f = findStage(d, r.id2); return f ? { ok: true, text: `子阶段 ${f.si + 1}「${short(f.s.title, 14)}」走完` } : { ok: false, text: '（已删除的子阶段）' }; }
     if (r.kind === 'beat') { const f = findBeat(d, r.id2); return f ? { ok: true, text: `拍 ${f.si + 1}.${f.bi + 1}「${short(f.b.text, 14)}」发生过` } : { ok: false, text: '（已删除的拍）' }; }
     if (r.kind === 'option') {
       const f = findBeat(d, r.id2); const o = f && f.b.options.find(x => x.id === r.optionId);
       return o ? { ok: true, text: `拍 ${f.si + 1}.${f.bi + 1} 选了「${short(o.choice, 14)}」` } : { ok: false, text: '（已删除的选项）' };
     }
-    return { ok: true, text: '' };
+    return { ok: false, text: '' };
   }
   function requireText(d, r) {
     const t = requireTarget(d, r);
-    return [t.text, oneLineText(r.note)].filter(Boolean).join('：') || '（空的前置条件）';
+    return t.text || '（没选条件）';
   }
 
   /* ---------- 泳道分析 ---------- */
@@ -203,7 +246,8 @@
       if (!filled(s.start) || !filled(s.end)) add('miss', 2, S, `${nm}：开始／结束局面没写全`);
       else if (s.start.trim() === s.end.trim()) add('warn', 2, S, `${nm}：开始和结束局面一样——删掉，或并到相邻子阶段`);
       if (!filled(s.endCondition)) add('miss', 2, S, `${nm}：没写结束条件`);
-      if (s.mode === 'loop' && !filled(s.loopExit)) add('miss', 2, S, `${nm}：标了循环，没写退出条件`);
+      if (s.mode === 'loop' && !s.loopExitWhen.length) add('miss', 2, S, `${nm}：标了循环，没设退出条件——玩家会困在里面`);
+      s.loopExitWhen.forEach(r => { if (!requireTarget(d, r).ok) add('miss', 2, S, `${nm}：循环退出条件没选好，或指向的东西已经删了`); });
       if (s.mode === 'parallel' && !filled(s.parallelGroup)) add('warn', 2, S, `${nm}：标了并行，没填并行组`);
       if (!s.beats.length) add('miss', 3, S, `${nm}：还没拆拍`);
       s.beats.forEach((b, bi) => {
@@ -227,7 +271,8 @@
           if (b.kind === '做' && !o.works) add('warn', 5, B, `${on}：没标灵不灵`);
           if (o.goto && o.goto.type === 'stage' && !findStage(d, o.goto.stageId)) add('miss', 2, B, `${on}：去向指向的子阶段不存在`);
         });
-        b.requires.forEach(r => { if (!requireTarget(d, r).ok) add('miss', 2, B, `${bn}：前置条件指向的东西已经删了`); if (r.kind === 'free' && !filled(r.note)) add('warn', 2, B, `${bn}：有一条前置条件是空的`); });
+        b.requires.forEach(r => { if (!requireTarget(d, r).ok) add('miss', 2, B, `${bn}：有一条前置条件没选好，或指向的东西已经删了`); });
+        [...b.sets, ...b.options.flatMap(o => o.sets)].forEach(st => { if (!findFact(d, st.factId)) add('miss', 2, B, `${bn}：让成立的状态已经删了`); });
         if (b.cuttable) add('info', 6, B, `${bn}：标了可砍`);
       });
       if (s.mode === 'branch') {
@@ -235,7 +280,7 @@
         if (!s.mergeTo) add('warn', 2, S, `${nm}：分支没写汇合到哪（或者标「这条线在这里结束」）`);
       }
       if (s.mergeTo && s.mergeTo !== 'end' && !findStage(d, s.mergeTo)) add('miss', 2, S, `${nm}：汇合到的子阶段不存在`);
-      s.requires.forEach(r => { if (!requireTarget(d, r).ok) add('miss', 2, S, `${nm}：前置条件指向的东西已经删了`); if (r.kind === 'free' && !filled(r.note)) add('warn', 2, S, `${nm}：有一条前置条件是空的`); });
+      s.requires.forEach(r => { if (!requireTarget(d, r).ok) add('miss', 2, S, `${nm}：有一条前置条件没选好，或指向的东西已经删了`); });
       if (!filled(s.design.summary)) add('miss', 6, S, `${nm}：设计目的还空着`);
       if (s.beats.length) d.lanes.forEach(l => {
         if ((s.laneExclude || []).includes(l.id)) return;
@@ -243,6 +288,13 @@
       });
     });
     if (!filled(m.design.summary)) add('miss', 6, T, '顶层：设计目的还空着');
+  (d.facts || []).forEach(f => {
+    const nmf = `状态「${short(f.name, 12)}」`; const u = factUsage(d, f.id);
+    if (!filled(f.name)) add('miss', 2, { type: 'fact', id: f.id }, '有一个状态没起名字', 'flow');
+    if (u.usedBy.some(x => !x.negate) && !u.setBy.some(x => x.value)) add('miss', 2, { type: 'fact', id: f.id }, `${nmf}：有条件要求它成立，但没有任何拍或选项让它成立——这个条件永远满足不了`, 'flow');
+    if (u.setBy.length && !u.usedBy.length) add('info', 2, { type: 'fact', id: f.id }, `${nmf}：设了但还没有任何条件用到它`, 'flow');
+    if (!u.setBy.length && !u.usedBy.length) add('info', 2, { type: 'fact', id: f.id }, `${nmf}：没有地方设它，也没有地方用它，可以删掉`, 'flow');
+  });
     const seq = allBeats(d); const ch = laneChanges(d);
     let run = [];
     const flushRun = () => {
@@ -329,7 +381,7 @@
     L.push(`- **这段讲什么**：${mdEsc(m.summary)}`, `- **关二狗怎么变了**：从 ${mdEsc(m.changeFrom)} 到 ${mdEsc(m.changeTo)}`, `- **关二狗的目的**：${mdEsc(m.goal)}`, `- **结束条件**：${mdEsc(m.endCondition)}`, ...D(m.design), '');
     L.push('## 子阶段', '');
     d.stages.forEach((s, si) => {
-      const mode = s.mode === 'loop' ? `（循环，退出条件：${mdEsc(s.loopExit)}）` : s.mode === 'parallel' ? `（并行组：${mdEsc(s.parallelGroup)}）` : '';
+      const mode = s.mode === 'loop' ? `（循环，退出条件：${s.loopExitWhen.map(r => mdEsc(requireText(d, r))).join('；') || '（没设）'}）` : s.mode === 'parallel' ? `（并行组：${mdEsc(s.parallelGroup)}）` : '';
       L.push(`### ${si + 1}. ${s.title || '未命名'}${mode}`, '');
       L.push(`- **关二狗的目的**：${mdEsc(s.goal)}`, `- **开始**：${mdEsc(s.start)}`, `- **结束**：${mdEsc(s.end)}`, `- **结束条件**：${mdEsc(s.endCondition)}`, ...D(s.design));
       const excl = d.lanes.filter(l => (s.laneExclude || []).includes(l.id)).map(l => l.name);
@@ -349,12 +401,13 @@
           L.push(`- 玩家看到什么：${mdEsc(b.cells.see)}`, `- 玩家做什么：${mdEsc(b.cells.act)}`, `- 游戏怎么回应：${mdEsc(b.cells.respond)}`, `- 做错了会怎样：${mdEsc(b.cells.wrong)}`);
           if (filled(b.stuck)) L.push(`- **卡点**：${mdEsc(b.stuck)}`);
           if (b.requires.length) L.push(`- **前置条件**：${b.requires.map(r => mdEsc(requireText(d, r))).join('；')}`);
+          if (b.sets.length) L.push(`- **发生后**：${setsText(d, b.sets)}`);
           if (b.options.length) {
             const isDo = b.kind === '做';
-            L.push('', isDo ? '| 做法 | 灵不灵 | 反应 | 结果 | 后果 | 去向 |' : '| 选项 | 反应 | 结果 | 后果 | 去向 |', isDo ? '|---|---|---|---|---|---|' : '|---|---|---|---|---|');
+            L.push('', isDo ? '| 做法 | 灵不灵 | 反应 | 结果 | 后果 | 状态变化 | 去向 |' : '| 选项 | 反应 | 结果 | 后果 | 状态变化 | 去向 |', isDo ? '|---|---|---|---|---|---|---|' : '|---|---|---|---|---|---|');
             b.options.forEach(o => L.push(isDo
-              ? `| ${mdEsc(o.choice)} | ${WORKS_NAMES[o.works] || ''} | ${mdEsc(o.reaction)} | ${mdEsc(o.result)} | ${mdEsc(o.effect)} | ${gotoText(d, o)} |`
-              : `| ${mdEsc(o.choice)} | ${mdEsc(o.reaction)} | ${mdEsc(o.result)} | ${mdEsc(o.effect)} | ${gotoText(d, o)} |`));
+              ? `| ${mdEsc(o.choice)} | ${WORKS_NAMES[o.works] || ''} | ${mdEsc(o.reaction)} | ${mdEsc(o.result)} | ${mdEsc(o.effect)} | ${setsText(d, o.sets)} | ${gotoText(d, o)} |`
+              : `| ${mdEsc(o.choice)} | ${mdEsc(o.reaction)} | ${mdEsc(o.result)} | ${mdEsc(o.effect)} | ${setsText(d, o.sets)} | ${gotoText(d, o)} |`));
           }
           L.push('');
         });
@@ -381,6 +434,11 @@
       seq.forEach(x => L.push(`| ${x.si + 1}.${x.bi + 1} ${mdEsc(short(x.b.text, 14))} | ${d.lanes.map(l => { const val = x.b.lanes[l.id]; return val === undefined ? '' : (typeof val === 'number' && val > 0 ? '+' + val : mdEsc(String(val))); }).join(' | ')} |`));
       L.push('');
     }
+    if ((d.facts || []).length) {
+      L.push('## 状态', '', '| 状态 | 在哪设 | 在哪用 |', '|---|---|---|');
+      d.facts.forEach(f => { const u = factUsage(d, f.id); L.push(`| ${mdEsc(f.name)} | ${u.setBy.map(x => usageText(x) + (x.value ? '（成立）' : '（不再成立）')).join('；')} | ${u.usedBy.map(x => usageText(x) + (x.negate ? '（要求不成立）' : '')).join('；')} |`); });
+      L.push('');
+    }
     if (d.parking.length) {
       L.push('## 停车场', '');
       d.parking.forEach(p => { const f = p.stageId ? findStage(d, p.stageId) : null; L.push(`- [${p.done ? 'x' : ' '}] ${mdEsc(p.text)}${f ? `（子阶段 ${f.si + 1}）` : ''}`); });
@@ -395,7 +453,7 @@
     DESIGN_KEYS, ARC, KINDS, KCLS, MODE_NAMES, WORKS_NAMES, LANE_KIND_NAMES, STEP_NAMES, GUIDE_STEPS, GUIDE_RULES, FIELD_LABELS,
     newDesign, newDoc, newStage, newBeat, newMechanic, normalize,
     allBeats, findStage, findBeat, mechOfBeat, laneFilled, isAct, visitKey, mapGroups,
-    newOption, newRequire, optionSources, gotoText, mergeText, requireTarget, requireText, stageRefText,
+    newOption, newRequire, newSet, newFact, findFact, setsText, factUsage, usageText, optionSources, gotoText, mergeText, requireTarget, requireText, stageRefText,
     flatEmotionIds, laneChanges, computeIssues, criteria, progress,
     objLabel, keyLabel, buildMarkdown
   };

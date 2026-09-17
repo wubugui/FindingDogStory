@@ -223,7 +223,7 @@ function refOf(doc, target) {
 }
 function resolveRef(doc, raw) {
   const r = String(raw).trim(); let m;
-  const named = { top: 'top', 顶层: 'top', 梗概: 'synopsis', synopsis: 'synopsis', 停车场: 'parking', parking: 'parking', 泳道: 'lanes', lanes: 'lanes', 流向: 'flow', flow: 'flow', 全文: 'all', all: 'all', 玩法: 'mechs', mechanics: 'mechs', 地图: 'maps', maps: 'maps' };
+  const named = { top: 'top', 顶层: 'top', 梗概: 'synopsis', synopsis: 'synopsis', 停车场: 'parking', parking: 'parking', 泳道: 'lanes', lanes: 'lanes', 流向: 'flow', flow: 'flow', 状态: 'facts', facts: 'facts', 全文: 'all', all: 'all', 玩法: 'mechs', mechanics: 'mechs', 地图: 'maps', maps: 'maps' };
   if (named[r]) return { type: named[r] };
   if ((m = r.match(/^(?:子阶段)?\s*(\d+)$/))) { const s = doc.stages[+m[1] - 1]; if (!s) throw notFound(`没有子阶段 ${m[1]}（共 ${doc.stages.length} 个）`); return { type: 'stage', id: s.id }; }
   if ((m = r.match(/^(?:拍)?\s*(\d+)\.(\d+)$/))) { const s = doc.stages[+m[1] - 1]; const b = s && s.beats[+m[2] - 1]; if (!b) throw notFound(`没有拍 ${m[1]}.${m[2]}`); return { type: 'beat', id: b.id }; }
@@ -267,9 +267,9 @@ function issuesBlock(doc, list, title) {
   return [`### ${title}（${list.length}）`, ...list.map(i => '- ' + issueLine(doc, i))];
 }
 function stageModeText(s) {
-  if (s.mode === 'loop') return `〔循环，退出条件：${oneLine(s.loopExit) || '（空）'}〕`;
   if (s.mode === 'parallel') return `〔并行组：${oneLine(s.parallelGroup) || '（空）'}〕`;
   if (s.mode === 'branch') return '〔分支〕';
+  if (s.mode === 'loop') return '〔循环〕';
   return '';
 }
 
@@ -279,6 +279,7 @@ function networkLines(doc, s) {
   L.push(`- 从哪来：${src.length ? src.map(x => `拍 ${x.si + 1}.${x.bi + 1} 选「${oneLine(x.o.choice)}」`).join('；') : (s.mode === 'branch' ? '（标了分支，但没有任何选项通向它）' : '按顺序走到')}`);
   L.push(`- 之后：${C.mergeText(doc, s)}`);
   L.push(`- 前置条件：${s.requires.length ? s.requires.map(r => C.requireText(doc, r)).join('；') : '（无）'}`);
+  if (s.mode === 'loop') L.push(`- 循环退出条件（满足任一）：${s.loopExitWhen.length ? s.loopExitWhen.map(r => C.requireText(doc, r)).join('；') : '（没设）'}`);
   return L;
 }
 function optionLines(doc, b) {
@@ -288,8 +289,24 @@ function optionLines(doc, b) {
     `   - 他的反应：${oneLine(o.reaction) || '（空）'}`,
     `   - 结果：${oneLine(o.result) || '（空）'}`,
     `   - 后果：${oneLine(o.effect) || '（空）'}`,
+    `   - 状态变化：${o.sets.length ? C.setsText(doc, o.sets) : '（无）'}`,
     `   - 去向：${C.gotoText(doc, o)}`
   ]);
+}
+function showFacts(ctx) {
+  const { doc } = ctx;
+  const L = [`## 状态（${doc.facts.length}）`, '', '一件已经成立的事。选项、拍让它成立或不再成立；前置条件、循环退出条件读它。', ''];
+  const data = doc.facts.map(fct => {
+    const u = C.factUsage(doc, fct.id);
+    L.push(`### ${fct.name || '（未命名状态）'}`);
+    L.push(`- 在哪设：${u.setBy.length ? u.setBy.map(x => C.usageText(x) + (x.value ? '（成立）' : '（不再成立）')).join('；') : '（没有）'}`);
+    L.push(`- 在哪用：${u.usedBy.length ? u.usedBy.map(x => C.usageText(x) + (x.negate ? '（要求不成立）' : '')).join('；') : '（没有）'}`, '');
+    return { id: fct.id, name: fct.name, setBy: u.setBy.map(x => ({ where: C.usageText(x), value: x.value })), usedBy: u.usedBy.map(x => ({ where: C.usageText(x), negate: !!x.negate })) };
+  });
+  if (!doc.facts.length) L.push('（还没有状态）');
+  const iss = ctx.issues.filter(i => i.target.type === 'fact');
+  L.push(...issuesBlock(doc, iss, '检查（状态）'));
+  return { text: L.join('\n'), data: { facts: data, issues: iss } };
 }
 function showFlow(ctx) {
   const { doc } = ctx;
@@ -354,6 +371,7 @@ function showBeat(ctx, id, contextN) {
       `- 归入玩法：${mechs.length ? mechs.map(x => `${x.m.name || '未命名'}（${x.slots.join('、')}）`).join('；') : '（无）'}`);
   }
   if (b.requires.length) L.push(`- 前置条件：${b.requires.map(r => C.requireText(doc, r)).join('；')}`);
+  if (b.sets.length) L.push(`- 这一拍发生后：${C.setsText(doc, b.sets)}`);
   if (b.options.length) { L.push('', `### ${b.kind === '做' ? '做法' : '选项'}（${b.options.length}）`, ...optionLines(doc, b), ''); }
   L.push(`- 泳道：${lanes.map(x => `${x.name} ${x.value === null ? (x.excludedInStage ? '〔不属于这段〕' : '—') : (typeof x.value === 'number' && x.value > 0 ? '+' + x.value : oneLine(String(x.value)))}`).join('；')}`, '');
   L.push('### 前后文', ...neighbors.map(x => (x.b.id === id ? '▶ ' : '  ') + beatLine(x)), '');
@@ -446,6 +464,7 @@ function renderTarget(ctx, target, flags) {
     case 'synopsis': return showSynopsis(ctx);
     case 'parking': return showParking(ctx);
     case 'flow': return showFlow(ctx);
+    case 'facts': return showFacts(ctx);
     case 'all': return showAll(ctx, Number(flags.page) || 1);
   }
   throw new CliError(EXIT.INTERNAL, '未知条目类型 ' + target.type);
@@ -633,6 +652,7 @@ const HELP = `chaipai ${CLI_VERSION} —— 拆拍台只读 CLI（agent 访问�
                           3.2            拍 3.2（--context N 带前后 N 拍，默认 2）
                           玩法 / 玩法:名字 / 地图 / 地图:名字 / 梗概 / 停车场 / 泳道
                           流向           整张网：分支、选项跳转、汇合、前置条件
+                          状态           所有状态：在哪让它成立、在哪当条件用
                           全文           整份 Markdown（--page N 翻页，每页 ${PAGE_LINES} 行）
                           id:<id>        按 id 精确定位（编号会随制作人挪动而变，id 不变）
   checks                检查结果（和页面同一套规则）。--step N 只看第 N 步；--level miss,warn,info

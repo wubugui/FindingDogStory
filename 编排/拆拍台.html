@@ -172,6 +172,19 @@ body[data-layout="phone"].kbd-open #toasts{bottom:12px}
 .purposebox{border-left:3px solid var(--accent);background:var(--bg);border-radius:0 6px 6px 0;padding:8px 10px;margin-bottom:10px}
 .purposebox .purpose{font-weight:600;margin-bottom:4px;white-space:pre-wrap}
 .purposebox .hint{white-space:pre-wrap}
+.reqrow{grid-template-columns:auto minmax(0,1fr) auto !important}
+.condfact{display:flex;gap:6px;min-width:0}
+.condfact .reqsel{flex:1;min-width:0}
+.setsbox{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.setsbox .reqsel{width:auto;max-width:100%}
+.setchip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:14px;padding:2px 4px 2px 2px;background:var(--panel2);font-size:13px}
+.setchip .setval{border:0;border-radius:12px;padding:2px 8px;background:var(--ok);color:#fff;font-size:12px;cursor:pointer}
+.setchip.off .setval{background:var(--warn)}
+.factrow{padding:8px 0;border-bottom:1px solid var(--line)}
+.factrow:last-child{border-bottom:0}
+body[data-layout="phone"] .reqrow{grid-template-columns:1fr auto !important}
+body[data-layout="phone"] .reqrow .condfact,body[data-layout="phone"] .reqrow>.reqsel{grid-column:1 / -1}
+body[data-layout="phone"] .reqrow>.btn{grid-row:1;grid-column:2}
 .optcard{border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:10px;background:var(--bg)}
 .reqrow{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) auto;gap:6px;align-items:start;margin-bottom:6px}
 .reqsel{width:100%}
@@ -512,11 +525,16 @@ const HELP = {
   '标题': { what: '这个子阶段的名字。', how: ['按局面起名，不按地图起名。'], eg: '鬼打墙、坠潭' },
   '开始时局面': { what: '这个子阶段开始那一刻，关二狗处在什么情况。', how: ['写他知道什么、手里有什么、以为接下来会怎样。'], eg: '背着尸往下走，以为很快就到山脚。' },
   '结束时局面': { what: '这个子阶段结束那一刻的情况。', how: ['必须和开始时不一样。', '一样就说明这一段没推进：删掉，或者并到相邻子阶段。'], eg: '老辈人的招全使完了，碑石还在前头。' },
-  '结构': { what: '这个子阶段怎么走。', how: ['普通：按顺序走一遍。', '循环：同一段会重复发生（比如鬼打墙），必须写退出条件。', '并行：几个子阶段都要做，只是不分先后（比如城里几件事随便先做哪件），给它们填同一个并行组名。', '分支：只有玩家选了某个选项才会走这一段，走完要写「之后」汇合到哪，或这条线结束。'] },
+  '结构': { what: '这个子阶段怎么走。', how: ['普通：按顺序走一遍。', '循环：同一段会重复发生（比如鬼打墙），必须设退出条件。', '并行：几个子阶段都要做，只是不分先后（比如城里几件事随便先做哪件），给它们填同一个并行组名。', '分支：只有玩家选了某个选项才会走这一段，走完要写「之后」汇合到哪，或这条线结束。'] },
   '网状关系': { what: '这个子阶段在整张网里的位置：从哪来、之后去哪、要满足什么条件才发生。', how: ['线性的段落这里基本不用动。', '分支、开放世界里随时能触发的段落，要在这里写清楚。'] },
   '从哪来': { what: '哪些拍的哪些选项，去向指到了这个子阶段。自动算出来的，不用填。', how: ['标了「分支」却没有任何来源，玩家就到不了这里。', '要加来源，去那一拍的选项表里把「去向」改成这个子阶段。'] },
   '之后': { what: '走完这个子阶段接着去哪。', how: ['按顺序接下一个子阶段：线性的默认值。', '汇合到某个子阶段：分支走完回到主线的哪里。', '这条线在这里结束：这条分支到此为止（比如死了、离开了）。'], eg: '「撂尸逃跑」这条分支走完，汇合到「坠潭」。' },
-  '前置条件': { what: '要先满足这些条件，这一段（或这一拍）才会发生。开放世界里的门控就写在这里，以后对应叙事状态机的条件。', how: ['能指到具体东西就选：某个子阶段走完、某一拍发生过、某一拍选过某个选项。', '指不到的就选「只写文字说明」，把条件写清楚。', '有多条时默认要全部满足；是「满足其一」的话，在说明里写清楚。'], eg: '「去义庄还钱」要求：拍 5.2 选了「私吞帕子包里的钱」。' },
+  '前置条件': { what: '要先满足这些条件，这一段（或这一拍）才会发生。开放世界里的门控写在这里，以后对应叙事状态机的条件。', how: ['先选类型，再选指向谁：状态成立／不成立、选过某个选项、某拍发生过、某子阶段走完。', '条件说不清是哪一拍哪个选项造成的，就用「状态」：新建一个状态，在造成它的选项或拍上设「成立」。', '有多条时要全部满足。'], eg: '「去义庄还钱」要求：状态「私吞了帕子包里的钱」成立。' },
+  '退出条件': { what: '循环什么时候结束。满足任意一条就跳出。', how: ['一般是某个状态成立（比如「试完所有招」），在循环里对应的选项或拍上设这个状态成立。', '没有退出条件的循环，玩家就困死在里面。'] },
+  '状态': { what: '一件已经成立的事。选项、拍让它成立或不再成立；前置条件、循环退出条件读它。这是网状叙事里因果的骨架。', how: ['用短语起名：撂过尸、拿了帕子包、欠义庄钱。', '只在后面有地方要用到时才建；没人用的状态检查会提示可以删。', '改名会同步到所有用到的地方。'] },
+  '这一拍发生后': { what: '这一拍发生之后，哪些状态成立、哪些不再成立。', how: ['只写后面会被当条件用的事。', '点「成立／不再成立」可以切换。'], eg: '「捡起帕子包」这一拍发生后：「拿了帕子包」成立。' },
+  '选了之后': { what: '选了这个选项（或用了这种做法）之后，哪些状态成立、哪些不再成立。', how: ['「后果」写给人看，这里写给工具和 agent 分析：后面哪里要用这个选择的影响，就在这里设一个状态。', '点「成立／不再成立」可以切换。'], eg: '选「撂尸就跑」：「撂过尸」成立，「能领工钱」不再成立。' },
+  '条件与状态': { what: '这一拍要满足什么条件才发生，发生后改变哪些状态。', how: ['大多数拍两样都没有，保持折叠就行。'] },
   '选项（开放拍）': { what: '「选」的拍里，玩家能选的每一个选项。', how: ['先问：这个选择会不会改变后面的流程？', '不会（只差后果）：去向选「继续下一拍」，差别写在「后果」里——大部分选项应该是这种。', '会：去向选「跳到某个子阶段」，那个子阶段结构标「分支」，写好之后汇合到哪。', '选项之间的差别要让玩家看得出来，否则等于没得选。'] },
   '做法（多种解法）': { what: '同一个目标有好几种做法时，逐个列出来。', how: ['每种做法标灵不灵，写游戏怎么回应、有什么后果。', '都指向同一个目标，去向一般是「继续下一拍」；某种做法会把戏带到别处，才改去向。'], eg: '鬼打墙：反穿鞋（不灵）、撒尿画界（不灵）、撒糙米（看情况）、求告（不灵）。' },
   '玩家选什么': { what: '这个选项是什么，用玩家看到的说法写。', eg: '撂下尸体就跑' },
@@ -527,7 +545,6 @@ const HELP = {
   '这种做法的结果': { what: '用了这种做法之后，局面变成什么。' },
   '后果（影响什么）': { what: '这个选择带来的长期影响：状态、物件、别人的态度，以及以后哪些条件会因此成立。', how: ['写得具体，以后别处的前置条件会引用它。', '会影响泳道的（火暗一把、更重）也写在这里。'], eg: '工钱没了；三把火暗一把；之后「去义庄」这条线打不开。' },
   '去向': { what: '选了这个之后，戏往哪走。', how: ['继续下一拍：流程不变，只差后果。', '跳到某个子阶段：进入分支，那个子阶段要标「分支」并写汇合。', '这条线结束：这条路到头了。'] },
-  '这一拍的前置条件': { what: '要先满足这些条件，这一拍才会发生。', how: ['比如只有带着某样东西、或者之前选过某个选项，才出现这一拍。'] },
   '流向': { what: '整张网：子阶段按顺序排，选项跳转、分支汇合、前置条件画成连线。', how: ['看有没有到不了的分支（没有橙线进来的 ⑂）。', '看分支有没有回来（蓝线），或者明确结束（⊗）。', '前置条件的虚线从下往上指，说明依赖的是后面才发生的事——检查是不是写反了。'] },
   '逐个看': { what: '每个子阶段的来源、出口、之后、前置条件，用文字列出来。' },
   '退出条件': { what: '循环什么时候结束。', how: ['写成能触发的事件。', '没有退出条件的循环，玩家就卡死在里面。'], eg: '把老辈人的招都试一遍之后。' },
@@ -865,29 +882,77 @@ function renderView() {
 }
 
 /* ---------- 网状叙事：前置条件 / 选项与做法 / 分支 / 流向 ---------- */
-function refChoices() {
-  const out = [['free:', '只写文字说明（下面填）']];
-  doc.stages.forEach((st, si) => {
-    out.push([`stage:${st.id}`, `子阶段 ${si + 1}「${short(st.title, 14)}」走完`]);
-    st.beats.forEach((bb, bi) => {
-      out.push([`beat:${bb.id}`, `　拍 ${si + 1}.${bi + 1}「${short(bb.text, 14)}」发生过`]);
-      bb.options.forEach(o => out.push([`option:${bb.id}:${o.id}`, `　　拍 ${si + 1}.${bi + 1} 选了「${short(o.choice, 12)}」`]));
-    });
+/* 选一个状态；最后一项「＋ 新建状态…」 */
+function factSelect(currentId, onPick, placeholder) {
+  const facts = doc.facts;
+  const el = h('select', { class: 'reqsel' },
+    h('option', { value: '', selected: !currentId }, placeholder || '选一个状态…'),
+    currentId && !C.findFact(doc, currentId) ? h('option', { value: currentId, selected: true }, '（这个状态已经删了，请重选）') : null,
+    facts.map(f => h('option', { value: f.id, selected: f.id === currentId }, f.name || '（未命名状态）')),
+    h('option', { value: '__new' }, '＋ 新建状态…'));
+  el.addEventListener('change', async () => {
+    if (el.value !== '__new') { onPick(el.value); return; }
+    const name = await askText('新建状态', '', '一件已经成立的事，用短语写，比如：撂过尸、拿了帕子包、欠义庄钱');
+    if (!name || !name.trim()) { el.value = currentId || ''; return; }
+    const exist = doc.facts.find(f => f.name.trim() === name.trim());
+    if (exist) { onPick(exist.id); return; }
+    const f = C.newFact(name.trim());
+    mutate(() => { doc.facts.push(f); });
+    onPick(f.id);
   });
-  return out;
+  return el;
 }
-function requiresEditor(owner) {
-  const rows = owner.requires.map((r, i) => {
-    const cur = r.kind === 'free' ? 'free:' : r.kind === 'option' ? `option:${r.id2}:${r.optionId}` : `${r.kind}:${r.id2}`;
-    const ok = C.requireTarget(doc, r).ok;
-    const pick = h('select', { class: 'reqsel', onchange: e => mutate(() => { const [k, a, o] = e.target.value.split(':'); r.kind = k; r.id2 = a || ''; r.optionId = o || ''; }) },
-      ok ? null : h('option', { value: cur, selected: true }, '（指向的东西已经删了，请重选）'),
-      refChoices().map(([val, txt]) => h('option', { value: val, selected: ok && val === cur }, txt)));
-    return h('div', { class: 'reqrow' }, pick,
-      field(r, 'note', 'req' + r.id, { ph: r.kind === 'free' ? '写清楚条件，如：身上带着桃木' : '补充说明（可选）' }),
-      btn('✕', () => mutate(() => owner.requires.splice(i, 1)), 'sm', '删掉这条前置条件'));
+const COND_KINDS = [['fact', '状态'], ['option', '选过某个选项'], ['beat', '某拍发生过'], ['stage', '某子阶段走完']];
+/* 条件列表编辑器：前置条件、循环退出条件共用。一条条件＝类型 + 指向 */
+function conditionsEditor(list, addLabel) {
+  const rows = list.map((r, i) => {
+    const kindSel = h('select', { class: 'condkind', onchange: e => mutate(() => { r.kind = e.target.value; r.id2 = ''; r.optionId = ''; r.negate = false; }) },
+      COND_KINDS.map(([k, t]) => h('option', { value: k, selected: r.kind === k }, t)));
+    let target;
+    if (r.kind === 'fact') {
+      target = h('div', { class: 'condfact' },
+        factSelect(r.id2, id => mutate(() => { r.id2 = id; })),
+        h('select', { class: 'condneg', onchange: e => mutate(() => { r.negate = e.target.value === 'no'; }) },
+          h('option', { value: 'yes', selected: !r.negate }, '成立'), h('option', { value: 'no', selected: r.negate }, '不成立')));
+    } else {
+      const choices = [];
+      doc.stages.forEach((st, si) => {
+        if (r.kind === 'stage') choices.push([st.id, '', `子阶段 ${si + 1}「${short(st.title, 16)}」`]);
+        st.beats.forEach((bb, bi) => {
+          if (r.kind === 'beat') choices.push([bb.id, '', `拍 ${si + 1}.${bi + 1}「${short(bb.text, 16)}」`]);
+          if (r.kind === 'option') bb.options.forEach(o => choices.push([bb.id, o.id, `拍 ${si + 1}.${bi + 1} 选「${short(o.choice, 14)}」`]));
+        });
+      });
+      const cur = r.id2 ? `${r.id2}|${r.optionId || ''}` : '';
+      const ok = !r.id2 || C.requireTarget(doc, r).ok;
+      target = h('select', { class: 'reqsel', onchange: e => mutate(() => { const [a, o] = e.target.value.split('|'); r.id2 = a || ''; r.optionId = o || ''; }) },
+        h('option', { value: '', selected: !r.id2 }, choices.length ? '选一个…' : (r.kind === 'option' ? '（还没有任何选项）' : '（还没有可选的）')),
+        ok ? null : h('option', { value: cur, selected: true }, '（指向的东西已经删了，请重选）'),
+        choices.map(([a, o, t]) => h('option', { value: `${a}|${o}`, selected: ok && cur === `${a}|${o}` }, t)));
+    }
+    return h('div', { class: 'reqrow' }, kindSel, target, btn('✕', () => mutate(() => list.splice(i, 1)), 'sm', '删掉这条'));
   });
-  return h('div', {}, rows, btn('＋ 前置条件', () => mutate(() => owner.requires.push(C.newRequire())), 'sm'));
+  return h('div', {}, rows, btn(addLabel || '＋ 条件', () => mutate(() => list.push(C.newRequire())), 'sm'));
+}
+/* 让状态成立 / 不再成立 */
+function setsEditor(sets) {
+  const chips = sets.map((st, i) => {
+    const f = C.findFact(doc, st.factId);
+    return h('span', { class: 'setchip' + (st.value ? '' : ' off') },
+      h('button', { class: 'setval', title: '点一下切换：成立 ↔ 不再成立', onclick: () => mutate(() => { st.value = !st.value; }) }, st.value ? '成立' : '不再成立'),
+      h('span', {}, f ? f.name || '（未命名状态）' : '（已删除的状态）'),
+      h('span', { class: 'x', title: '去掉', onclick: () => mutate(() => sets.splice(i, 1)) }, '✕'));
+  });
+  const adder = factSelect('', id => { if (!id) return; mutate(() => { if (!sets.some(x => x.factId === id)) sets.push(C.newSet(id)); }); }, '＋ 让某个状态成立…');
+  return h('div', { class: 'setsbox' }, chips, adder);
+}
+function beatRequiresSec(bb) {
+  const body = [
+    h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '前置条件', helpBtn('前置条件'), h('span', { class: 'hint' }, ' · 满足了这一拍才会发生')), conditionsEditor(bb.requires, '＋ 前置条件')),
+    h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '这一拍发生后', helpBtn('这一拍发生后'), h('span', { class: 'hint' }, ' · 让哪些状态成立或不再成立')), setsEditor(bb.sets))
+  ];
+  if (bb.requires.length || bb.sets.length) return sec('条件与状态', '网状', ...body);
+  return h('details', { class: 'sec reqfold' }, h('summary', {}, '这一拍有前置条件，或者会改变状态？', helpBtn('条件与状态')), ...body);
 }
 function stageNetworkSec(st, si) {
   const src = C.optionSources(doc, st.id);
@@ -902,12 +967,7 @@ function stageNetworkSec(st, si) {
         h('span', { class: 'num' }, `${x.si + 1}.${x.bi + 1}`), kindBadge(x.b), h('span', { class: 'ell' }, `选「${short(x.o.choice, 24)}」→ 到这里`))))
         : h('div', { class: 'hint' }, st.mode === 'branch' ? '还没有任何选项通向这里——去某一拍的选项表里，把「去向」指到这个子阶段。' : '没有选项专门跳到这里，按顺序走到。')),
     frow('之后', mergeSel),
-    h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '前置条件', helpBtn('前置条件'), h('span', { class: 'hint' }, ' · 满足了才会发生，没有就空着')), requiresEditor(st)));
-}
-function beatRequiresSec(bb) {
-  const body = [h('p', { class: 'hint' }, '这一拍要满足条件才会发生时填；没有就空着。'), requiresEditor(bb)];
-  if (bb.requires.length) return sec('这一拍的前置条件', '网状', ...body);
-  return h('details', { class: 'sec reqfold' }, h('summary', {}, '这一拍要满足条件才会发生？（前置条件）', helpBtn('前置条件')), ...body);
+    h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '前置条件', helpBtn('前置条件'), h('span', { class: 'hint' }, ' · 满足了才会发生，没有就空着')), conditionsEditor(st.requires, '＋ 前置条件')));
 }
 function optionsSec(bb) {
   const isDo = bb.kind === '做'; const word = isDo ? '做法' : '选项';
@@ -929,6 +989,7 @@ function optionsSec(bb) {
         frow('他的反应', field(o, 'reaction', oid, { multi: true })),
         frow(isDo ? '这种做法的结果' : '这个选项的结果', field(o, 'result', oid, { multi: true }))),
       frow('后果（影响什么）', field(o, 'effect', oid, { multi: true })),
+      h('div', { class: 'frow' }, h('span', { class: 'flabel' }, isDo ? '这样做之后' : '选了之后', helpBtn('选了之后'), h('span', { class: 'hint' }, ' · 让哪些状态成立或不再成立')), setsEditor(o.sets)),
       frow('去向', gotoSel));
   });
   return sec(isDo ? '做法（多种解法）' : '选项（开放拍）', '第 5 步',
@@ -953,7 +1014,16 @@ function renderFlow(v) {
     if (st.mergeTo && st.mergeTo !== 'end') { const t = findStage(st.mergeTo); if (t) edges.push({ from: si, to: t.si, side: -1, cls: 'merge', label: '汇合' }); }
     if (st.mergeTo === 'end') edges.push({ from: si, to: null, side: 1, cls: 'end', label: '这条线结束' });
     const reqs = st.requires.concat(...st.beats.map(bb => bb.requires));
-    reqs.forEach(r => { let f = null; if (r.kind === 'stage') f = findStage(r.id2); else if (r.kind === 'beat' || r.kind === 'option') f = findBeat(r.id2); if (f) edges.push({ from: f.si, to: si, side: -1, cls: 'req', label: '前置' }); });
+    reqs.forEach(r => {
+      if (r.kind === 'fact') {
+        const fct = C.findFact(doc, r.id2); if (!fct) return;
+        const srcs = new Set(C.factUsage(doc, fct.id).setBy.filter(x => x.value !== r.negate).map(x => x.si));
+        srcs.forEach(fromSi => edges.push({ from: fromSi, to: si, side: -1, cls: 'req', label: `「${short(fct.name, 6)}」` }));
+        return;
+      }
+      let f = null; if (r.kind === 'stage') f = findStage(r.id2); else if (r.kind === 'beat' || r.kind === 'option') f = findBeat(r.id2);
+      if (f) edges.push({ from: f.si, to: si, side: -1, cls: 'req', label: '前置' });
+    });
   });
   const svg = S('svg', { width: W, height: TOP * 2 + n * RH, class: 'flowsvg' });
   const defs = S('defs', {});
@@ -996,6 +1066,25 @@ function renderFlow(v) {
       reqs.length ? h('div', { class: 'hint' }, '前置：' + reqs.join('；')) : null);
   });
   v.append(sec('逐个看', '', lines));
+  v.append(factsSec());
+}
+function factsSec() {
+  const rows = doc.facts.map((f, i) => {
+    const u = C.factUsage(doc, f.id);
+    const link = x => h('a', { class: 'lnk', onclick: () => select(x.where === 'stage' || x.where === 'loopExit' ? { type: 'stage', id: x.s.id } : { type: 'beat', id: x.b.id }, { tab: 'detail' }) }, C.usageText(x));
+    return h('div', { class: 'factrow', id: 'fact-' + f.id },
+      h('div', { class: 'mechhead' }, field(f, 'name', 'fact' + f.id, { ph: '状态名，如：撂过尸' }),
+        btn('删除', () => {
+          if (u.setBy.length || u.usedBy.length) { toast(`「${f.name}」还有 ${u.setBy.length + u.usedBy.length} 处在用，先去掉那些地方再删`, 'err'); return; }
+          mutate(() => doc.facts.splice(i, 1));
+        }, 'danger sm')),
+      h('div', { class: 'hint' }, '在哪设：', u.setBy.length ? u.setBy.map(x => [link(x), x.value ? '（成立）' : '（不再成立）']) : '（没有）'),
+      h('div', { class: 'hint' }, '在哪用：', u.usedBy.length ? u.usedBy.map(x => [link(x), x.negate ? '（要求不成立）' : '']) : '（没有）'));
+  });
+  return sec(`状态（${doc.facts.length}）`, '网状',
+    h('p', { class: 'hint' }, '所有状态：在哪让它成立，在哪把它当条件。改名会同步到所有用到的地方。'),
+    doc.facts.length ? rows : h('p', { class: 'hint' }, '还没有状态。在选项的「选了之后」、拍的「这一拍发生后」、或者前置条件里新建。'),
+    h('div', { class: 'toolbar', style: 'margin-top:8px' }, btn('＋ 新建状态', async () => { const name = await askText('新建状态', '', '一件已经成立的事，用短语写'); if (name && name.trim()) mutate(() => doc.facts.push(C.newFact(name.trim()))); }, 'sm')));
 }
 
 /* ---------- 详情 ---------- */
@@ -1049,7 +1138,7 @@ function detailStage(v, s, si) {
     h('div', { class: 'warnline', dataset: { inline: 'same:' + s.id } }),
     frow('结束条件', field(s, 'endCondition', oid, { multi: true }), '以后就是叙事状态机里推进的信号'),
     h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '结构', helpBtn('结构')), seg([['normal', '普通'], ['loop', '循环'], ['parallel', '并行'], ['branch', '分支']], s.mode, val => mutate(() => { s.mode = val || 'normal'; }))),
-    s.mode === 'loop' ? frow('退出条件', field(s, 'loopExit', oid, { multi: true }), '重复到什么时候为止') : null,
+    s.mode === 'loop' ? h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '退出条件', helpBtn('退出条件'), h('span', { class: 'hint' }, ' · 满足任意一条就跳出循环')), conditionsEditor(s.loopExitWhen, '＋ 退出条件')) : null,
     s.mode === 'parallel' ? frow('并行组', field(s, 'parallelGroup', oid), '同组的子阶段不分先后，填同一个组名') : null));
   v.append(stageNetworkSec(s, si));
   v.append(sec(`这一段的拍（${s.beats.length}）`, '第 3 步',
@@ -1327,6 +1416,7 @@ function jumpTo(i) {
   const t = i.target;
   if (t.type === 'mech') { tab = 'mech'; renderTabs(); renderView(); const el = document.getElementById('mech-' + t.id); if (el) el.scrollIntoView({ block: 'start' }); return; }
   if (t.type === 'map') { tab = 'maps'; renderTabs(); renderView(); return; }
+  if (t.type === 'fact') { tab = 'flow'; renderTabs(); renderView(); const el = document.getElementById('fact-' + t.id); if (el) el.scrollIntoView({ block: 'center' }); return; }
   select(t.type === 'top' ? { type: 'top' } : t, { tab: i.tab === 'lanes' ? 'lanes' : 'detail' });
   renderTabs(); renderView();
 }
