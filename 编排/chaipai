@@ -1,0 +1,19 @@
+#!/bin/sh
+# chaipai: read-only CLI for the planning page. Usage: sh 编排/chaipai <command>  (see --help)
+# Node lookup order: $CHAIPAI_NODE -> node on PATH -> GameDraft's bundled node. Fails loudly, never silently.
+HERE="$(cd "$(dirname "$0")" && pwd)"
+NODE=""
+if [ -n "$CHAIPAI_NODE" ]; then
+  NODE="$CHAIPAI_NODE"
+elif command -v node >/dev/null 2>&1 && node -e "" >/dev/null 2>&1; then
+  NODE="node"
+else
+  for CAND in "$HERE"/../../GameDraft/.tools/node/node-*/node.exe "$HERE"/../../GameDraft/.tools/node/node-*/bin/node; do
+    if [ -x "$CAND" ]; then NODE="$CAND"; break; fi
+  done
+fi
+if [ -z "$NODE" ]; then
+  echo "[chaipai] node not found: install Node 18+ or set CHAIPAI_NODE" >&2
+  exit 127
+fi
+exec "$NODE" "$HERE/chaipai.cjs" "$@"

@@ -1,0 +1,48 @@
+# 拆拍台发布到 GitHub Pages（手机访问用）。只发页面本身（拆拍台.html + core.js），不发任何数据；
+# 任务数据在 chaipai-data 分支，由页面通过 GitHub 接口读写。
+name: 拆拍台 Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '编排/拆拍台.html'
+      - '编排/core.js'
+      - '.github/workflows/chaipai-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: chaipai-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 组装站点
+        run: |
+          mkdir -p _site
+          # core.js 带上提交号，手机浏览器不会用到旧缓存
+          sed "s|<script src=\"core.js\"></script>|<script src=\"core.js?v=${GITHUB_SHA}\"></script>|" "编排/拆拍台.html" > _site/index.html
+          grep -q "core.js?v=${GITHUB_SHA}" _site/index.html
+          cp "编排/core.js" _site/core.js
+          touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
