@@ -2,7 +2,8 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
+<meta name="theme-color" content="#232326">
 <title>拆拍台</title>
 <style>
 :root{
@@ -21,7 +22,8 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
-body{display:flex;flex-direction:column;background:var(--bg);color:var(--text);font:14px/1.55 "Microsoft YaHei UI","Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif}
+html{-webkit-text-size-adjust:100%}
+body{height:100dvh;overscroll-behavior:none;-webkit-tap-highlight-color:transparent;display:flex;flex-direction:column;background:var(--bg);color:var(--text);font:14px/1.55 "Microsoft YaHei UI","Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif}
 button,input,textarea,select{font:inherit;color:inherit}
 select{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:5px;padding:2px 6px}
 select:focus{outline:none;border-color:var(--accent2)}
@@ -57,20 +59,107 @@ header{min-height:50px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8p
 .tcount{margin-left:4px;font-size:11px;background:var(--warn);color:#fff;border-radius:8px;padding:0 5px}
 .tcount:empty{display:none}
 #view{flex:1;overflow:auto;padding:16px 20px 80px;min-height:0}
-@media (max-width:860px){
-  .layout{grid-template-columns:1fr;grid-template-rows:38% 62%}
-  #outline{border-right:0;border-bottom:1px solid var(--line)}
-  header{padding:6px 8px}
-  #titleSlot input{width:150px}
-  .status{flex-basis:100%;order:10;white-space:normal}
-  .outline-head .hint{display:none}
+
+/* ===== 触屏：点击目标放大（不论宽窄，折叠屏内屏也是触屏） ===== */
+@media (pointer: coarse){
+  button,.tab,.pick,.bchip,.brow,.iss,.refline,.lc.beatcell,.lc.trend{touch-action:manipulation}
+  .btn{min-height:40px;padding:6px 14px}
+  .btn.sm{min-height:36px;padding:4px 12px;font-size:13px}
+  .seg button{min-height:40px;padding:6px 14px}
+  .tab{padding:10px 14px}
+  .row{min-height:46px}
+  .otext{padding:9px 4px}
   .inp,.ta,.otext,select{font-size:16px}
-  .row{min-height:36px}
-  #view{padding:12px 10px 80px}
-  .tab{padding:6px 9px}
-  .grid2,.grid4,.arc,.chain{grid-template-columns:1fr !important}
-  .chain .arrow{display:none}
+  select{min-height:40px}
+  input[type=checkbox]{width:22px;height:22px}
+  .checkline{min-height:40px}
+  .pick{padding:13px 10px}
+  .bchip{padding:8px 8px}
+  .brow,.iss,.refline{padding:10px 8px}
+  .x{padding:8px 10px}
+  .lc.trend{min-height:48px}
+  .tog{width:30px;height:40px;display:grid;place-items:center;font-size:16px}
+  details.ask summary{padding:8px 0}
 }
+/* ===== 外壳：返回、菜单、底部导航 ===== */
+.iconbtn{display:none;align-items:center;justify-content:center;min-width:40px;font-size:18px;line-height:1}
+.bbar{display:none}
+.row .go{display:none;border:0;background:transparent;color:var(--muted);font-size:24px;line-height:1;width:36px;height:40px;flex:none;align-items:center;justify-content:center}
+header{padding-top:max(7px,env(safe-area-inset-top));padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
+.outline-actions{position:sticky;bottom:0;background:var(--panel);border-top:1px solid var(--line);z-index:1}
+
+/* ===== 折叠屏展开 / 平板（600–1023px）：左右两栏，顶栏精简 ===== */
+body[data-layout="fold"] .layout{grid-template-columns:minmax(260px,38%) 1fr}
+body[data-layout="fold"] header .hx{display:none}
+body[data-layout="fold"] #bMenu{display:inline-flex}
+body[data-layout="fold"] #titleSlot input{width:180px}
+body[data-layout="fold"] .status{min-width:0;flex:1 1 120px}
+body[data-layout="fold"] #tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+body[data-layout="fold"] #tabs::-webkit-scrollbar{display:none}
+body[data-layout="fold"] .tab{flex:none}
+body[data-layout="fold"] .chain{grid-template-columns:1fr !important}
+body[data-layout="fold"] .chain .arrow{display:none}
+body[data-layout="fold"] .arc{grid-template-columns:1fr 1fr}
+body[data-layout="fold"] .outline-head .hint{display:none}
+body[data-layout="fold"] #view{padding:14px 14px 40px}
+
+/* ===== 手机（<600px，含折叠屏外屏）：大纲 / 内容两屏切换 + 底部导航 ===== */
+body[data-layout="phone"]{--lanelab:92px}
+body[data-layout="phone"] .layout{grid-template-columns:1fr}
+body[data-layout="phone"][data-mview="outline"] #work{display:none}
+body[data-layout="phone"][data-mview="work"] #outline{display:none}
+body[data-layout="phone"] #outline{border-right:0;padding-bottom:0}
+body[data-layout="phone"] #tabs{display:none}
+body[data-layout="phone"] header{gap:6px;padding-bottom:6px}
+body[data-layout="phone"] header .hx,body[data-layout="phone"] .brand{display:none}
+body[data-layout="phone"] #bMenu{display:inline-flex}
+body[data-layout="phone"][data-mview="work"] #bBack{display:inline-flex}
+body[data-layout="phone"] #titleSlot{flex:1;min-width:0}
+body[data-layout="phone"] #titleSlot input{width:100%;font-size:16px}
+body[data-layout="phone"] .spacer{display:none}
+body[data-layout="phone"] .status{flex-basis:100%;order:10;white-space:normal;font-size:12px;line-height:1.4}
+body[data-layout="phone"] .outline-head{display:none}
+body[data-layout="phone"] .row{padding-right:2px}
+body[data-layout="phone"] .row.beat{padding-left:22px}
+body[data-layout="phone"] .row .go{display:inline-flex}
+body[data-layout="phone"] .row .num{min-width:34px;cursor:default}
+body[data-layout="phone"] .chip{max-width:72px}
+body[data-layout="phone"] .grid2,body[data-layout="phone"] .grid4,body[data-layout="phone"] .arc,body[data-layout="phone"] .chain{grid-template-columns:1fr !important}
+body[data-layout="phone"] .chain .arrow{display:none}
+body[data-layout="phone"] #view{padding:10px 10px 28px}
+body[data-layout="phone"] .sec{padding:12px;border-radius:10px;margin-bottom:10px}
+body[data-layout="phone"] .toolbar{gap:6px}
+body[data-layout="phone"] .formula{flex-wrap:wrap}
+body[data-layout="phone"] .formula .inp{flex:1 1 40%}
+body[data-layout="phone"] .fromto{flex-wrap:wrap}
+body[data-layout="phone"] .fromto .inp{flex:1 1 40%}
+body[data-layout="phone"] .laneedit{grid-template-columns:1fr;gap:4px}
+body[data-layout="phone"] .lanes-scroll{max-height:none}
+body[data-layout="phone"] .lanemgr{flex-direction:column;align-items:stretch}
+body[data-layout="phone"] .lanechip{flex-wrap:wrap}
+body[data-layout="phone"] .mechhead{flex-wrap:wrap}
+body[data-layout="phone"] .sent{flex-direction:column}
+body[data-layout="phone"] .sent .acts{max-width:none;justify-content:flex-start}
+body[data-layout="phone"] .park{flex-wrap:wrap}
+body[data-layout="phone"] .modal-back{align-items:end;place-items:end stretch}
+body[data-layout="phone"] .modal{width:100%;max-height:88dvh;border-radius:16px 16px 0 0;border-left:0;border-right:0;border-bottom:0;padding:14px 14px calc(18px + env(safe-area-inset-bottom))}
+body[data-layout="phone"] #toasts{bottom:calc(78px + env(safe-area-inset-bottom));width:calc(100vw - 24px)}
+body[data-layout="phone"] .toast{text-align:center}
+body[data-layout="phone"] .bbar{display:flex;flex:none;border-top:1px solid var(--line);background:var(--panel);padding:0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+body[data-layout="phone"].kbd-open .bbar{display:none}
+body[data-layout="phone"].kbd-open #toasts{bottom:12px}
+.bb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:56px;border:0;background:transparent;color:var(--muted);font-size:11px;position:relative;touch-action:manipulation}
+.bb.on{color:var(--accent);font-weight:600}
+.bbi{font-size:20px;line-height:1}
+.bb .tcount{position:absolute;top:6px;left:calc(50% + 8px);margin:0}
+.menu-list{display:flex;flex-direction:column}
+.menu-item{display:flex;align-items:center;gap:10px;border:0;border-bottom:1px solid var(--line);background:transparent;text-align:left;padding:14px 6px;font-size:15px;min-height:50px}
+.menu-item:last-child{border-bottom:0}
+.menu-item .mi{width:24px;text-align:center;color:var(--muted)}
+.menu-item:disabled{opacity:.45}
+.tabgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tabgrid .btn{min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.tabgrid .btn.on{border-color:var(--accent);color:var(--accent)}
 /* outline */
 .outline-head{display:flex;flex-direction:column;padding:2px 12px 6px;border-bottom:1px solid var(--line);margin-bottom:4px}
 .outline-head b{font-size:13px}
@@ -221,20 +310,22 @@ svg.curve{display:block}
 </head>
 <body>
 <header>
+  <button class="btn iconbtn" id="bBack" title="回到大纲">‹</button>
   <span class="brand">拆拍台</span>
   <span id="titleSlot"></span>
   <span id="status" class="status"></span>
   <span class="spacer"></span>
-  <button class="btn sm" id="bProj">项目：未绑定</button>
-  <button class="btn sm" id="bSync" title="GitHub 同步设置（手机和电脑互相同步）">同步设置</button>
-  <button class="btn" id="bNew">新建</button>
-  <button class="btn" id="bOpen" title="Ctrl+O">打开</button>
-  <button class="btn" id="bReopen" hidden>打开上次</button>
+  <button class="btn sm hx" id="bProj">项目：未绑定</button>
+  <button class="btn sm hx" id="bSync" title="GitHub 同步设置（手机和电脑互相同步）">同步设置</button>
+  <button class="btn hx" id="bNew">新建</button>
+  <button class="btn hx" id="bOpen" title="Ctrl+O">打开</button>
+  <button class="btn hx" id="bReopen" hidden>打开上次</button>
   <button class="btn primary" id="bSave" title="Ctrl+S">保存</button>
-  <button class="btn" id="bSaveAs">另存为</button>
-  <button class="btn" id="bMd">导出 Markdown</button>
-  <button class="btn" id="bUndo" title="Ctrl+Z">撤销</button>
-  <button class="btn" id="bRedo" title="Ctrl+Y / Ctrl+Shift+Z">重做</button>
+  <button class="btn hx" id="bSaveAs">另存为</button>
+  <button class="btn hx" id="bMd">导出 Markdown</button>
+  <button class="btn hx" id="bUndo" title="Ctrl+Z">撤销</button>
+  <button class="btn hx" id="bRedo" title="Ctrl+Y / Ctrl+Shift+Z">重做</button>
+  <button class="btn iconbtn" id="bMenu" title="更多操作">⋯</button>
 </header>
 <div class="layout">
   <aside id="outline"></aside>
@@ -243,6 +334,7 @@ svg.curve{display:block}
     <div id="view"></div>
   </section>
 </div>
+<nav class="bbar" id="bottombar"></nav>
 <script src="core.js"></script>
 <script>
 'use strict';
@@ -382,8 +474,10 @@ function refreshDerived() {
   const byId = new Map();
   issues.forEach(i => { if (i.level === 'info') return; const id = i.target.type === 'top' ? 'top' : i.target.id; byId.set(id, (byId.get(id) || 0) + 1); });
   document.querySelectorAll('[data-dot-for]').forEach(d => { const n = byId.get(d.dataset.dotFor) || 0; d.classList.toggle('on', n > 0); d.title = n ? `${n} 项待处理（看「检查」页）` : ''; });
-  const c = $('[data-tab-count="checks"]'); if (c) c.textContent = issues.filter(i => i.level !== 'info').length || '';
-  const p = $('[data-tab-count="parking"]'); if (p) { const n = doc.parking.filter(x => !x.done).length; p.textContent = n || ''; p.style.background = 'var(--accent2)'; }
+  const nChecks = issues.filter(i => i.level !== 'info').length || '';
+  document.querySelectorAll('[data-tab-count="checks"]').forEach(c => { c.textContent = nChecks; });
+  const nPark = doc.parking.filter(x => !x.done).length || '';
+  document.querySelectorAll('[data-tab-count="parking"]').forEach(p => { p.textContent = nPark; p.style.background = 'var(--accent2)'; });
   document.querySelectorAll('[data-inline]').forEach(el => {
     const [kind, id] = el.dataset.inline.split(':');
     if (kind === 'same') { const f = findStage(id); const on = f && filled(f.s.start) && f.s.start.trim() === f.s.end.trim(); el.textContent = on ? '开始和结束局面一样——删掉，或并到相邻子阶段' : ''; }
@@ -415,7 +509,14 @@ function focusKey(key, toEnd) {
   el.focus();
   if (toEnd) { try { const n = el.value.length; el.setSelectionRange(n, n); } catch (e) { } }
 }
-const focusOutline = (id, toEnd) => focusKey(`o:${id}`, toEnd);
+const focusOutline = (id, toEnd) => {
+  if (isPhone() && mview === 'work') {
+    const t = findBeat(id) ? { type: 'beat', id } : findStage(id) ? { type: 'stage', id } : null;
+    if (t) { select(t, { tab: 'detail' }); focusKey(`f:${id}:${t.type === 'beat' ? 'text' : 'title'}`, true); }
+    return;
+  }
+  focusKey(`o:${id}`, toEnd);
+};
 
 function renderHeader() {
   const slot = $('#titleSlot'); slot.innerHTML = '';
@@ -429,8 +530,8 @@ function renderOutline() {
   const box = $('#outline'); const st = box.scrollTop; box.innerHTML = '';
   box.append(h('div', { class: 'outline-head' }, h('b', {}, '大纲 · 任务 → 子阶段 → 拍'),
     h('span', { class: 'hint' }, 'Enter 新行（光标后的字带过去）· Tab 降为拍 · Shift+Tab 升为子阶段 · Alt+↑↓ 移动 · Alt+1~4 标 看/做/选/略 · 拖编号排序 · 空行 Backspace 删除')));
-  box.append(h('div', { class: 'row top' + (sel.type === 'top' ? ' selected' : ''), dataset: { id: 'top' }, onclick: () => select({ type: 'top' }) },
-    h('span', { class: 'num' }, '任务'), h('span', { class: 'label', style: 'flex:1' }, syncSpan('top:title', doc.meta.title, '未命名任务')), h('span', { class: 'dot', dataset: { dotFor: 'top' } })));
+  box.append(h('div', { class: 'row top' + (sel.type === 'top' ? ' selected' : ''), dataset: { id: 'top' }, onclick: () => rowTap({ type: 'top' }) },
+    h('span', { class: 'num' }, '任务'), h('span', { class: 'label', style: 'flex:1' }, syncSpan('top:title', doc.meta.title, '未命名任务')), h('span', { class: 'dot', dataset: { dotFor: 'top' } }), goBtn({ type: 'top' })));
   doc.stages.forEach((s, si) => {
     const row = h('div', { class: 'row stage' + (sel.type === 'stage' && sel.id === s.id ? ' selected' : ''), dataset: { id: s.id } },
       h('span', { class: 'tog', title: '折叠/展开', onclick: e => { e.stopPropagation(); s.collapsed = !s.collapsed; changed(); renderOutline(); refreshDerived(); } }, s.beats.length ? (s.collapsed ? '▸' : '▾') : '·'),
@@ -438,8 +539,8 @@ function renderOutline() {
       modeBadge(s),
       outlineInput(s, 'title', '子阶段（局面变了才切）', { type: 'stage', id: s.id }),
       h('span', { class: 'chip' }, s.beats.length ? `${s.beats.length}拍` : ''),
-      h('span', { class: 'dot', dataset: { dotFor: s.id } }));
-    row.addEventListener('click', e => { if (e.target.tagName !== 'INPUT') select({ type: 'stage', id: s.id }); });
+      h('span', { class: 'dot', dataset: { dotFor: s.id } }), goBtn({ type: 'stage', id: s.id }));
+    row.addEventListener('click', e => { if (e.target.tagName !== 'INPUT') rowTap({ type: 'stage', id: s.id }); });
     box.append(row); dnd(row, 'stage', s.id);
     if (s.collapsed) return;
     s.beats.forEach((b, bi) => {
@@ -449,8 +550,8 @@ function renderOutline() {
         outlineInput(b, 'text', '发生了什么', { type: 'beat', id: b.id }),
         h('span', { class: 'chip', dataset: { sync: `${b.id}:map` } }, b.map),
         b.cuttable ? h('span', { class: 'chip cut' }, '可砍') : null,
-        h('span', { class: 'dot', dataset: { dotFor: b.id } }));
-      r.addEventListener('click', e => { if (e.target.tagName !== 'INPUT') select({ type: 'beat', id: b.id }); });
+        h('span', { class: 'dot', dataset: { dotFor: b.id } }), goBtn({ type: 'beat', id: b.id }));
+      r.addEventListener('click', e => { if (e.target.tagName !== 'INPUT') rowTap({ type: 'beat', id: b.id }); });
       box.append(r); dnd(r, 'beat', b.id);
     });
   });
@@ -602,8 +703,10 @@ function moveNode(src, dst, after) {
 const TABS = [['detail', '详情'], ['table', '拍表'], ['lanes', '泳道'], ['mech', '玩法'], ['maps', '地图'], ['checks', '检查'], ['synopsis', '梗概'], ['parking', '停车场'], ['guide', '指南']];
 function renderTabs() {
   const n = $('#tabs'); n.innerHTML = '';
-  TABS.forEach(([k, t]) => n.append(h('button', { class: 'tab' + (tab === k ? ' on' : ''), onclick: () => { tab = k; renderTabs(); renderView(); refreshDerived(); scheduleLive(); } }, t, h('span', { class: 'tcount', dataset: { tabCount: k } }))));
+  TABS.forEach(([k, t]) => n.append(h('button', { class: 'tab' + (tab === k ? ' on' : ''), onclick: () => switchTab(k) }, t, h('span', { class: 'tcount', dataset: { tabCount: k } }))));
+  renderBottomBar();
 }
+function switchTab(k) { tab = k; renderTabs(); renderView(); refreshDerived(); scheduleLive(); const v = $('#view'); if (v) v.scrollTop = 0; }
 function renderView() {
   const v = $('#view');
   const selKey = sel.type + ':' + (sel.id || '');
@@ -707,7 +810,7 @@ function detailBeat(v, f) {
       frow('关二狗怎么反应', field(b, 'reaction', oid, { multi: true })), h('span', { class: 'arrow' }, '→'),
       frow('结果', field(b, 'result', oid, { multi: true }))),
     h('div', { class: 'grid2' }, frow('地图', mapIn, '标签，不是层级'), frow('原文摘句', field(b, 'source', oid, { multi: true, cls: 'quote' }), '梗概里的原句'))));
-  v.append(sec('看／做／选／略', '第 4 步', h('p', { class: 'hint' }, '大纲里选中这一拍按 Alt+1～4 更快。再点一次取消。'),
+  v.append(sec('看／做／选／略', '第 4 步', h('p', { class: 'hint' }, isPhone() ? '再点一次取消。' : '大纲里选中这一拍按 Alt+1～4 更快。再点一次取消。'),
     seg(KINDS, b.kind, val => mutate(() => { b.kind = val; }))));
   if (isAct(b)) {
     v.append(sec('细化', '第 5 步',
@@ -783,19 +886,21 @@ function renderTable(v) {
 
 /* ---------- 泳道 ---------- */
 const COL = 136;
+/* 手机上把次要的大块内容收起来，点开再看 */
+function collapsible(label, node) { return isPhone() ? h('details', { class: 'ask' }, h('summary', {}, label), node) : node; }
 function renderLanes(v) {
   const nameIn = h('input', { class: 'inp sm', placeholder: '泳道名，如：重、冷' });
   const kindIn = h('select', {}, h('option', { value: 'trend' }, '升降'), h('option', { value: 'curve' }, '曲线'), h('option', { value: 'text' }, '文字'));
   v.append(sec('泳道图', '第 7 步',
     h('p', { class: 'hint' }, '横轴是拍。查三件事：某条泳道整段空着（补上，或在子阶段详情里判定不属于这段）；情绪曲线平了（红虚线，这里要一个「转」）；几条泳道在同一拍一起变（黄底＝联动点，重点设计、重点试玩）。'),
-    h('div', { class: 'lanemgr' }, doc.lanes.map((l, i) => h('div', { class: 'lanechip' },
+    collapsible('管理泳道（增删、改名、换类型）', h('div', { class: 'lanemgr' }, doc.lanes.map((l, i) => h('div', { class: 'lanechip' },
       field(l, 'name', 'lane' + l.id, { cls: 'sm' }),
       h('select', { disabled: l.id === 'emotion', onchange: e => { const nk = e.target.value; const has = allBeats().some(x => laneFilled(x.b, l)); if (has && !confirm('换类型会清空这条泳道已填的值。继续？')) { e.target.value = l.kind; return; } mutate(() => { l.kind = nk; allBeats().forEach(x => delete x.b.lanes[l.id]); }); } },
         [['curve', '曲线'], ['trend', '升降'], ['text', '文字']].map(([k, t]) => h('option', { value: k, selected: l.kind === k }, t))),
       btn('←', () => mutate(() => moveArr(doc.lanes, i, -1)), 'sm', '上移'),
       btn('→', () => mutate(() => moveArr(doc.lanes, i, 1)), 'sm', '下移'),
       l.id !== 'emotion' ? btn('✕', () => { if (confirm(`删除泳道「${l.name}」和它所有的值？`)) mutate(() => doc.lanes.splice(i, 1)); }, 'sm', '删除') : null)),
-      h('div', { class: 'lanechip' }, nameIn, kindIn, btn('添加泳道', () => { const n = nameIn.value.trim(); if (!n) { nameIn.focus(); return; } mutate(() => doc.lanes.push({ id: uid(), name: n, kind: kindIn.value })); }, 'sm'))),
+      h('div', { class: 'lanechip' }, nameIn, kindIn, btn('添加泳道', () => { const n = nameIn.value.trim(); if (!n) { nameIn.focus(); return; } mutate(() => doc.lanes.push({ id: uid(), name: n, kind: kindIn.value })); }, 'sm')))),
     h('div', { class: 'legend' },
       h('span', {}, h('span', { class: 'sw', style: 'background:var(--link)' }), '联动点'),
       h('span', {}, h('span', { class: 'sw', style: 'background:repeating-linear-gradient(45deg,transparent 0 3px,var(--warnbg) 3px 6px)' }), '这一段这条泳道全空'),
@@ -805,7 +910,7 @@ function renderLanes(v) {
   if (!seq.length) { v.append(h('p', { class: 'hint' }, '还没有拍。')); return; }
   const n = seq.length; const changes = laneChanges(); const flat = flatEmotionIds();
   const colCls = x => ((changes.get(x.b.id) || []).length >= 2 ? ' link' : '') + (sel.type === 'beat' && sel.id === x.b.id ? ' selcol' : '');
-  const grid = h('div', { class: 'lg', style: `grid-template-columns:160px repeat(${n},${COL}px)` });
+  const grid = h('div', { class: 'lg', style: `grid-template-columns:var(--lanelab,160px) repeat(${n},${COL}px)` });
   grid.append(h('div', { class: 'lc lab corner' }, '子阶段'));
   doc.stages.forEach((s, si) => { if (!s.beats.length) return; grid.append(h('div', { class: 'lc stagehead' + (sel.type === 'stage' && sel.id === s.id ? ' selstage' : ''), style: `grid-column:span ${s.beats.length}`, title: s.title, onclick: () => select({ type: 'stage', id: s.id }) }, `${si + 1}. `, syncSpan(s.id + ':title', s.title, '未命名'), s.mode === 'loop' ? ' ↻' : '', s.mode === 'parallel' ? ' ∥' : '')); });
   grid.append(h('div', { class: 'lc lab' }, '剧情拍'));
@@ -1033,6 +1138,84 @@ function renderGuide(v) {
   v.append(sec('快捷键', '', h('div', {},
     ['Enter：新建同级（光标后的字带到新行）', 'Ctrl+Enter（子阶段行）：在它下面加第一拍', 'Tab：子阶段降为上一个子阶段的拍', 'Shift+Tab：拍升为子阶段（后面的拍跟过去）', '↑ ↓：上下切换行', 'Alt+↑ ↓：移动', 'Alt+1～4：标 看／做／选／略', '空行 Backspace：删除', '拖动编号：排序', 'Ctrl+S 保存 · Ctrl+Z 撤销 · Ctrl+Y 重做'].map(t => h('div', {}, t)))));
 }
+
+/* ====================================================================
+ * 手机 / 折叠屏外壳
+ *  手机（<600px，含折叠屏外屏）：「大纲」「内容」两屏切换，底部导航；安卓返回键/返回手势回到大纲。
+ *  折叠屏展开 / 平板（600–1023px）：左右两栏，顶栏次要按钮收进「⋯」菜单。
+ *  电脑（≥1024px）：原样。展开、合上折叠屏时实时切换，编辑状态不丢。
+ * ==================================================================== */
+let mview = 'outline';
+const layoutOf = () => window.innerWidth < 600 ? 'phone' : window.innerWidth < 1024 ? 'fold' : 'desktop';
+const isPhone = () => document.body.dataset.layout === 'phone';
+function applyLayout() {
+  const before = document.body.dataset.layout;
+  document.body.dataset.layout = layoutOf();
+  document.body.dataset.mview = mview;
+  renderBottomBar();
+  return before !== document.body.dataset.layout;
+}
+function goWork(k) {
+  if (k && k !== tab) { tab = k; renderTabs(); renderView(); refreshDerived(); scheduleLive(); }
+  if (isPhone() && mview !== 'work') { history.pushState({ chaipai: 'work' }, ''); mview = 'work'; applyLayout(); const v = $('#view'); if (v) v.scrollTop = 0; }
+  renderBottomBar();
+}
+function goOutline() {
+  if (history.state && history.state.chaipai === 'work') { history.back(); return; }
+  mview = 'outline'; applyLayout();
+}
+window.addEventListener('popstate', () => {
+  if ($('#modal')) { closeModal(); if (mview === 'work') history.pushState({ chaipai: 'work' }, ''); return; }
+  if (mview === 'work') { mview = 'outline'; applyLayout(); }
+});
+function rowTap(t) { select(t); if (isPhone()) goWork('detail'); }
+function goBtn(t) { return h('button', { class: 'go', title: '打开详情', onclick: e => { e.stopPropagation(); select(t, { tab: 'detail' }); goWork('detail'); } }, '›'); }
+const BB = [['outline', '☰', '大纲'], ['detail', '✎', '详情'], ['lanes', '〰', '泳道'], ['checks', '✓', '检查'], ['more', '⋯', '更多']];
+function renderBottomBar() {
+  const bb = $('#bottombar'); if (!bb) return;
+  bb.innerHTML = '';
+  if (document.body.dataset.layout !== 'phone') return;
+  const main = ['detail', 'lanes', 'checks'];
+  BB.forEach(([k, icon, label]) => {
+    const on = k === 'outline' ? mview === 'outline' : mview === 'work' && (k === 'more' ? !main.includes(tab) : tab === k);
+    const moreLabel = k === 'more' && mview === 'work' && !main.includes(tab) ? (TABS.find(x => x[0] === tab) || [0, label])[1] : label;
+    bb.append(h('button', { class: 'bb' + (on ? ' on' : ''), onclick: () => { if (k === 'outline') goOutline(); else if (k === 'more') openTabSheet(); else goWork(k); } },
+      h('span', { class: 'bbi' }, icon), h('span', {}, moreLabel), k === 'checks' ? h('span', { class: 'tcount', dataset: { tabCount: 'checks' } }) : null));
+  });
+  if (typeof refreshDerived === 'function' && doc) { try { refreshDerived(); } catch (e) { } }
+}
+function openTabSheet() {
+  showModal('切换页面', h('div', { class: 'tabgrid' }, TABS.map(([k, t]) => h('button', { class: 'btn' + (tab === k && mview === 'work' ? ' on' : ''), onclick: () => { finishModal(); goWork(k); } }, t,
+    k === 'checks' || k === 'parking' ? h('span', { class: 'tcount', dataset: { tabCount: k } }) : null))));
+  refreshDerived();
+}
+function openMenu() {
+  const item = (icon, text, fn, disabled) => h('button', { class: 'menu-item', disabled: !!disabled, onclick: () => { finishModal(); fn(); } }, h('span', { class: 'mi' }, icon), text);
+  const phone = isPhone();
+  showModal('操作', h('div', { class: 'menu-list' },
+    item('＋', '新建任务', () => $('#bNew').click()),
+    item('📂', '打开任务', () => openFile()),
+    item('💾', '另存为…', () => saveFile(true)),
+    phone ? item('↶', '撤销', undo, !undoStack.length) : null,
+    phone ? item('↷', '重做', redo, !redoStack.length) : null,
+    item('⇩', '导出 Markdown', exportMd),
+    item('☁', 'GitHub 同步设置', () => openSettings(false)),
+    FS_OK ? item('🗂', $('#bProj').textContent, onProjButton) : null,
+    !phone ? item('↶', '撤销', undo, !undoStack.length) : null,
+    !phone ? item('↷', '重做', redo, !redoStack.length) : null));
+}
+/* 软键盘弹起时藏掉底部导航，不挡输入框 */
+let vvMax = 0, vvW = 0;
+function kbdCheck() {
+  const hgt = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+  if (window.innerWidth !== vvW) { vvW = window.innerWidth; vvMax = hgt; }
+  vvMax = Math.max(vvMax, hgt);
+  document.body.classList.toggle('kbd-open', hgt < vvMax * 0.75);
+}
+window.addEventListener('resize', () => { if (applyLayout()) { renderOutline(); renderView(); } kbdCheck(); });
+if (window.visualViewport) window.visualViewport.addEventListener('resize', kbdCheck);
+$('#bBack').onclick = goOutline;
+$('#bMenu').onclick = openMenu;
 
 /* ====================================================================
  * 存储与同步
@@ -1639,6 +1822,8 @@ document.addEventListener('focusin', scheduleLive);
 document.addEventListener('visibilitychange', () => { scheduleLive(); if (document.visibilityState === 'visible' && curName && ghReady()) syncCurrent({ pullOnly: true }); });
 setInterval(() => { if (LOCAL_MODE && projDir && projState === 'ok' && !liveErr) writeLive(); }, LIVE_HEARTBEAT_SEC * 1000);
 setInterval(() => { if (curName && ghReady() && document.visibilityState === 'visible') syncCurrent({ pullOnly: true }); }, PULL_EVERY);
+applyLayout();
+kbdCheck();
 renderAll();
 updateProj();
 (async () => {
