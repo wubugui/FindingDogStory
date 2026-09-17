@@ -160,6 +160,15 @@ body[data-layout="phone"].kbd-open #toasts{bottom:12px}
 .tabgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .tabgrid .btn{min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
 .tabgrid .btn.on{border-color:var(--accent);color:var(--accent)}
+/* 「?」说明 */
+.help{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;border:1px solid var(--line);background:var(--panel2);color:var(--accent2);font-size:12px;font-weight:700;margin:0 2px 0 6px;cursor:pointer;padding:0;vertical-align:middle;line-height:1;flex:none}
+.help:hover{border-color:var(--accent2)}
+@media (pointer: coarse){ .help{width:26px;height:26px;font-size:14px} }
+.helppop{position:fixed;z-index:70;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.35);padding:10px 14px 12px;max-height:70vh;overflow:auto;font-size:13px;line-height:1.6}
+.helppop p{margin:4px 0 8px}
+.helppop ul,.modal ul{margin:4px 0 8px;padding-left:18px}
+.helppop li,.modal li{margin:2px 0}
+.helpeg{color:var(--muted)}
 /* outline */
 .outline-head{display:flex;flex-direction:column;padding:2px 12px 6px;border-bottom:1px solid var(--line);margin-bottom:4px}
 .outline-head b{font-size:13px}
@@ -463,8 +472,118 @@ function field(obj, path, objId, opts = {}) {
 const syncSpan = (key, value, empty) => h('span', { dataset: { sync: key, empty: empty || '' } }, value || empty || '');
 const btn = (text, fn, cls, title) => h('button', { class: 'btn ' + (cls || ''), onclick: fn, title }, text);
 function seg(opts, cur, on) { return h('div', { class: 'seg' }, opts.map(([v, t]) => h('button', { class: cur === v ? 'on' : '', onclick: () => on(cur === v ? '' : v) }, t))); }
-const sec = (title, step, ...children) => h('div', { class: 'sec' }, h('h3', {}, step ? h('span', { class: 'step' }, step) : null, title), ...children);
-const frow = (label, ctrl, hint) => h('div', { class: 'frow' }, h('span', { class: 'flabel' }, label, hint ? h('span', { class: 'hint' }, ' · ' + hint) : null), ctrl);
+const sec = (title, step, ...children) => h('div', { class: 'sec' }, h('h3', {}, step ? h('span', { class: 'step' }, step) : null, title, helpBtn(title)), ...children);
+/* ---------- 每个空旁边的「?」：点开看这是什么、怎么想 ---------- */
+const HELP = {
+  '大纲': { what: '拆的骨架：任务 → 子阶段 → 拍。', how: ['一层拆完整段，再往下拆一层。', '点一行进详情，在详情里填细节。', 'Enter 在下面新建一行；升降级、删除在详情里点按钮。'] },
+  '顶层 · 整段任务': { what: '这次要拆的一整块剧情，比如「第七节·跑马梁」。', how: ['先只填这一栏的几项。', '下面的「设计目的」等拍都拆完了再回来填。'] },
+  '任务名': { what: '这一段叫什么。和保存的文件名是同一个。', how: ['用剧情里一眼能认出来的叫法。'], eg: '跑马梁·背尸' },
+  '这段讲什么': { what: '一句话说清这一段发生了什么。', how: ['只写因果主线，不写细节。', '一句话装不下，说明范围太大，考虑拆成两个任务。'], eg: '关二狗上山背尸，被鬼打墙逼得撂尸逃命，坠潭将死。' },
+  '关二狗怎么变了': { what: '进这段之前和走完这段之后，关二狗（处境、心态、手里的东西）有什么不同。', how: ['「从」填进来时的样子，「到」填离开时的样子。', '写不出变化，这段就会散——先想清楚这个再往下拆。'], eg: '从「就当白跑一趟」到「这辈子头一回不要工钱」' },
+  '关二狗的目的': { what: '戏里关二狗想要什么（他自己的目的，不是设计目的）。顶层写整段的，子阶段写这一小段的。', how: ['站在他的角度想：他此刻想干嘛？', '用他会说的话写，不要写成设计语言。'], eg: '背尸下山，领那二百五十文。' },
+  '结束条件': { what: '怎么算这一段（或这个子阶段）完了。', how: ['写成一个看得见、能触发的事件，不写感受。', '以后做进游戏，就是叙事状态机里推进到下一段的信号。'], eg: '招全使完了，冷气贴到后颈。' },
+  '子阶段': { what: '一个「局面」。局面变了才切新的子阶段，换地图不算。', how: ['每个子阶段都要有：关二狗的目的、开始局面、结束局面、结束条件。'] },
+  '标题': { what: '这个子阶段的名字。', how: ['按局面起名，不按地图起名。'], eg: '鬼打墙、坠潭' },
+  '开始时局面': { what: '这个子阶段开始那一刻，关二狗处在什么情况。', how: ['写他知道什么、手里有什么、以为接下来会怎样。'], eg: '背着尸往下走，以为很快就到山脚。' },
+  '结束时局面': { what: '这个子阶段结束那一刻的情况。', how: ['必须和开始时不一样。', '一样就说明这一段没推进：删掉，或者并到相邻子阶段。'], eg: '老辈人的招全使完了，碑石还在前头。' },
+  '结构': { what: '这个子阶段怎么走。', how: ['普通：按顺序走一遍。', '循环：同一段会重复发生（比如鬼打墙），必须写退出条件。', '并行：几个子阶段不分先后（比如城里几件事随便先做哪件），给它们填同一个并行组名。'] },
+  '退出条件': { what: '循环什么时候结束。', how: ['写成能触发的事件。', '没有退出条件的循环，玩家就卡死在里面。'], eg: '把老辈人的招都试一遍之后。' },
+  '并行组': { what: '标记哪几个子阶段不分先后。', how: ['不分先后的几个子阶段，填同一个组名。'], eg: '城里打听' },
+  '这一段的拍': { what: '这个子阶段拆出来的拍。一拍＝局面变一次。', how: ['每拍写一行：发生了什么 → 关二狗怎么反应 → 结果。', '这一步不想玩法。'] },
+  '拍': { what: '一拍＝局面变一次。', how: ['先把「发生 → 反应 → 结果」写清楚，再标看／做／选／略。', '只有标了「做」「选」的拍，才往下细化玩法。'] },
+  '发生了什么': { what: '这一拍外面发生的事，也就是触发。', how: ['写客观发生的事，不写关二狗心里怎么想。', '一拍只写一件事，两件事就拆成两拍。'], eg: '又看见那块碑石和那株崖松。' },
+  '关二狗怎么反应': { what: '他对这件事的反应：说了什么、做了什么、心里怎么想。', how: ['贴着人物写，符合他的性子。', '反应要能引出下一格的结果。'], eg: '心里一紧，认出是鬼打墙。' },
+  '结果': { what: '这一拍结束后，局面变成了什么。', how: ['必须和这一拍开始前不同，否则它不算一拍。', '后面四格填不出来，多半是这里没想清楚。'], eg: '他知道自己被困住了。' },
+  '地图': { what: '这一拍发生在哪张图。只是个标签，不是层级。', how: ['同一个地方全程用同一个名字（「地图」页会按名字汇总）。', '尽量和游戏里的场景名一致。'], eg: '跑马梁' },
+  '原文摘句': { what: '这一拍对应梗概里的哪句原文。', how: ['方便以后回头对照，可以留空。', '在「梗概」页点「→ 新拍」会自动带上。'] },
+  '看／做／选／略': { what: '这一拍用什么形式给玩家。', how: ['看：演出，玩家只看着。', '做：玩家亲手操作。', '选：玩家做一个决定。', '略：一笔带过，或者直接跳过。', '只有「做」「选」的拍才需要设计玩法。'], eg: '到了凼里空无一人 → 看；喊两嗓子听有没有回音 → 做。' },
+  '细化': { what: '只给「做」「选」的拍填：把这一刻的玩法落到具体操作上。', how: ['先写公式，再填四格；四格填不出就写卡点。'] },
+  '公式：玩家动词 ＋ 对象 ＋ 阻力': { what: '用一句话锁定这个玩法。', how: ['动词：玩家干什么（走、破解、捡、喊、选）。', '对象：对什么干。', '阻力：什么让这件事不容易。', '写不出阻力，这一拍多半不是玩法，改回「看」。'], eg: '破解 ＋ 碑石崖松 ＋ 招一个个不灵' },
+  '玩家看到什么': { what: '这一刻屏幕上玩家能看到、听到的信息。', how: ['只写玩家能感知到的，不写玩家不知道的。', '玩家要靠这些明白「该做点什么了」。'], eg: '碑石第三次出现；背包里有鞋、糙米、桃木。' },
+  '玩家做什么': { what: '玩家具体的操作。', how: ['写按什么、点什么、选什么，越具体越好。'], eg: '从背包里选「反穿鞋」使用。' },
+  '游戏怎么回应': { what: '玩家做完之后，游戏给的反馈。', how: ['画面、声音、状态变化都算。', '回应要让玩家明白自己做对了还是做错了。'], eg: '换鞋演出，镜头拉远，碑石还在前头。' },
+  '做错了会怎样': { what: '做错了、或者什么都不做的后果。', how: ['什么都不会发生＝这个玩法不成立。', '后果最好落到泳道上（火暗一把、更重、更冷）。'], eg: '冷气更近一步，三把火暗一把。' },
+  '卡点': { what: '四格填不出来时，写清楚卡在哪。', how: ['写问题，不写答案。', '这些就是判决切片要拿去试玩验证的点。'], eg: '不知道怎么让玩家自己认出碑石在重复，而不靠字幕提示。' },
+  '归入玩法': { what: '这一拍在哪个玩法里担任起承转合的哪一格。', how: ['起＝教，承＝用，转＝变，合＝极。', '一拍可以同时属于多个玩法。', '玩法没建的话，先在下面新建。'] },
+  '可砍': { what: '一个标记：这一拍跟它所在子阶段的设计目的无关，删了也不影响这一段要给玩家的东西。只是标记，不会删任何东西。', how: ['先把子阶段的「设计目的」写出来。', '逐拍问：这一拍在为这个目的服务吗？不服务就勾上。', '排期紧要压量时，先从标了可砍的拍下手；或者改一改，让它服务目的。'], eg: '鬼打墙的设计目的是「越挣扎越绝望」，如果有一拍只是描写路边景色，就可以标可砍。' },
+  '可砍 · 泳道': { what: '给这一拍打「可砍」标记，并填它在各条泳道上的值。', how: ['每一项旁边都有「?」。'] },
+  '泳道值:emotion': { what: '这一拍玩家的情绪有多高（-3～+3）。', how: ['负数＝紧张、恐惧、压抑；正数＝放松、得意、松口气。', '看整条曲线：连续三拍一样高就是「平了」，这里需要一个「转」。'], eg: '坠潭那拍 -3，闻到香粉味那拍回到 -1。' },
+  '泳道值:curve': { what: '这一拍在这条泳道上的高低（-3～+3）。', how: ['只在这一拍有明确高低时填，前后拍对比着看。'] },
+  '泳道值:trend': { what: '这条泳道对应的系统，在这一拍是升、降，还是没变。', how: ['升／降＝这一拍它变了；平＝明确没变。', '没关系的拍留空。', '几条泳道在同一拍一起变＝联动点，重点设计、重点试玩。'], eg: '三把火：坠潭那拍填「降」。' },
+  '泳道值:text': { what: '这一拍在这条线上发生了什么，用文字写。', how: ['只在有新东西时写，比如「玩家知道什么」这条，就在玩家新知道一件事的拍上写。'], eg: '想起那人交代的三条规矩。' },
+  '泳道判定': { what: '勾上＝这个系统跟这个子阶段没关系，检查时不再报「整段空着」。', how: ['只在确定这一段本来就不该有这个系统时才勾。', '别为了消掉警告而勾。'] },
+  '设计目的': { what: '这个子阶段为什么存在，要给玩家什么。', how: ['拍拆完再回来填。', '按 ① 删除测试 → ② 四格 → ③ 倒推 的顺序，一步步挤出来，最后归纳成一两句。'] },
+  '整段的设计目的（最后填）': { what: '整段任务为什么存在，要给玩家什么。', how: ['所有子阶段的设计目的都填完之后，再对照着归纳这一段的。', '同样按 ① 删除测试 → ② 四格 → ③ 倒推 来想。'] },
+  '① 删除测试：把这一段整个删掉，后面哪里会坏？': { what: '假设这一段整个不存在，后面哪里会变弱、哪里会不成立。', how: ['坏掉的那一处，就是这一段存在的理由。', '想不出哪里会坏，这一段可能可以砍。'], eg: '删掉鬼打墙：撂尸就显得太轻易，「这辈子头一回不要工钱」立不住；坠潭时玩家也不会觉得无路可逃。' },
+  '② 四格：玩家走完这一段，比进来前多了／少了什么（挑能填的填）': { what: '从玩家角度，看走完这一段前后的差别。', how: ['四格挑能填的填，不用填满。', '比直接问「设计目的是什么」具体得多，好下笔。'] },
+  '学会了': { what: '玩家走完这一段，学会的规则或操作。', eg: '老辈人的招能拿来用，但不一定灵。' },
+  '知道了': { what: '玩家新知道的信息，或者埋下的伏笔。', eg: '那人交代的三条规矩不是随口说说的。' },
+  '感受到': { what: '玩家这一段的情绪体验。', eg: '越挣扎越绝望。' },
+  '得到或失去了': { what: '玩家（或关二狗）得到、失去的物件或状态。', eg: '失去对「背尸是熟活」的自信；捡到一个帕子包。' },
+  '③ 倒推：后面的高潮需要玩家先具备什么？分到这一段的是': { what: '后面的高潮要成立，玩家得先有什么；其中哪些应该由这一段给。', how: ['先想高潮那一刻要多狠。', '再往回问：玩家得先学会什么、拥有过什么、失去过什么？', '把需要的东西分派给前面的子阶段，这里写分到这一段的那一项。'], eg: '坠潭时三把火一把把熄灭要让人怕，玩家得先见过火会暗 → 分给「背尸」这一段。' },
+  '设计目的（归纳）': { what: '把上面几项归纳成一两句话。', how: ['写成「让玩家……」的句子。', '以后要砍东西、改东西，都拿这一句来判断。'], eg: '让玩家第一次感到恐惧会反过来压在自己身上，并学会三把火会暗。' },
+  '泳道图': { what: '横轴是拍，每一行是一条泳道（一个系统，或者情绪）。', how: ['找三样东西：', '整段空着的泳道（斜线底）：补上，或者在子阶段详情里判定它不属于这段。', '平的情绪曲线（红虚线）：这里需要一个「转」。', '联动点（黄底）：几条泳道同一拍一起变，重点设计、重点试玩。'] },
+  '玩法': { what: '从做／选的拍里归纳出来的玩法。', how: ['同一个动作在很多拍里反复出现，就值得做成通用系统；只出现一次的，按这一段的专属玩法做。', '每个玩法都要走一遍起承转合，并写判决句。'] },
+  '玩法名': { what: '给这个玩法起个名字。', how: ['用「动作＋对象」的格式。'], eg: '鬼打墙破解、火把续命' },
+  '判决句 · 成立的时候，玩家会…': { what: '玩法成立的时候，玩家会自己做出什么行为。', how: ['写看得见的玩家行为，试玩时拿它来对照。', '不要写「玩家觉得好玩」这种没法验证的话。'], eg: '玩家会主动去翻老辈人的招一个个试，而不是乱按或者查攻略。' },
+  '判决句 · 做错了，游戏会…': { what: '玩家做错的时候，游戏怎么回应。', how: ['要有后果，而且玩家看得懂。', '和拍里四格的「做错了会怎样」对得上。'], eg: '冷气更近一步，三把火暗一把。' },
+  '起承转合·起': { what: '起＝教：玩家第一次、安全地学会这个玩法。', how: ['失败代价低，规则让玩家自己看懂。'] },
+  '起承转合·承': { what: '承＝用：正常使用，玩家越用越熟。' },
+  '起承转合·转': { what: '转＝变：规则被扭一下，原来的办法不灵了，或者出现新情况。' },
+  '起承转合·合': { what: '合＝极：用到头，或者彻底崩掉，是这个玩法的高潮。' },
+  '备注': { what: '随手记，不参与检查。' },
+  '地图汇总': { what: '按地图反过来看：每张图在哪些子阶段出现，每次来时是什么状态。给做场景（原画、夜景、灯、NPC）用。' },
+  '地图·时段': { what: '这次来这张图是什么时间。', how: ['决定用哪一套时段原画和光。'], eg: '白天、黄昏、三更' },
+  '地图·光': { what: '这次来时主要靠什么光、有多亮。', eg: '月光很淡，只有手里一根火把和凼边那盏长明灯。' },
+  '地图·谁在场': { what: '除了关二狗，这次还有谁在（人、尸、鬼、NPC）。', eg: '只有灯旁边那具尸。' },
+  '地图·能做什么': { what: '这次来时玩家能交互的东西。', eg: '喊人、架尸、看长明灯。' },
+  '梗概原文': { what: '把这一段的梗概原文贴进来。', how: ['下面会按句拆开，逐句决定它变成子阶段、拍，还是并入某一拍的原文摘句。'] },
+  '逐句拆': { what: '梗概按句拆开，一句一行。', how: ['→ 新拍：变成一拍，接在选中的拍后面。', '→ 新子阶段：变成一个子阶段。', '并入选中拍：追加到当前选中那一拍的原文摘句。', '灰掉的句子是已经用过的。'] },
+  '停车场': { what: '拆的时候冒出来的下一层点子，先丢在这里。', how: ['一层拆完整段才往下拆一层，当下别往下钻。', '会记住你当时选中的是哪个子阶段。'] },
+  '拍表': { what: '所有拍放在一张表里。', how: ['类型筛「做＋选」，就只剩要设计玩法的那几拍。'] },
+  '完成标准': { what: '四条都打上勾，这一段就算拆完了。' },
+  '仓库所有者': { what: 'GitHub 用户名。', eg: 'wubugui' },
+  '仓库名': { what: '放数据的仓库。', eg: 'FindingDogStory' },
+  '数据分支': { what: '专门放任务文件的分支，不碰 main。', how: ['默认 chaipai-data，不用改；分支不存在会自动建。'] },
+  '令牌（fine-grained token）': { what: '让这个网页能读写 GitHub 上任务文件的钥匙，只存在这台设备的浏览器里。', how: ['去 GitHub → Settings → Developer settings → Fine-grained tokens 新建。', '仓库只选 FindingDogStory，权限只给 Contents 读写。', '不要发到任何聊天里。'] },
+  '这台设备叫': { what: '这台设备的名字，会显示在提交记录和冲突提示里。', eg: '电脑、手机' }
+};
+function helpKeyOf(label) {
+  if (typeof label !== 'string') return null;
+  if (HELP[label]) return label;
+  if (/^子阶段 \d+$/.test(label)) return '子阶段';
+  if (/^拍 \d+\.\d+$/.test(label)) return '拍';
+  if (/^这一段的拍/.test(label)) return '这一段的拍';
+  return null;
+}
+function helpBtn(label) {
+  const key = helpKeyOf(label); if (!key) return null;
+  return h('button', { class: 'help', type: 'button', title: '这是什么、怎么想', onclick: e => { e.preventDefault(); e.stopPropagation(); showHelp(key, e.currentTarget); } }, '?');
+}
+function helpBody(hp) {
+  return [
+    hp.what ? h('p', {}, hp.what) : null,
+    hp.how && hp.how.length ? h('div', {}, h('b', {}, '怎么想'), h('ul', {}, hp.how.map(x => h('li', {}, x)))) : null,
+    hp.eg ? h('p', { class: 'helpeg' }, h('b', {}, '例：'), hp.eg) : null
+  ];
+}
+function closeHelp() { const p = $('#helppop'); if (p) p.remove(); }
+function showHelp(key, anchor) {
+  const hp = HELP[key]; const title = key.startsWith('泳道值:') ? '这条泳道怎么填' : key.replace(/^(地图|起承转合)·/, '');
+  closeHelp();
+  if (typeof isPhone === 'function' && isPhone() && !$('#modal')) { showModal(title, ...helpBody(hp)); return; }
+  const pop = h('div', { id: 'helppop', class: 'helppop' }, h('div', { class: 'mechhead' }, h('b', { style: 'flex:1' }, title), btn('×', closeHelp, 'sm')), ...helpBody(hp));
+  document.body.append(pop);
+  const r = anchor.getBoundingClientRect(); const pw = Math.min(400, window.innerWidth - 24);
+  pop.style.width = pw + 'px';
+  pop.style.left = Math.min(Math.max(12, r.left - 24), window.innerWidth - pw - 12) + 'px';
+  let top = r.bottom + 6; pop.style.top = top + 'px';
+  const ph = pop.offsetHeight;
+  if (top + ph > window.innerHeight - 12) pop.style.top = Math.max(12, r.top - ph - 6) + 'px';
+}
+document.addEventListener('pointerdown', e => { const p = $('#helppop'); if (p && !p.contains(e.target) && !(e.target.classList && e.target.classList.contains('help'))) closeHelp(); }, true);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeHelp(); });
+const frow = (label, ctrl, hint) => h('div', { class: 'frow' }, h('span', { class: 'flabel' }, label, helpBtn(label), hint ? h('span', { class: 'hint' }, ' · ' + hint) : null), ctrl);
 const kindBadge = b => h('span', { class: 'kb k-' + KCLS[b.kind || ''], title: b.kind ? b.kind : '还没标看/做/选/略' }, b.kind || '?');
 const modeBadge = s => s.mode === 'loop' ? h('span', { class: 'mb', title: '循环' }, '↻') : s.mode === 'parallel' ? h('span', { class: 'mb', title: '并行' }, '∥') : null;
 
@@ -528,7 +647,7 @@ function renderHeader() {
 /* ---------- 大纲 ---------- */
 function renderOutline() {
   const box = $('#outline'); const st = box.scrollTop; box.innerHTML = '';
-  box.append(h('div', { class: 'outline-head' }, h('b', {}, '大纲 · 任务 → 子阶段 → 拍'),
+  box.append(h('div', { class: 'outline-head' }, h('b', {}, '大纲 · 任务 → 子阶段 → 拍', helpBtn('大纲')),
     h('span', { class: 'hint' }, 'Enter 在下面新建一行 · Alt+↑↓ 移动 · Alt+1~4 标 看/做/选/略 · 拖编号排序 · 升降级、删除在详情里')));
   box.append(h('div', { class: 'row top' + (sel.type === 'top' ? ' selected' : ''), dataset: { id: 'top' }, onclick: () => rowTap({ type: 'top' }) },
     h('span', { class: 'num' }, '任务'), h('span', { class: 'label', style: 'flex:1' }, syncSpan('top:title', doc.meta.title, '未命名任务')), h('span', { class: 'dot', dataset: { dotFor: 'top' } }), goBtn({ type: 'top' })));
@@ -549,7 +668,7 @@ function renderOutline() {
         kindBadge(b),
         outlineInput(b, 'text', '发生了什么', { type: 'beat', id: b.id }),
         h('span', { class: 'chip', dataset: { sync: `${b.id}:map` } }, b.map),
-        b.cuttable ? h('span', { class: 'chip cut' }, '可砍') : null,
+        b.cuttable ? h('span', { class: 'chip cut', title: '标了可砍：跟所在子阶段的设计目的无关' }, '可砍') : null,
         h('span', { class: 'dot', dataset: { dotFor: b.id } }), goBtn({ type: 'beat', id: b.id }));
       r.addEventListener('click', e => { if (e.target.tagName !== 'INPUT') rowTap({ type: 'beat', id: b.id }); });
       box.append(r); dnd(r, 'beat', b.id);
@@ -710,7 +829,7 @@ function designBlock(d, objId, title) {
   return sec(title || '设计目的', '第 6 步',
     h('p', { class: 'hint' }, '别对着空白硬写。拆完拍再回来：① 删除测试 → ② 四格 → ③ 倒推，最后归纳成一两句。'),
     frow('① 删除测试：把这一段整个删掉，后面哪里会坏？', field(d, 'deleteTest', oid, { multi: true }), '坏掉的那处就是它存在的理由'),
-    h('span', { class: 'flabel' }, '② 四格：玩家走完这一段，比进来前多了／少了什么（挑能填的填）'),
+    h('span', { class: 'flabel' }, '② 四格：玩家走完这一段，比进来前多了／少了什么（挑能填的填）', helpBtn('② 四格：玩家走完这一段，比进来前多了／少了什么（挑能填的填）')),
     h('div', { class: 'grid2' }, DESIGN_KEYS.map(([k, l, hint]) => frow(l, field(d, k, oid, { multi: true }), hint))),
     frow('③ 倒推：后面的高潮需要玩家先具备什么？分到这一段的是', field(d, 'backward', oid, { multi: true })),
     frow('设计目的（归纳）', field(d, 'summary', oid, { multi: true, cls: 'key' })));
@@ -720,7 +839,7 @@ function detailTop(v) {
   v.append(sec('顶层 · 整段任务', '第 1 步',
     frow('任务名', field(m, 'title', 'top')),
     frow('这段讲什么', field(m, 'summary', 'top', { multi: true }), '一句话'),
-    h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '关二狗怎么变了'),
+    h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '关二狗怎么变了', helpBtn('关二狗怎么变了')),
       h('div', { class: 'fromto' }, '从', field(m, 'changeFrom', 'top', { ph: '进来时' }), '到', field(m, 'changeTo', 'top', { ph: '出去时' }))),
     frow('关二狗的目的', field(m, 'goal', 'top', { multi: true }), '戏里的'),
     frow('结束条件', field(m, 'endCondition', 'top', { multi: true }), '怎么算这段完了')));
@@ -749,7 +868,7 @@ function detailStage(v, s, si) {
     h('div', { class: 'grid2' }, frow('开始时局面', field(s, 'start', oid, { multi: true })), frow('结束时局面', field(s, 'end', oid, { multi: true }))),
     h('div', { class: 'warnline', dataset: { inline: 'same:' + s.id } }),
     frow('结束条件', field(s, 'endCondition', oid, { multi: true }), '以后就是叙事状态机里推进的信号'),
-    h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '结构'), seg([['normal', '普通'], ['loop', '循环'], ['parallel', '并行']], s.mode, val => mutate(() => { s.mode = val || 'normal'; }))),
+    h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '结构', helpBtn('结构')), seg([['normal', '普通'], ['loop', '循环'], ['parallel', '并行']], s.mode, val => mutate(() => { s.mode = val || 'normal'; }))),
     s.mode === 'loop' ? frow('退出条件', field(s, 'loopExit', oid, { multi: true }), '重复到什么时候为止') : null,
     s.mode === 'parallel' ? frow('并行组', field(s, 'parallelGroup', oid), '同组的子阶段不分先后，填同一个组名') : null));
   v.append(sec(`这一段的拍（${s.beats.length}）`, '第 3 步',
@@ -790,7 +909,7 @@ function detailBeat(v, f) {
     seg(KINDS, b.kind, val => mutate(() => { b.kind = val; }))));
   if (isAct(b)) {
     v.append(sec('细化', '第 5 步',
-      h('span', { class: 'flabel' }, '公式：玩家动词 ＋ 对象 ＋ 阻力'),
+      h('span', { class: 'flabel' }, '公式：玩家动词 ＋ 对象 ＋ 阻力', helpBtn('公式：玩家动词 ＋ 对象 ＋ 阻力')),
       h('div', { class: 'formula frow' }, field(b, 'formula.verb', oid, { ph: '动词：走／破解／捡…' }), '＋', field(b, 'formula.object', oid, { ph: '对象' }), '＋', field(b, 'formula.resistance', oid, { ph: '阻力' })),
       h('div', { class: 'warnrow', dataset: { inline: 'res:' + b.id } }, '写不出阻力，这一拍可能不是玩法——', btn('改回「看」', () => mutate(() => { b.kind = '看'; }), 'sm')),
       h('div', { class: 'grid2' },
@@ -808,8 +927,8 @@ function detailBeat(v, f) {
       h('div', { class: 'toolbar', style: 'margin-top:8px' }, nameIn, btn('新建玩法', () => { const n = nameIn.value.trim(); if (!n) { nameIn.focus(); return; } mutate(() => { const m = newMechanic(); m.name = n; doc.mechanics.push(m); }); }, 'sm'))));
   }
   v.append(sec('可砍 · 泳道', '第 6 · 7 步',
-    h('label', { class: 'checkline' }, h('input', { type: 'checkbox', checked: b.cuttable, onchange: e => mutate(() => { b.cuttable = e.target.checked; }) }), '可砍（跟子阶段的设计目的无关）'),
-    doc.lanes.map(l => h('div', { class: 'laneedit' }, h('span', { class: 'flabel', style: 'margin:0' }, l.name), laneEditor(b, l)))));
+    h('label', { class: 'checkline' }, h('input', { type: 'checkbox', checked: b.cuttable, onchange: e => mutate(() => { b.cuttable = e.target.checked; }) }), '可砍：这一拍跟所在子阶段的设计目的无关，删了不影响这段要给玩家的东西（只是标记，不会删）', helpBtn('可砍')),
+    doc.lanes.map(l => h('div', { class: 'laneedit' }, h('span', { class: 'flabel', style: 'margin:0' }, l.name, helpBtn('泳道值:' + (l.id === 'emotion' ? 'emotion' : l.kind))), laneEditor(b, l)))));
 }
 function laneEditor(b, l) {
   const cur = b.lanes[l.id];
@@ -894,7 +1013,7 @@ function renderLanes(v) {
   grid.append(h('div', { class: 'lc lab' }, '玩家在做'));
   seq.forEach(x => grid.append(h('div', { class: 'lc' + colCls(x) }, h('div', { class: 'clamp' }, doingText(x.b)))));
   doc.lanes.forEach(l => {
-    grid.append(h('div', { class: 'lc lab' }, syncSpan('lane' + l.id + ':name', l.name), h('div', { class: 'hint' }, l.kind === 'curve' ? '点格子定高度（-3～+3），点同值清空' : l.kind === 'trend' ? '点击循环：升→降→平→空' : '直接写')));
+    grid.append(h('div', { class: 'lc lab' }, syncSpan('lane' + l.id + ':name', l.name), helpBtn('泳道值:' + (l.id === 'emotion' ? 'emotion' : l.kind)), h('div', { class: 'hint' }, l.kind === 'curve' ? '点格子定高度（-3～+3），点同值清空' : l.kind === 'trend' ? '点击循环：升→降→平→空' : '直接写')));
     if (l.kind === 'curve') { grid.append(curveRow(l, seq, changes, flat)); return; }
     seq.forEach(x => {
       const excl = x.s.laneExclude.includes(l.id); const empty = !excl && !x.s.beats.some(b => laneFilled(b, l));
@@ -967,12 +1086,12 @@ function renderMech(v) {
     h('div', { class: 'toolbar' }, btn('＋ 新建玩法', () => { let id; mutate(() => { const m = newMechanic(); doc.mechanics.push(m); id = m.id; }); focusKey(`f:${id}:name`); }, 'primary'))));
   doc.mechanics.forEach((m, mi) => {
     v.append(h('div', { class: 'sec', id: 'mech-' + m.id },
-      h('div', { class: 'mechhead' }, field(m, 'name', m.id, { ph: '玩法名，如：鬼打墙破解', cls: 'big' }),
+      h('div', { class: 'mechhead' }, field(m, 'name', m.id, { ph: '玩法名，如：鬼打墙破解', cls: 'big' }), helpBtn('玩法名'),
         btn('↑', () => mutate(() => moveArr(doc.mechanics, mi, -1)), 'sm'), btn('↓', () => mutate(() => moveArr(doc.mechanics, mi, 1)), 'sm'),
         btn('删除', () => { if (confirm(`删除玩法「${m.name || '未命名'}」？`)) mutate(() => doc.mechanics.splice(mi, 1)); }, 'danger sm')),
       h('div', { class: 'grid2' }, frow('判决句 · 成立的时候，玩家会…', field(m, 'ok', m.id, { multi: true })), frow('判决句 · 做错了，游戏会…', field(m, 'wrong', m.id, { multi: true }))),
       h('div', { class: 'arc' }, ARC.map(([k, t, hint]) => h('div', { class: 'arccol' + (m.arc[k].length ? '' : ' missing') },
-        h('div', { class: 'arct' }, h('b', {}, t), ' ', h('span', { class: 'hint' }, hint)),
+        h('div', { class: 'arct' }, h('b', {}, t), helpBtn('起承转合·' + t), ' ', h('span', { class: 'hint' }, hint)),
         m.arc[k].map(id => { const f = findBeat(id); if (!f) return null; return h('div', { class: 'bchip', title: f.b.text, onclick: () => select({ type: 'beat', id }, { tab: 'detail' }) },
           h('span', { class: 'num', style: 'min-width:0' }, `${f.si + 1}.${f.bi + 1}`), kindBadge(f.b), h('span', { class: 'ell' }, short(f.b.text, 30)),
           h('span', { class: 'x', title: '移出', onclick: e => { e.stopPropagation(); mutate(() => { m.arc[k] = m.arc[k].filter(z => z !== id); }); } }, '✕')); }),
@@ -996,7 +1115,7 @@ function renderMaps(v) {
     v.append(h('div', { class: 'sec' },
       h('div', { class: 'mechhead' }, nameIn, h('span', { class: 'hint' }, `出现在 ${g.visits.length} 个子阶段`)),
       h('div', { style: 'overflow-x:auto' }, h('table', { class: 'tbl' },
-        h('thead', {}, h('tr', {}, ['子阶段', '出现的拍', '时段', '光', '谁在场', '能做什么'].map(t => h('th', {}, t)))),
+        h('thead', {}, h('tr', {}, ['子阶段', '出现的拍', '时段', '光', '谁在场', '能做什么'].map(t => h('th', {}, t, helpBtn('地图·' + t))))),
         h('tbody', {}, g.visits.map(vs => {
           const key = visitKey(g.map, vs.stage.id);
           const mv = doc.mapVisits[key] || (doc.mapVisits[key] = { time: '', light: '', who: '', can: '' });
