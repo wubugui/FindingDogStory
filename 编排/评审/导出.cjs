@@ -4,7 +4,7 @@
  * 用法：node 编排/评审/导出.cjs <轮次目录>
  *   拆分结果.md  去掉「梗概原文」和每拍的「原文摘句」——B1、B2 只准看这一份，不能让原文漏进去
  *   检查.md      机器检查逐条
- *   度量.json    各步待处理数、完成标准、规模、字段预算
+ *   度量.json    各步待处理数、完成标准、规模、交接范围、未定清单、字段预算
  */
 'use strict';
 const fs = require('fs'); const path = require('path');
@@ -29,23 +29,28 @@ for (let n = 1; n <= 9; n++) {
 }
 fs.writeFileSync(path.join(dir, '检查.md'), L.join('\n'), 'utf8');
 
-/* 细化范围：拍都标了类型、且至少有一个做／选拍细化完成的子阶段 */
-const detailed = doc.stages.map((s, si) => ({ si, s })).filter(x => x.s.beats.length && x.s.beats.every(b => b.kind) && x.s.beats.some(b => C.isAct(b) && C.detailDone(b)));
+/* 交接范围：制作人自己勾了「这一段拆完了」的子阶段。工具不替他猜范围。 */
+const ready = doc.stages.map((s, si) => ({ si, s })).filter(x => x.s.ready);
+const readyIds = new Set(ready.flatMap(x => [x.s.id, ...x.s.beats.map(b => b.id)]));
 const beats = C.allBeats(doc).map(x => x.b);
+const open = C.openItems(doc);
 const keys = o => Object.keys(o).filter(k => !['id', 'collapsed'].includes(k)).length;
 const metrics = {
   title: doc.meta.title,
   pending: prog.pending, current: prog.current,
   criteria: C.criteria(doc, issues).map(([text, ok]) => ({ text, ok })),
-  scale: { stages: doc.stages.length, beats: beats.length, 看: beats.filter(b => b.kind === '看').length, 做: beats.filter(b => b.kind === '做').length, 选: beats.filter(b => b.kind === '选').length, 未标: beats.filter(b => !b.kind).length, options: beats.reduce((n, b) => n + b.options.length, 0), mechanics: doc.mechanics.length, facts: doc.facts.length, maps: C.mapGroups(doc).length, stuck: beats.filter(b => C.filled(b.stuck)).length, cuttable: beats.filter(b => b.cuttable).length },
-  detailedStages: detailed.map(x => `${x.si + 1}. ${x.s.title}`),
+  scale: { stages: doc.stages.length, beats: beats.length, 看: beats.filter(b => b.kind === '看').length, 做: beats.filter(b => b.kind === '做').length, 选: beats.filter(b => b.kind === '选').length, 没想好: beats.filter(b => b.kind === C.UNDECIDED).length, 未标: beats.filter(b => !b.kind).length, options: beats.reduce((n, b) => n + b.options.length, 0), needs: doc.stages.reduce((n, s) => n + s.needs.length + s.beats.reduce((m, b) => m + b.needs.length, 0), 0), mechanics: doc.mechanics.length, maps: C.mapGroups(doc).length, stuck: beats.filter(b => C.filled(b.stuck)).length, cuttable: beats.filter(b => b.cuttable).length },
+  readyStages: ready.map(x => `${x.si + 1}. ${x.s.title}`),
+  openItems: open.map(x => x.text),
   machineGate: {
+    readyCount: ready.length,
     wiringMiss: issues.filter(i => i.step === 7 && i.level === 'miss').length,
-    detailedMiss3to7: issues.filter(i => i.level === 'miss' && i.step >= 3 && i.step <= 7 && (i.target.type === 'stage' ? detailed.some(x => x.s.id === i.target.id) : i.target.type === 'beat' ? detailed.some(x => x.s.beats.some(b => b.id === i.target.id)) : false)).length
+    readyMiss: issues.filter(i => i.level === 'miss' && i.target.id && readyIds.has(i.target.id)).length
   },
-  /* 字段预算：一个人要面对的格子种类数。修工具让它上涨，得在 修复.md 里写理由 */
-  fieldBudget: { 顶层: keys(C.newDoc().meta), 子阶段: keys(C.newStage()) + keys(C.newDesign()) - 1, 拍: keys(C.newBeat()) + 3 + 4 - 2, 选项: keys(C.newOption()), 玩法: keys(C.newMechanic()) + 4 - 1 }
+  /* 字段预算：一个人要面对的格子种类数。修工具让它上涨，得在 修复.md 里写理由。
+     泳道的「不属于／没想好」是同一个三选一，算一格；地图汇总只剩「光与场景备注」一格要人填。 */
+  fieldBudget: { 顶层: keys(C.newDoc().meta), 子阶段: keys(C.newStage()) - 3 + keys(C.newDesign()), 拍: keys(C.newBeat()) + 3 + 4 - 2, 选项: keys(C.newOption()), 接线条目: keys(C.newNeed()), 玩法: keys(C.newMechanic()) + 4 - 1, 地图汇总: 1 }
 };
 metrics.fieldBudget.合计 = Object.values(metrics.fieldBudget).reduce((a, b) => a + b, 0);
 fs.writeFileSync(path.join(dir, '度量.json'), JSON.stringify(metrics, null, 2), 'utf8');
-console.log(`导出完成：${doc.stages.length} 个子阶段、${beats.length} 拍；细化范围：${metrics.detailedStages.join('、') || '（无）'}；字段预算 ${metrics.fieldBudget.合计}`);
+console.log(`导出完成：${doc.stages.length} 个子阶段、${beats.length} 拍；交接范围：${metrics.readyStages.join('、') || '（一个都没勾）'}；未定 ${open.length} 条；字段预算 ${metrics.fieldBudget.合计}`);

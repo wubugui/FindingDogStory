@@ -172,27 +172,10 @@ body[data-layout="phone"].kbd-open #toasts{bottom:12px}
 .purposebox{border-left:3px solid var(--accent);background:var(--bg);border-radius:0 6px 6px 0;padding:8px 10px;margin-bottom:10px}
 .purposebox .purpose{font-weight:600;margin-bottom:4px;white-space:pre-wrap}
 .purposebox .hint{white-space:pre-wrap}
-.reqrow{grid-template-columns:auto minmax(0,1fr) auto !important}
-.condfact{display:flex;gap:6px;min-width:0}
-.condfact .reqsel{flex:1;min-width:0}
-.setsbox{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.setsbox .reqsel{width:auto;max-width:100%}
-.setchip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:14px;padding:2px 4px 2px 2px;background:var(--panel2);font-size:13px}
-.setchip .setval{border:0;border-radius:12px;padding:2px 8px;background:var(--ok);color:#fff;font-size:12px;cursor:pointer}
-.setchip.off .setval{background:var(--warn)}
-.factrow{padding:8px 0;border-bottom:1px solid var(--line)}
-.factrow:last-child{border-bottom:0}
-body[data-layout="phone"] .reqrow{grid-template-columns:1fr auto !important}
-body[data-layout="phone"] .reqrow .condfact,body[data-layout="phone"] .reqrow>.reqsel{grid-column:1 / -1}
-body[data-layout="phone"] .reqrow>.btn{grid-row:1;grid-column:2}
 .cutbox{display:inline-flex;align-items:center;gap:4px;flex:none;font-size:12px;color:var(--muted);cursor:pointer;padding:2px 4px}
 .cutbox input{margin:0}
 .verbgroup{border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:8px;background:var(--bg)}
 .optcard{border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:10px;background:var(--bg)}
-.reqrow{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) auto;gap:6px;align-items:start;margin-bottom:6px}
-.reqsel{width:100%}
-body[data-layout="phone"] .reqrow{grid-template-columns:1fr auto}
-body[data-layout="phone"] .reqrow .reqsel{grid-column:1 / -1}
 details.reqfold>summary{cursor:pointer;color:var(--accent2);font-size:13px}
 details.reqfold[open]>summary{margin-bottom:8px}
 .flowwrap{max-height:none;padding:6px 0;margin-bottom:14px}
@@ -357,6 +340,15 @@ svg.curve{display:block}
 .sent .acts{display:flex;gap:4px;flex:none;flex-wrap:wrap;justify-content:flex-end;max-width:260px}
 .park{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--line)}
 .park.done .ta{text-decoration:line-through;color:var(--muted)}
+
+.reqrow{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) auto;gap:6px;align-items:start;margin-bottom:6px}
+.reqsel{width:100%}
+body[data-layout="phone"] .reqrow{grid-template-columns:1fr auto}
+body[data-layout="phone"] .reqrow>.reqsel{grid-column:1;grid-row:1}
+body[data-layout="phone"] .reqrow>.btn{grid-column:2;grid-row:1}
+body[data-layout="phone"] .reqrow>.inp{grid-column:1 / -1;grid-row:2}
+.warnrow[hidden]{display:none}
+.k-undecided{background:var(--hint)}
 </style>
 </head>
 <body>
@@ -440,8 +432,8 @@ let undoStack = [], redoStack = [], lastSnap = JSON.stringify(doc);
 let snapTimer = null, saveTimer = null, derivedTimer = null;
 const FS_OK = 'showOpenFilePicker' in window && 'showSaveFilePicker' in window;
 
-function beatHasContent(b) { return [b.reaction, b.result, b.source, b.map, b.who, b.kind, b.stuck, b.dilemma, ...Object.values(b.formula), ...Object.values(b.cells)].some(filled) || Object.keys(b.lanes).length > 0 || b.cuttable || b.options.length > 0 || b.requires.length > 0 || b.sets.length > 0; }
-function stageHasContent(s) { return [s.goal, s.start, s.end, s.setting, s.cast, s.foreshadow, s.parallelGroup, ...Object.values(s.design)].some(filled) || s.requires.length > 0 || s.loopExitWhen.length > 0; }
+function beatHasContent(b) { return [b.reaction, b.result, b.source, b.map, b.who, b.kind, b.stuck, b.dilemma, ...Object.values(b.formula), ...Object.values(b.cells)].some(filled) || Object.keys(b.lanes).length > 0 || b.cuttable || b.options.length > 0 || b.needs.length > 0; }
+function stageHasContent(s) { return [s.goal, s.start, s.end, s.setting, s.cast, s.foreshadow, s.stuck, s.loopExit, s.parallelGroup, ...Object.values(s.design)].some(filled) || s.needs.length > 0; }
 function renameMap(oldName, nv) {
   allBeats().forEach(x => { if (x.b.map.trim() === oldName) x.b.map = nv; });
   for (const k of Object.keys(doc.mapVisits)) {
@@ -520,7 +512,7 @@ const HELP = {
   '大纲': { what: '拆的骨架：任务 → 子阶段 → 拍。', how: ['一层拆完整段，再往下拆一层。', '点一行进详情，在详情里填细节。', 'Enter 在下面新建一行；升降级、删除在详情里点按钮。'] },
   '顶层 · 整段任务': { what: '这次要拆的一整块剧情，比如「第七节·跑马梁」。', how: ['先把这一栏填完，再去切子阶段。', '体验目标是整段的方向，后面每个子阶段的设计目的都要服务它。'] },
   '任务名': { what: '这一段叫什么。和保存的文件名是同一个。', how: ['用剧情里一眼能认出来的叫法。'], eg: '跑马梁·背尸' },
-  '这段讲什么': { what: '一句话说清这一段发生了什么。', how: ['只写因果主线，不写细节。', '一句话装不下，说明范围太大，考虑拆成两个任务。'], eg: '关二狗上山背尸，被鬼打墙逼得撂尸逃命，坠潭将死。' },
+  "这段讲什么": {"what":"一句话说清这一段发生了什么。","how":["只写因果主线，不写细节。","装不下，先砍细节；砍到只剩主线还装不下，再考虑拆成两个任务。"],"eg":"关二狗上山背尸，被鬼打墙逼得撂尸逃命，坠潭将死。"},
   '关二狗怎么变了': { what: '进这段之前和走完这段之后，关二狗（处境、心态、手里的东西）有什么不同。', how: ['「从」填进来时的样子，「到」填离开时的样子。', '写不出变化，这段就会散——先想清楚这个再往下拆。'], eg: '从「就当白跑一趟」到「这辈子头一回不要工钱」' },
   '关二狗的目的': { what: '戏里关二狗想要什么（他自己的目的，不是设计目的）。顶层写整段的，子阶段写这一小段的。', how: ['站在他的角度想：他此刻想干嘛？', '用他会说的话写，不要写成设计语言。'], eg: '背尸下山，领那二百五十文。' },
   '体验目标': { what: '玩家玩完这一整段，应该经历到什么。是整段的方向，定切片的时候就写。', how: ['写成「让玩家……」的句子，一两句。', '每个子阶段的设计目的都要能说出它在为这一句出力。', '以后拿成品切片给人试玩，就对照这一句判成没成。'], eg: '让玩家第一次体会到：在这个世界里，怕本身就会要命。' },
@@ -532,66 +524,50 @@ const HELP = {
   '结束时局面': { what: '这个子阶段结束那一刻的情况。', how: ['必须和开始时不一样。', '一样就说明这一段没推进：删掉，或者并到相邻子阶段。'], eg: '老辈人的招全使完了，碑石还在前头。' },
   '登场角色与物件': { what: '这一段里出现的人、鬼、尸，和起作用的物件。', how: ['只列在这一段里真的起作用的。', '方便以后查「这个东西第一次出现在哪」。'], eg: '关二狗、那具瘦尸；火把、糙米、桃木、反穿的鞋。' },
   '伏线': { what: '这一段埋下了什么（后面要收），或者收了什么（前面埋的）。', how: ['埋：写清楚打算在哪收。', '收：写清楚是哪里埋的。', '只埋不收、只收没埋，都要回头补。'], eg: '埋：帕子包里的东西（阿秀线收）。收：那人交代的三条规矩。' },
-  '结构': { what: '这个子阶段怎么走。', how: ['普通：按顺序走一遍。', '循环：同一段会重复发生（比如鬼打墙），要在下面「网状关系」里设退出条件。', '并行：几个子阶段都要做，只是不分先后（比如城里几件事随便先做哪件），给它们填同一个并行组名。', '分支：只有玩家选了某个选项才会走这一段。一般不用手动标——在选项的「去向」里选「新建分支子阶段」会自动建好。'] },
+  "结构": {"what":"这个子阶段怎么走。","how":["普通：按顺序走一遍。","循环：同一段会重复发生（比如鬼打墙）。怎么出去，在下面「接线」里写一句话。","并行：几个子阶段都要做，只是不分先后，给它们填同一个并行组名。","分支：只有玩家选了某个选项才会走这一段。一般不用手动标——在选项的「去向」里选「新建分支子阶段」会自动建好。"]},
   '并行组': { what: '标记哪几个子阶段不分先后。', how: ['不分先后的几个子阶段，填同一个组名。'], eg: '城里打听' },
   '设计目的': { what: '这个子阶段为什么存在，要给玩家什么。切出这一段的时候就写。', how: ['直接写不出来，就用下面三个问法挤：① 删除测试 → ② 四格 → ③ 倒推，最后归纳成一两句。', '后面拆拍、标可砍、决定哪拍让玩家动手、细化玩法，都对照这一句。', '拆到后面发现不对，回来改——改完再看一遍这段的拍。'] },
-  '① 删除测试：把这一段整个删掉，后面哪里会坏？': { what: '假设这一段整个不存在，后面哪里会变弱、哪里会不成立。', how: ['坏掉的那一处，就是这一段存在的理由。', '想不出哪里会坏，这一段可能可以砍。'], eg: '删掉鬼打墙：撂尸就显得太轻易，「这辈子头一回不要工钱」立不住；坠潭时玩家也不会觉得无路可逃。' },
-  '② 四格：玩家走完这一段，比进来前多了／少了什么（挑能填的填）': { what: '从玩家角度，看走完这一段前后的差别。', how: ['四格挑能填的填，不用填满。', '比直接问「设计目的是什么」具体得多，好下笔。'] },
   '学会了': { what: '玩家走完这一段，学会的规则或操作。', eg: '老辈人的招能拿来用，但不一定灵。' },
   '知道了': { what: '玩家新知道的信息，或者埋下的伏笔。', eg: '那人交代的三条规矩不是随口说说的。' },
   '感受到': { what: '这一段的情绪拍：玩家在这里应该是什么感受。', eg: '越挣扎越绝望。' },
   '得到或失去了': { what: '玩家（或关二狗）得到、失去的物件或状态。', eg: '失去对「背尸是熟活」的自信；捡到一个帕子包。' },
-  '③ 倒推：后面的高潮需要玩家先具备什么？分到这一段的是': { what: '后面的高潮要成立，玩家得先有什么；其中哪些应该由这一段给。', how: ['先想高潮那一刻要多狠。', '再往回问：玩家得先学会什么、拥有过什么、失去过什么？', '把需要的东西分派给前面的子阶段，这里写分到这一段的那一项。'], eg: '坠潭时三把火一把把熄灭要让人怕，玩家得先见过火会暗 → 分给「背尸」这一段。' },
   '设计目的（归纳）': { what: '把上面几项归纳成一两句话。', how: ['写成「让玩家……」的句子。', '以后要砍东西、改东西，都拿这一句来判断。'], eg: '让玩家第一次感到恐惧会反过来压在自己身上，并学会三把火会暗。' },
   '这一段的拍': { what: '这个子阶段拆出来的拍。一拍＝局面变一次。', how: ['每拍写一行：发生了什么 → 关二狗怎么反应 → 结果。这一步不想玩法。', '拍拆完，对照上面的设计目的逐拍看：跟目的无关的，在这一行后面勾「可砍」。'] },
   '可砍': { what: '一个标记：这一拍跟这个子阶段的设计目的无关，删了也不影响这一段要给玩家的东西。只是标记，不会删任何东西。', how: ['对照这一段的设计目的，逐拍问：这一拍在为它出力吗？不出力就勾上。', '排期紧要压量时，先从标了可砍的拍下手；或者改一改，让它服务目的。'], eg: '鬼打墙的设计目的是「越挣扎越绝望」，如果有一拍只是描写路边景色，就可以标可砍。' },
   '拍': { what: '一拍＝局面变一次。', how: ['先把「发生 → 反应 → 结果」写清楚。', '全段的拍都拆完、横着看过之后，再标看／做／选，再细化。'] },
   '发生了什么': { what: '这一拍外面发生的事，也就是触发。', how: ['写客观发生的事，不写关二狗心里怎么想。', '一拍只写一件事，两件事就拆成两拍。'], eg: '又看见那块碑石和那株崖松。' },
-  '关二狗怎么反应': { what: '他对这件事的反应：说了什么、做了什么、心里怎么想。', how: ['贴着人物写，符合他的性子。', '反应要能引出下一格的结果。'], eg: '心里一紧，认出是鬼打墙。' },
+  "关二狗怎么反应": {"what":"他对这件事的反应：说了什么、做了什么、心里怎么想。","how":["贴着人物写，符合他的性子。","来不及反应、没力气反应，也照实写一句，比如「来不及反应」。"],"eg":"心里一紧，认出是鬼打墙。"},
   '结果': { what: '这一拍结束后，局面变成了什么。', how: ['必须和这一拍开始前不同，否则它不算一拍。', '后面细化填不出来，多半是这里没想清楚。'], eg: '他知道自己被困住了。' },
   '地图': { what: '这一拍发生在哪个场所。只是个标签，不是层级。', how: ['同一个地方全程用同一个名字（「地图」页会按名字汇总）。'], eg: '跑马梁' },
-  '在场者': { what: '这一拍里，除了关二狗还有谁在（人、尸、鬼）。', how: ['没有别人就空着。'], eg: '背上那具尸' },
+  "在场者": {"what":"这一拍里，除了关二狗还有谁在。","how":["只写人和会动的东西：人、尸、鬼、不露面但在场的。","物件（灯、帕子包）不算，写在子阶段的「登场角色与物件」里。","只有关二狗一个就空着。"],"eg":"背上那具尸"},
   '原文摘句': { what: '这一拍对应梗概里的哪句原文。', how: ['方便以后回头对照，可以留空。', '在「梗概」页点「→ 新拍」会自动带上。'] },
   '泳道': { what: '这一拍在各条泳道上的值。也可以去「泳道」页整张填，更快。', how: ['每条泳道旁边有「?」。'] },
-  '泳道值:emotion': { what: '这一拍玩家的情绪有多高（-3～+3）。', how: ['负数＝紧张、恐惧、压抑；正数＝放松、得意、松口气。', '看整条曲线：连续三拍一样高就是「平了」，这里需要一个「转」。'], eg: '坠潭那拍 -3，闻到香粉味那拍回到 -1。' },
+  "泳道值:emotion": {"what":"这一拍玩家的感受有多高（-3～+3）。按玩家打，不按关二狗。","how":["-3＝最紧张、最压抑、最怕；0＝平常；+3＝最放松、最得意、最解气。","玩家松一口气但满头问号，算偏高（松了）。","看整条曲线：连续三拍一样高就是「平了」，这里需要一个「转」。"],"eg":"坠潭那拍 -3；闻到香粉味、没死成那拍回到 -1 或 0。"},
   '泳道值:curve': { what: '这一拍在这条泳道上的高低（-3～+3）。', how: ['只在这一拍有明确高低时填，前后拍对比着看。'] },
-  '泳道值:trend': { what: '这条泳道对应的系统，在这一拍是升、降，还是没变。', how: ['升／降＝这一拍它变了；平＝明确没变。', '没关系的拍留空。', '几条泳道在同一拍一起变＝联动点，重点设计、重点试玩。'], eg: '三把火：坠潭那拍填「降」。' },
+  "泳道值:trend": {"what":"这条泳道对应的系统，在这一拍是升、降，还是没变。","how":["升／降＝这一拍它变了；平＝明确没变。第一次出现也算「升」。","和这一拍没关系就留空。","几条泳道在同一拍一起变＝联动点，重点设计、重点试玩。"],"eg":"三把火：第一次显出来那拍填「升」，坠潭那拍填「降」。"},
   '泳道值:text': { what: '这一拍在这条线上发生了什么，用文字写。', how: ['只在有新东西时写，比如「玩家知道什么」这条，就在玩家新知道一件事的拍上写。'], eg: '想起那人交代的三条规矩。' },
-  '泳道判定': { what: '勾上＝这个系统跟这个子阶段没关系，检查时不再报「整段空着」。', how: ['只在确定这一段本来就不该有这个系统时才勾。', '别为了消掉警告而勾。'] },
-  '看／做／选': { what: '这一拍用什么形式给玩家。', how: ['判据只有一条：这一拍的变化，能不能由玩家的动作触发？', '能 → 做（玩家亲手操作）或 选（玩家做一个决定）。', '不能 → 看（演出）。', '没意义的玩法段要砍，过长的纯演出也要砍。', '只有「做」「选」的拍才往下细化。'], eg: '到了凼里空无一人 → 看；喊两嗓子听有没有回音 → 做；撂不撂尸 → 选。' },
+  "泳道判定": {"what":"每条泳道在这一段是哪种情况。","how":["要填：这一段里它有变化，去泳道页填。","不属于这一段：这个系统在这一段本来就不出现。","属于，但没想好：它在这一段该有动静，只是你还没想过——会进未定清单。别为了消掉警告勾「不属于」，那是把窟窿藏起来。"]},
+  "看／做／选": {"what":"这一拍用什么形式给玩家。","how":["先问：这一拍的变化，能不能由玩家的动作触发？","不能 → 看（演出）。","能，而且有一个目标，玩家想办法达成 → 做。办法可以有好几种（比如五招挨个试），那也是「做」，列做法表。","能，而且没有对错，选哪边都要付代价 → 选。","真没想好 → 没想好。它会进未定清单，别硬选一个。","没意义的玩法段要砍，过长的纯演出也要砍。"],"eg":"到了凼里空无一人 → 看；五招挨个试 → 做；撂不撂尸 → 选。"},
   '细化 · 做': { what: '把这一刻的玩法落到具体操作上。', how: ['先写公式，再填四格。', '同一个目标有好几种做法，就不填四格，改填下面的做法表。', '填不出来就写卡点。'] },
   '细化 · 选': { what: '把这个选择写清楚：难在哪，每个选项各带来什么。', how: ['先写两难，再在下面的选项表里逐个列选项。', '填不出来就写卡点。'] },
   '公式：玩家动词 ＋ 对象 ＋ 阻力': { what: '用一句话锁定这个玩法。', how: ['动词：玩家干什么，随便写，不用管技术上怎么实现。', '对象：对什么干。', '阻力：什么让这件事不容易。', '写不出阻力，这一拍多半不是玩法，改回「看」。'], eg: '破解 ＋ 碑石崖松 ＋ 招一个个不灵' },
   '玩家看到什么': { what: '这一刻玩家能看到、听到的信息。', how: ['只写玩家能感知到的，不写玩家不知道的。', '玩家要靠这些明白「该做点什么了」。'], eg: '碑石第三次出现；身上有鞋、糙米、桃木。' },
   '玩家做什么': { what: '玩家具体干什么。', how: ['写清楚动作本身，不用管技术上怎么实现。'], eg: '把鞋脱下来反着穿上，再往前走。' },
   '游戏怎么回应': { what: '玩家做完之后，游戏给的反馈。', how: ['画面、声音、状态变化都算。', '回应要让玩家明白自己做对了还是做错了。'], eg: '换鞋，镜头拉远，碑石还在前头。' },
-  '做错了会怎样': { what: '做错了、或者什么都不做的后果。', how: ['什么都不会发生＝这个玩法不成立。', '后果最好落到泳道上（火暗一把、更重、更冷）。'], eg: '冷气更近一步，三把火暗一把。' },
+  "做错了会怎样": {"what":"做错了、或者什么都不做的后果。","how":["有些拍本来就做不错（比如鬼打墙里怎么走都绕回来），那就写代价：耗时间、耗火把、更怕。","既做不错、又没代价，这一拍多半该是「看」。"],"eg":"冷气更近一步，三把火暗一把。"},
   '两难': { what: '这个选择难在哪：选每一边，各要失去什么。', how: ['每个选项都得有代价，否则玩家不用想就选了，等于没得选。', '写不出两难，这一拍多半不是「选」，改成「看」或「做」。'], eg: '撂尸：保命，但工钱没了，这辈子头一回砸了活。继续背：保住活，但冷气已经贴到后颈。' },
-  '卡点': { what: '细化填不出来时，写清楚卡在哪。', how: ['写问题，不写答案。', '这些就是判决切片要拿去试玩验证的点。'], eg: '不知道怎么让玩家自己认出碑石在重复，而不靠字幕提示。' },
-  '选项（开放拍）': { what: '「选」的拍里，玩家能选的每一个选项。', how: ['先问：这个选择会不会改变后面的流程？', '不会（只差后果）：去向选「继续下一拍」，差别写进「后果」和「选了之后」的状态——大部分选项应该是这种。', '会：去向选「＋ 新建分支子阶段」，工具会建好那一段，你去那边拆拍，再写它之后汇合到哪。', '后果要让玩家事先看得出轻重；各条分支长短可以不一样。', '别为了分支而分支。'] },
-  '做法（多种解法）': { what: '同一个目标有好几种做法时，逐个列出来。列了做法表，上面的四格就不用填了。', how: ['每种做法标灵不灵，写游戏怎么回应、有什么后果。', '都指向同一个目标，去向一般是「继续下一拍」。'], eg: '鬼打墙：反穿鞋（不灵）、撒尿画界（不灵）、撒糙米（看情况）、求告（不灵）。' },
+  "卡点": {"what":"你还没想好的事，如实写在这里。子阶段和拍都有这个格子。","how":["写问题，不写答案。","它会进「未定清单」，导出时排在最前面——照着做的人读到会回来问你，不会自己猜。","没想好就说没想好，这是正经答案；硬填一个，交出去的就是假的。"],"eg":"背尸时「越怕越重」具体怎么玩，还没想好。"},
   '玩家选什么': { what: '这个选项是什么，用玩家看到的说法写。', eg: '撂下尸体就跑' },
   '这种做法': { what: '这一种做法具体是什么。', eg: '脱鞋反穿' },
   '灵不灵': { what: '这种做法能不能达到目标。', how: ['灵：做了就成。', '不灵：做了没用（但可以有后果）。', '看情况：要满足别的条件才灵，把条件写进结果或后果。'] },
   '他的反应': { what: '关二狗对这个选项／这种做法的反应。', how: ['贴着人物写，同一个人面对不同选项，反应要像同一个人。'] },
-  '这个选项的结果': { what: '选了这个之后，局面变成什么。', how: ['只写这个选项特有的结果；所有选项都一样的结果，写在这一拍上面的「结果」里。'] },
-  '这种做法的结果': { what: '用了这种做法之后，局面变成什么。' },
-  '后果（影响什么）': { what: '这个选择带来的长期影响，写给人看。', how: ['后面有地方要用到这个影响的，在下面「选了之后」里设成状态——那是给工具和 agent 分析用的。'], eg: '工钱没了；三把火暗一把；之后「去义庄」这条线打不开。' },
-  '选了之后': { what: '选了这个选项（或用了这种做法）之后，哪些状态成立、哪些不再成立。', how: ['只为后面会用到的影响设状态。', '走进分支的选项一定要设一个状态，否则分支汇合回主线之后，就分不出玩家走没走过。', '点「成立／不再成立」可以切换。'], eg: '选「撂尸就跑」：「撂过尸」成立，「能领工钱」不再成立。' },
-  '去向': { what: '选了这个之后，戏往哪走。', how: ['继续下一拍：流程不变，只差后果。', '＋ 新建分支子阶段：这个选择会把戏带到别处，工具替你建好那一段。', '跳到某个子阶段：那一段已经存在。', '这条线结束：这条路到头了。'] },
+  "去向": {"what":"选了这个之后，戏往哪走。","how":["继续下一拍：流程不变，只差后果。","没想好：进未定清单。别留着默认值冒充决定。","＋ 新建分支子阶段：这个选择会把戏带到别处，工具替你建好那一段。","跳到某个子阶段：那一段已经存在。","这条线结束：这条路到头了。"]},
   '归入玩法': { what: '这一拍在哪个玩法里担任起承转合的哪一格。', how: ['玩法从哪来：去「玩法」页，那里会把做／选拍按动词分组，同一个动词反复出现就建一个玩法。', '起＝教，承＝用，转＝变，合＝极。一拍可以同时属于多个玩法。'] },
-  '网状关系': { what: '这个子阶段在整张网里的位置：从哪来、之后去哪、要满足什么条件才发生。选项和状态都有了之后再来填。', how: ['线性的段落这里基本不用动。', '分支、循环、开放世界里要满足条件才出现的段落，在这里接线。'] },
   '从哪来': { what: '哪些拍的哪些选项，去向指到了这个子阶段。自动算出来的，不用填。', how: ['标了「分支」却没有任何来源，玩家就到不了这里。'] },
-  '之后': { what: '走完这个子阶段接着去哪。', how: ['按顺序接下一个子阶段：线性的默认值。', '汇合到某个子阶段：分支走完回到主线的哪里。', '这条线在这里结束：这条分支到此为止（比如死了、离开了）。'], eg: '「撂尸逃跑」这条分支走完，汇合到「坠潭」。' },
-  '前置条件': { what: '要先满足这些条件，这一段（或这一拍）才会发生。开放世界里「什么时候能碰到这段」就写在这里。', how: ['先选类型，再选指向谁：状态成立／不成立、选过某个选项、某拍发生过、某子阶段走完。', '条件说不清是哪一拍哪个选项造成的，就用「状态」：新建一个状态，在造成它的选项或拍上设「成立」。', '有多条时要全部满足。'], eg: '「去义庄还钱」要求：状态「私吞了帕子包里的钱」成立。' },
-  '退出条件': { what: '循环什么时候结束。满足任意一条就跳出。', how: ['一般是某个状态成立（比如「试完所有招」），在循环里对应的选项或拍上设这个状态成立。', '没有退出条件的循环，玩家就困死在里面。'] },
-  '状态': { what: '一件已经成立的事。选项、拍让它成立或不再成立；前置条件、循环退出条件读它。这是网状叙事里因果的骨架。', how: ['用短语起名：撂过尸、拿了帕子包、欠义庄钱。', '只在后面有地方要用到时才建；没人用的状态检查会提示可以删。', '改名会同步到所有用到的地方。'] },
-  '这一拍发生后': { what: '这一拍发生之后，哪些状态成立、哪些不再成立。', how: ['只写后面会被当条件用的事。', '点「成立／不再成立」可以切换。'], eg: '「捡起帕子包」这一拍发生后：「拿了帕子包」成立。' },
-  '条件与状态': { what: '这一拍要满足什么条件才发生，发生后改变哪些状态。', how: ['大多数拍两样都没有，保持折叠就行。', '选项和状态都有了之后再来接线。'] },
-  '流向': { what: '整张网：子阶段按顺序排，选项跳转、分支汇合、前置条件画成连线。', how: ['看有没有到不了的分支（没有橙线进来的 ⑂）。', '看分支有没有回来（蓝线），或者明确结束（⊗）。', '前置条件的虚线从下往上指，说明依赖的是后面才发生的事——检查是不是写反了。'] },
+  "流向": {"what":"整张网：子阶段按顺序排，选项跳转、分支汇合、「要先发生过」画成连线。","how":["看有没有到不了的分支（没有橙线进来的 ⑂）。","看分支有没有回来（蓝线），或者明确结束（⊗）。","灰虚线从下往上指，说明依赖的是后面才发生的事——检查是不是指反了。","线多了看不清就看下面的「逐个看」。"]},
   '逐个看': { what: '每个子阶段的来源、出口、之后、前置条件，用文字列出来。' },
   '泳道图': { what: '横轴是拍，每一行是一条泳道（一个系统，或者情绪）。拍拆完就来横着看一遍，在细化玩法之前。', how: ['找三样东西：', '整段空着的泳道（斜线底）：补上，或者在子阶段详情里判定它不属于这段。', '平的情绪曲线（红虚线）：这里需要一个「转」。', '联动点（黄底）：几条泳道同一拍一起变，重点设计、重点试玩。'] },
-  '玩法': { what: '从做／选的拍里归纳出来的玩法。', how: ['怎么来：下面会把还没归入玩法的做／选拍按动词分组。同一个动词反复出现，就值得做成一个玩法；只出现一次的，按这一段的专属玩法做。', '每个玩法都要走一遍起承转合，并写判决句。'] },
+  "玩法": {"what":"从做／选的拍里归出来的玩法。","how":["已经想好的玩法，直接新建，再把拍挂上去（在拍的详情里挂更顺手）。","没头绪时，看下面按动词的分组：同一个动词反复出现，就值得做成一个玩法。","每个玩法走一遍起承转合。某一格在别的章节、或者没想好，在备注里写明，别为了填满去编一拍。","写判决句。"]},
   '玩法名': { what: '给这个玩法起个名字。', how: ['用「动作＋对象」的格式。'], eg: '鬼打墙破解、火把续命' },
   '判决句 · 成立的时候，玩家会…': { what: '玩法成立的时候，玩家会自己做出什么行为。', how: ['写看得见的玩家行为，试玩时拿它来对照。', '不要写「玩家觉得好玩」这种没法验证的话。'], eg: '玩家会主动去翻老辈人的招一个个试，而不是乱按或者查攻略。' },
   '判决句 · 做错了，游戏会…': { what: '玩家做错的时候，游戏怎么回应。', how: ['要有后果，而且玩家看得懂。', '和拍里四格的「做错了会怎样」对得上。'], eg: '冷气更近一步，三把火暗一把。' },
@@ -599,14 +575,10 @@ const HELP = {
   '起承转合·承': { what: '承＝用：正常使用，玩家越用越熟。' },
   '起承转合·转': { what: '转＝变：规则被扭一下，原来的办法不灵了，或者出现新情况。' },
   '起承转合·合': { what: '合＝极：用到头，或者彻底崩掉，是这个玩法的高潮。用完就放下。' },
-  '备注': { what: '随手记，不参与检查。' },
-  '地图汇总': { what: '交接用：按地图反过来看，每张图在哪些子阶段出现，每次来时是什么状态。给做场景（原画、夜景、灯、在场的人）的人看。' },
-  '地图·时段': { what: '这次来这张图是什么时间。', eg: '白天、黄昏、三更' },
-  '地图·光': { what: '这次来时主要靠什么光、有多亮。', eg: '月光很淡，只有手里一根火把和凼边那盏长明灯。' },
-  '地图·谁在场': { what: '除了关二狗，这次还有谁在（人、尸、鬼）。', eg: '只有灯旁边那具尸。' },
-  '地图·能做什么（自动）': { what: '这次来时玩家能干的事。从这张图上标了「做」「选」的拍自动列出来，不用填。' },
+  "备注": {"what":"随手记。起承转合某一格空着的原因（在别的章节／没想好）写在这里，检查就不再催。"},
+  "地图汇总": {"what":"交接用：每张图在哪几段出现、那时什么样。全部从你前面写的东西自动列出，给做场景（原画、夜景、灯、在场的人）的人看。"},
   '梗概原文': { what: '把这一段的梗概原文贴进来。', how: ['下面会按句拆开，逐句决定它变成子阶段、拍，还是并入某一拍的原文摘句。'] },
-  '逐句拆': { what: '梗概按句拆开，一句一行。', how: ['→ 新拍：变成一拍，接在选中的拍后面。', '→ 新子阶段：变成一个子阶段。', '并入选中拍：追加到当前选中那一拍的原文摘句。', '灰掉的句子是已经用过的。'] },
+  "逐句拆": {"what":"梗概按句拆开，一句一行。","how":["第 2 步只用「从这句起新开一段」：把整段切成几个子阶段，起个名字，然后回详情把每一段填完。","第 3 步再回来用「→ 新拍」：接在选中的拍后面。","并入选中拍：把这句追加到当前选中那一拍的原文摘句。","你在详情里手贴过原文摘句的句子，这里也会灰掉。"]},
   '停车场': { what: '拆的时候冒出来的下一层点子，先丢在这里。', how: ['一层拆完整段才往下拆一层，当下别往下钻。', '会记住你当时选中的是哪个子阶段。'] },
   '拍表': { what: '所有拍放在一张表里。', how: ['类型筛「做＋选」，就只剩要设计玩法的那几拍。'] },
   '完成标准': { what: '五条都打上勾，这一段就算拆完了。' },
@@ -614,7 +586,26 @@ const HELP = {
   '仓库名': { what: '放数据的仓库。', eg: 'FindingDogStory' },
   '数据分支': { what: '专门放任务文件的分支，不碰 main。', how: ['默认 chaipai-data，不用改；分支不存在会自动建。'] },
   '令牌（fine-grained token）': { what: '让这个网页能读写 GitHub 上任务文件的钥匙，只存在这台设备的浏览器里。', how: ['去 GitHub → Settings → Developer settings → Fine-grained tokens 新建。', '仓库只选 FindingDogStory，权限只给 Contents 读写。', '不要发到任何聊天里。'] },
-  '这台设备叫': { what: '这台设备的名字，会显示在提交记录和冲突提示里。', eg: '电脑、手机' }
+  '这台设备叫': { what: '这台设备的名字，会显示在提交记录和冲突提示里。', eg: '电脑、手机' },
+  "玩家走完这一段，比进来前多了／少了什么": {"what":"从玩家角度，看走完这一段前后的差别。","how":["四格挑能填的填，不用填满。","比直接问「设计目的是什么」具体，好下笔。填完再归纳。"]},
+  "删除测试": {"what":"换个问法挤设计目的：假设这一段整个不存在，后面哪里会变弱、哪里会不成立？","how":["坏掉的那一处，就是这一段存在的理由。","想不出哪里会坏，这一段可能可以砍。","可不填；和「倒推」答出来是同一件事也正常，填一个就够。"],"eg":"删掉鬼打墙：撂尸就显得太轻易；坠潭时玩家也不会觉得无路可逃。"},
+  "倒推": {"what":"换个问法挤设计目的：后面的高潮要成立，玩家得先有什么？其中哪一样该由这一段给？","how":["先想高潮那一刻要多狠，再往回问。","可不填。"],"eg":"坠潭时三把火一把把熄灭要让人怕，玩家得先见过火会暗 → 分给「背尸」这一段。"},
+  "选项": {"what":"「选」的拍里，玩家能选的每一个选项。","how":["先问：这个选择会不会改变后面的流程？","不会（只差后果）：去向选「继续下一拍」，差别写进长远后果——大部分选项应该是这种。","会：去向选「＋ 新建分支子阶段」，工具替你建好那一段，你去那边拆拍，再写它走完去哪。","某个选项你没想好，就照实写没想好，去向也选「没想好」。","别为了分支而分支。"]},
+  "做法（一个目标，好几种办法）": {"what":"同一个目标有好几种办法时，逐个列出来。列了这张表，上面的四格就不用填了。","how":["每种办法标灵不灵，写当场结果和长远后果。","再说清「几种做法怎么算过」。"],"eg":"鬼打墙：反穿鞋（不灵）、撒尿画界（不灵）、撒糙米（不灵）、求告（不灵）；全部试过才往下。"},
+  "几种做法怎么算过": {"what":"列了好几种做法之后，玩家试到什么程度，戏才往下走。","how":["试到灵的为止：有一种能成，成了就往下。","全部试过才往下：每种都得试一遍（比如五招全不灵，试完才崩溃）。","试一个就往下：随便用一种，戏就往下走。","没想好：进未定清单。"]},
+  "当场结果": {"what":"选了这个／用了这种办法之后，局面马上变成什么。","how":["只写这一个特有的；所有选项都一样的结果，写在这一拍上面的「结果」里。"]},
+  "长远后果": {"what":"这个选择留到后面的影响：少了什么、多了什么、谁因此记住了他、哪条路因此打开或关上。","how":["后面有地方要用到它，就在那边的「要先发生过」里指回这个选项。","没有长远后果就写「无」。"],"eg":"工钱没了；尸留在了山上；以后官爷那边不好交代。"},
+  "接线": {"what":"这个子阶段和别的段落怎么接。只接三样，全用人话。","how":["循环怎么出去：一句话。","从哪来、走完去哪：分支才需要管。","要先发生过：哪件事发生过，这一段才会出现。","线性的段落，这里基本不用动。"]},
+  "循环怎么出去": {"what":"这一段会反复发生，什么时候不再反复、往下走。用一句话写清。","how":["不用写成条件，写人话。","没写，玩家就困死在里面。"],"eg":"五招都试过、全不灵，冷气贴到后颈，他崩溃了。"},
+  "走完去哪": {"what":"走完这个子阶段接着去哪。","how":["按顺序接下一个子阶段：线性的默认值。","汇合到某个子阶段：分支走完回到主线的哪里。","这条线在这里结束：到此为止（比如死了、离开了）。"],"eg":"「撂尸逃跑」这条分支走完，汇合到「坠潭」。"},
+  "要先发生过": {"what":"哪件事发生过，这一段（或这一拍）才会出现。","how":["在下拉里指一下那件事：某个子阶段走完、某一拍发生过、某个选项被选过；也可以指「别的章节的事」，或者不指、只写一句话。","再补一句人话说清楚。","有好几条，就是都得发生过。更绕的关系（其中一个就行、没发生过才行）直接写在那句话里。","这不是写程序，照着做的人看得懂就行。"],"eg":"指向「拍 4.2 捡了帕子包」，补一句：没捡就没有这一拍。"},
+  "这一段拆完了": {"what":"勾上＝这一段你拆到底了，可以交给别人照着做。","how":["勾了的子阶段就是「交接范围」，导出时写在最前面。","没勾的段落，别人知道它还只是个大概。","勾了但还有「缺」，检查页会提醒。"]},
+  "交接": {"what":"把拆完的段落交出去。","how":["拆到底的子阶段勾上「拆完了」。","导出的全文最前面会列出交接范围和未定清单。"]},
+  "未定清单": {"what":"你标了「没想好」、写了卡点的地方，集中列在这里。","how":["导出时它排在最前面：照着做的人读到这些会回来问你，不会自己猜。","想好一条，回去改掉一条。"]},
+  "地图·地点·时段·氛围": {"what":"自动取自子阶段里你写的那一句。要改去子阶段改。"},
+  "地图·谁在场": {"what":"自动汇总这张图上这一段各拍的「在场者」。要改去拍里改。"},
+  "地图·能做什么": {"what":"自动列出这张图上这一段标了「做」「选」的拍。"},
+  "地图·光与场景备注": {"what":"前面没地方写的场景信息补在这里：靠什么光、有多亮、场景上有什么特别的。可不填。","eg":"月光很淡，只有凼边那盏长明灯。"}
 };
 function helpKeyOf(label) {
   if (typeof label !== 'string') return null;
@@ -656,9 +647,9 @@ const frow = (label, ctrl, hint) => {
   if (ctrl && ctrl.setAttribute && /^(INPUT|TEXTAREA|SELECT)$/.test(ctrl.tagName)) ctrl.setAttribute('aria-label', label);
   return h('div', { class: 'frow' }, h('span', { class: 'flabel' }, label, helpBtn(label), hint ? h('span', { class: 'hint' }, ' · ' + hint) : null), ctrl);
 };
-const kindBadge = b => h('span', { class: 'kb k-' + KCLS[b.kind || ''], title: b.kind ? b.kind : '还没标看/做/选' }, b.kind || '?');
+const kindBadge = b => h('span', { class: 'kb k-' + KCLS[b.kind || ''], title: b.kind === C.UNDECIDED ? '看／做／选：没想好' : b.kind ? b.kind : '还没标看/做/选' }, b.kind === C.UNDECIDED ? '未' : (b.kind || '?'));
 const modeBadge = s => [s.mode === 'loop' ? h('span', { class: 'mb', title: '循环' }, '↻') : s.mode === 'parallel' ? h('span', { class: 'mb', title: '并行' }, '∥') : s.mode === 'branch' ? h('span', { class: 'mb', title: '分支：只有选了某个选项才走' }, '⑂') : null,
-  s.requires && s.requires.length ? h('span', { class: 'mb', title: '有前置条件' }, '🔒') : null];
+  s.needs && s.needs.length ? h('span', { class: 'mb', title: '要别的事先发生过' }, '🔒') : null];
 
 function refreshDerived() {
   clearTimeout(derivedTimer);
@@ -742,7 +733,7 @@ function renderOutline() {
         outlineInput(b, 'text', '发生了什么', { type: 'beat', id: b.id }),
         h('span', { class: 'chip', dataset: { sync: `${b.id}:map` } }, b.map),
         b.options.length ? h('span', { class: 'chip', title: '这一拍列了' + (b.kind === '做' ? '几种做法' : '几个选项') }, `${b.options.length}${b.kind === '做' ? '做法' : '选项'}`) : null,
-        b.requires.length ? h('span', { class: 'mb', title: '有前置条件' }, '🔒') : null,
+        b.needs.length ? h('span', { class: 'mb', title: '要别的事先发生过' }, '🔒') : null,
         b.cuttable ? h('span', { class: 'chip cut', title: '标了可砍：跟所在子阶段的设计目的无关' }, '可砍') : null,
         h('span', { class: 'dot', dataset: { dotFor: b.id } }), goBtn({ type: 'beat', id: b.id }));
       r.addEventListener('click', e => { if (e.target.tagName !== 'INPUT') rowTap({ type: 'beat', id: b.id }); });
@@ -767,6 +758,7 @@ function addBeatNearSel(text, source) {
     if (sel.type === 'beat') { const f = findBeat(sel.id); f.s.beats.splice(f.bi + 1, 0, nb); }
     else if (sel.type === 'stage') { const f = findStage(sel.id); f.s.collapsed = false; f.s.beats.push(nb); }
     else { if (!doc.stages.length) doc.stages.push(newStage()); const s = doc.stages[doc.stages.length - 1]; s.collapsed = false; s.beats.push(nb); }
+    sel = { type: 'beat', id };
   });
   return id;
 }
@@ -884,7 +876,9 @@ function renderView() {
   const st = v.scrollTop; const scrollers = {};
   v.querySelectorAll('[data-scroll]').forEach(el => { scrollers[el.dataset.scroll] = { l: el.scrollLeft, t: el.scrollTop }; });
   v.innerHTML = ''; v.dataset.tab = tab; v.dataset.sel = selKey;
+  if (tab === 'checks' || tab === 'table' || tab === 'guide') issues = computeIssues();
   ({ detail: renderDetail, table: renderTable, lanes: renderLanes, flow: renderFlow, mech: renderMech, maps: renderMaps, checks: renderChecks, synopsis: renderSynopsis, parking: renderParking, guide: renderGuide })[tab](v);
+  v.querySelectorAll('textarea').forEach(autosize);
   if (sameTab && (tab !== 'detail' || sameSel)) {
     v.scrollTop = st;
     v.querySelectorAll('[data-scroll]').forEach(el => { const s = scrollers[el.dataset.scroll]; if (s) { el.scrollLeft = s.l; el.scrollTop = s.t; } });
@@ -893,78 +887,29 @@ function renderView() {
   refreshDerived();
 }
 
-/* ---------- 网状叙事：前置条件 / 选项与做法 / 分支 / 流向 ---------- */
-/* 选一个状态；最后一项「＋ 新建状态…」 */
-function factSelect(currentId, onPick, placeholder) {
-  const facts = doc.facts;
-  const el = h('select', { class: 'reqsel' },
-    h('option', { value: '', selected: !currentId }, placeholder || '选一个状态…'),
-    currentId && !C.findFact(doc, currentId) ? h('option', { value: currentId, selected: true }, '（这个状态已经删了，请重选）') : null,
-    facts.map(f => h('option', { value: f.id, selected: f.id === currentId }, f.name || '（未命名状态）')),
-    h('option', { value: '__new' }, '＋ 新建状态…'));
-  el.addEventListener('change', async () => {
-    if (el.value !== '__new') { onPick(el.value); return; }
-    const name = await askText('新建状态', '', '一件已经成立的事，用短语写，比如：撂过尸、拿了帕子包、欠义庄钱');
-    if (!name || !name.trim()) { el.value = currentId || ''; return; }
-    const exist = doc.facts.find(f => f.name.trim() === name.trim());
-    if (exist) { onPick(exist.id); return; }
-    const f = C.newFact(name.trim());
-    mutate(() => { doc.facts.push(f); });
-    onPick(f.id);
+/* ---------- 接线：分支、汇合、循环怎么出去、哪件事要先发生过（只有指向和人话，没有逻辑） ---------- */
+/* 「要先发生过」列表：每条＝指一下那件事（可不指）＋补一句人话 */
+function needsEditor(list) {
+  const choices = [];
+  doc.stages.forEach((st, si) => {
+    choices.push([`stage|${st.id}|`, `子阶段 ${si + 1}「${short(st.title, 16)}」走完`]);
+    st.beats.forEach((bb, bi) => {
+      choices.push([`beat|${bb.id}|`, `　拍 ${si + 1}.${bi + 1}「${short(bb.text, 16)}」发生过`]);
+      bb.options.forEach(o => choices.push([`option|${bb.id}|${o.id}`, `　　拍 ${si + 1}.${bi + 1} ${bb.kind === '做' ? '用了' : '选了'}「${short(o.choice, 14)}」`]));
+    });
   });
-  return el;
-}
-const COND_KINDS = [['fact', '状态'], ['option', '选过某个选项'], ['beat', '某拍发生过'], ['stage', '某子阶段走完']];
-/* 条件列表编辑器：前置条件、循环退出条件共用。一条条件＝类型 + 指向 */
-function conditionsEditor(list, addLabel) {
-  const rows = list.map((r, i) => {
-    const kindSel = h('select', { class: 'condkind', onchange: e => mutate(() => { r.kind = e.target.value; r.id2 = ''; r.optionId = ''; r.negate = false; }) },
-      COND_KINDS.map(([k, t]) => h('option', { value: k, selected: r.kind === k }, t)));
-    let target;
-    if (r.kind === 'fact') {
-      target = h('div', { class: 'condfact' },
-        factSelect(r.id2, id => mutate(() => { r.id2 = id; })),
-        h('select', { class: 'condneg', onchange: e => mutate(() => { r.negate = e.target.value === 'no'; }) },
-          h('option', { value: 'yes', selected: !r.negate }, '成立'), h('option', { value: 'no', selected: r.negate }, '不成立')));
-    } else {
-      const choices = [];
-      doc.stages.forEach((st, si) => {
-        if (r.kind === 'stage') choices.push([st.id, '', `子阶段 ${si + 1}「${short(st.title, 16)}」`]);
-        st.beats.forEach((bb, bi) => {
-          if (r.kind === 'beat') choices.push([bb.id, '', `拍 ${si + 1}.${bi + 1}「${short(bb.text, 16)}」`]);
-          if (r.kind === 'option') bb.options.forEach(o => choices.push([bb.id, o.id, `拍 ${si + 1}.${bi + 1} 选「${short(o.choice, 14)}」`]));
-        });
-      });
-      const cur = r.id2 ? `${r.id2}|${r.optionId || ''}` : '';
-      const ok = !r.id2 || C.requireTarget(doc, r).ok;
-      target = h('select', { class: 'reqsel', onchange: e => mutate(() => { const [a, o] = e.target.value.split('|'); r.id2 = a || ''; r.optionId = o || ''; }) },
-        h('option', { value: '', selected: !r.id2 }, choices.length ? '选一个…' : (r.kind === 'option' ? '（还没有任何选项）' : '（还没有可选的）')),
-        ok ? null : h('option', { value: cur, selected: true }, '（指向的东西已经删了，请重选）'),
-        choices.map(([a, o, t]) => h('option', { value: `${a}|${o}`, selected: ok && cur === `${a}|${o}` }, t)));
-    }
-    return h('div', { class: 'reqrow' }, kindSel, target, btn('✕', () => mutate(() => list.splice(i, 1)), 'sm', '删掉这条'));
+  const rows = list.map((n, i) => {
+    const cur = n.ref.type ? `${n.ref.type}|${n.ref.id}|${n.ref.optionId || ''}` : '';
+    const ok = C.needTarget(doc, n).ok;
+    const pick = h('select', { class: 'reqsel', 'aria-label': '哪件事', onchange: e => mutate(() => { const [t, a, o] = e.target.value.split('|'); n.ref = { type: t || '', id: a || '', optionId: o || '' }; }) },
+      h('option', { value: '', selected: !n.ref.type }, '（不指具体哪件事，只写一句话）'),
+      h('option', { value: 'outside||', selected: n.ref.type === 'outside' }, '别的章节的事'),
+      ok ? null : h('option', { value: cur, selected: true }, '（指的那件事已经删了，请重选）'),
+      choices.map(([val, txt]) => h('option', { value: val, selected: ok && val === cur }, txt)));
+    const note = field(n, 'note', 'need' + n.id, { ph: '补一句话，比如：五招都试过才算' }); note.setAttribute('aria-label', '补一句话');
+    return h('div', { class: 'reqrow' }, pick, note, btn('✕', () => mutate(() => list.splice(i, 1)), 'sm', '删掉这条'));
   });
-  return h('div', {}, rows, btn(addLabel || '＋ 条件', () => mutate(() => list.push(C.newRequire())), 'sm'));
-}
-/* 让状态成立 / 不再成立 */
-function setsEditor(sets) {
-  const chips = sets.map((st, i) => {
-    const f = C.findFact(doc, st.factId);
-    return h('span', { class: 'setchip' + (st.value ? '' : ' off') },
-      h('button', { class: 'setval', title: '点一下切换：成立 ↔ 不再成立', onclick: () => mutate(() => { st.value = !st.value; }) }, st.value ? '成立' : '不再成立'),
-      h('span', {}, f ? f.name || '（未命名状态）' : '（已删除的状态）'),
-      h('span', { class: 'x', title: '去掉', onclick: () => mutate(() => sets.splice(i, 1)) }, '✕'));
-  });
-  const adder = factSelect('', id => { if (!id) return; mutate(() => { if (!sets.some(x => x.factId === id)) sets.push(C.newSet(id)); }); }, '＋ 让某个状态成立…');
-  return h('div', { class: 'setsbox' }, chips, adder);
-}
-function beatRequiresSec(bb) {
-  const body = [
-    h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '前置条件', helpBtn('前置条件'), h('span', { class: 'hint' }, ' · 满足了这一拍才会发生')), conditionsEditor(bb.requires, '＋ 前置条件')),
-    h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '这一拍发生后', helpBtn('这一拍发生后'), h('span', { class: 'hint' }, ' · 让哪些状态成立或不再成立')), setsEditor(bb.sets))
-  ];
-  if (bb.requires.length || bb.sets.length) return sec('条件与状态', '第 7 步', ...body);
-  return h('details', { class: 'sec reqfold' }, h('summary', {}, '这一拍有前置条件，或者会改变状态？', helpBtn('条件与状态')), ...body);
+  return h('div', {}, rows, btn('＋ 要先发生过的事', () => mutate(() => list.push(C.newNeed())), 'sm'));
 }
 function stageNetworkSec(st, si) {
   const src = C.optionSources(doc, st.id);
@@ -973,14 +918,20 @@ function stageNetworkSec(st, si) {
     h('option', { value: 'end', selected: st.mergeTo === 'end' }, '这条线在这里结束'),
     st.mergeTo && st.mergeTo !== 'end' && !findStage(st.mergeTo) ? h('option', { value: st.mergeTo, selected: true }, '（汇合的子阶段已删除，请重选）') : null,
     doc.stages.map((x, xi) => x.id === st.id ? null : h('option', { value: x.id, selected: st.mergeTo === x.id }, `汇合到 子阶段 ${xi + 1}「${short(x.title, 14)}」`)));
-  return sec('网状关系', '第 7 步',
+  return sec('接线', '第 7 步',
+    h('p', { class: 'hint' }, '用人话说清就行，不用写逻辑。线性的段落这里基本不用动。'),
+    st.mode === 'loop' ? frow('循环怎么出去', field(st, 'loopExit', st.id, { multi: true, cls: 'key' }), '一句话') : null,
     h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '从哪来', helpBtn('从哪来')),
       src.length ? h('div', { class: 'blist' }, src.map(x => h('div', { class: 'brow', onclick: () => select({ type: 'beat', id: x.b.id }, { tab: 'detail' }) },
         h('span', { class: 'num' }, `${x.si + 1}.${x.bi + 1}`), kindBadge(x.b), h('span', { class: 'ell' }, `选「${short(x.o.choice, 24)}」→ 到这里`))))
-        : h('div', { class: 'hint' }, st.mode === 'branch' ? '还没有任何选项通向这里——去某一拍的选项表里，把「去向」指到这个子阶段。' : '没有选项专门跳到这里，按顺序走到。')),
-    frow('之后', mergeSel),
-    h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '前置条件', helpBtn('前置条件'), h('span', { class: 'hint' }, ' · 满足了才会发生，没有就空着')), conditionsEditor(st.requires, '＋ 前置条件')),
-    st.mode === 'loop' ? h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '退出条件', helpBtn('退出条件'), h('span', { class: 'hint' }, ' · 满足任意一条就跳出循环')), conditionsEditor(st.loopExitWhen, '＋ 退出条件')) : null);
+        : h('div', { class: 'hint' }, st.mode === 'branch' ? '还没有任何选项通向这里——去某一拍的选项表里，把「去向」指到这个子阶段。' : '按顺序走到。')),
+    frow('走完去哪', mergeSel),
+    h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '要先发生过', helpBtn('要先发生过'), h('span', { class: 'hint' }, ' · 哪件事发生过，这一段才会出现；没有就空着')), needsEditor(st.needs)));
+}
+function beatNeedsSec(bb) {
+  const body = [h('p', { class: 'hint' }, '哪件事发生过，这一拍才会出现。大多数拍没有，保持折叠就行。'), needsEditor(bb.needs)];
+  if (bb.needs.length) return sec('要先发生过', '第 7 步', ...body);
+  return h('details', { class: 'sec reqfold' }, h('summary', {}, '这一拍要别的事先发生过才会出现？'), ...body);
 }
 function optionsSec(bb) {
   const isDo = bb.kind === '做'; const word = isDo ? '做法' : '选项';
@@ -991,11 +942,12 @@ function optionsSec(bb) {
         const at = findBeat(bb.id); const ns = newStage(); ns.mode = 'branch'; ns.title = o.choice || '新分支';
         doc.stages.splice(at.si + 1, 0, ns); o.goto = { type: 'stage', stageId: ns.id }; return;
       }
-      o.goto = val === 'next' || val === 'end' ? { type: val, stageId: '' } : { type: 'stage', stageId: val };
+      o.goto = ['next', 'end', 'undecided'].includes(val) ? { type: val, stageId: '' } : { type: 'stage', stageId: val };
     }) },
       h('option', { value: 'next', selected: o.goto.type === 'next' }, '继续下一拍'),
+      h('option', { value: 'undecided', selected: o.goto.type === 'undecided' }, '没想好'),
       h('option', { value: 'end', selected: o.goto.type === 'end' }, '这条线结束'),
-      h('option', { value: '__newbranch' }, '＋ 新建分支子阶段（从这个选项走过去）'),
+      h('option', { value: '__newbranch' }, '＋ 新建分支子阶段（从这里走过去）'),
       o.goto.type === 'stage' && !findStage(o.goto.stageId) ? h('option', { value: o.goto.stageId, selected: true }, '（目标子阶段已删除，请重选）') : null,
       doc.stages.map((x, xi) => h('option', { value: x.id, selected: o.goto.type === 'stage' && o.goto.stageId === x.id }, `跳到 子阶段 ${xi + 1}「${short(x.title, 14)}」`)));
     const oid = 'opt' + o.id;
@@ -1003,56 +955,49 @@ function optionsSec(bb) {
       h('div', { class: 'mechhead' }, h('b', { style: 'flex:1' }, `${word} ${i + 1}`),
         btn('↑', () => mutate(() => moveArr(bb.options, i, -1)), 'sm', '上移'),
         btn('↓', () => mutate(() => moveArr(bb.options, i, 1)), 'sm', '下移'),
-        btn('删除', () => { if (confirm(`删除${word} ${i + 1}？`)) mutate(() => bb.options.splice(i, 1)); }, 'danger sm')),
+        btn('删除', () => { const has = [o.choice, o.reaction, o.result, o.effect].some(filled); if (!has || confirm(`删除${word} ${i + 1}？`)) mutate(() => bb.options.splice(i, 1)); }, 'danger sm')),
       frow(isDo ? '这种做法' : '玩家选什么', field(o, 'choice', oid)),
       isDo ? h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '灵不灵', helpBtn('灵不灵')), seg([['yes', '灵'], ['no', '不灵'], ['maybe', '看情况']], o.works, val => mutate(() => { o.works = val; }))) : null,
       h('div', { class: 'grid2' },
         frow('他的反应', field(o, 'reaction', oid, { multi: true })),
-        frow(isDo ? '这种做法的结果' : '这个选项的结果', field(o, 'result', oid, { multi: true }))),
-      frow('后果（影响什么）', field(o, 'effect', oid, { multi: true })),
-      h('div', { class: 'frow' }, h('span', { class: 'flabel' }, isDo ? '这样做之后' : '选了之后', helpBtn('选了之后'), h('span', { class: 'hint' }, ' · 让哪些状态成立或不再成立')), setsEditor(o.sets)),
+        frow('当场结果', field(o, 'result', oid, { multi: true }), '局面马上变成什么')),
+      frow('长远后果', field(o, 'effect', oid, { multi: true }), '后面还会用到的影响；没有就写「无」'),
       frow('去向', gotoSel));
   });
-  return sec(isDo ? '做法（多种解法）' : '选项（开放拍）', '第 6 步',
-    h('p', { class: 'hint' }, isDo ? '同一个目标有好几种做法时，逐个列出来；只有一种做法就不用填。' : '每个选项：玩家选什么 → 他的反应 → 结果 → 后果 → 去向。结果不同但后面流程一样的，去向都选「继续下一拍」。'),
+  return sec(isDo ? '做法（一个目标，好几种办法）' : '选项', '第 6 步',
+    h('p', { class: 'hint' }, isDo ? '同一个目标有好几种办法时，逐个列出来；只有一种办法就不用列，填上面的四格。' : '每个选项：玩家选什么 → 他的反应 → 当场结果 → 长远后果 → 去向。结果不同但后面流程一样的，去向都选「继续下一拍」；去向没想好就选「没想好」。'),
+    isDo && bb.options.length >= 2 ? h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '几种做法怎么算过', helpBtn('几种做法怎么算过')),
+      seg([['first', '试到灵的为止'], ['all', '全部试过才往下'], ['one', '试一个就往下'], ['undecided', '没想好']], bb.tryMode, val => mutate(() => { bb.tryMode = val; }))) : null,
     cards, h('div', { class: 'toolbar', style: 'margin-top:8px' }, btn('＋ ' + word, () => mutate(() => bb.options.push(C.newOption())), 'sm')));
 }
 function renderFlow(v) {
-  v.append(sec('流向', '第 7 步', h('p', { class: 'hint' }, '子阶段从上到下按顺序排。右边橙线＝选项跳过去；左边蓝线＝分支汇合回来；左边灰虚线＝前置条件（从条件出发，指向需要它的地方）。点子阶段进详情。')));
+  v.append(sec('流向', '第 7 步', h('p', { class: 'hint' }, '子阶段从上到下按顺序排。右边橙线＝选项跳过去；左边蓝线＝分支汇合回来；左边灰虚线＝「要先发生过」（从那件事指向需要它的地方）。点子阶段进详情。连线多了看不清，就看下面的「逐个看」。')));
   if (!doc.stages.length) { v.append(h('p', { class: 'hint' }, '还没有子阶段。')); return; }
   const NS = 'http://www.w3.org/2000/svg';
   const S = (t, a, txt) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (txt != null) e.textContent = txt; return e; };
   const n = doc.stages.length, RH = 64, TOP = 16;
   const avail = Math.max(340, ($('#view').clientWidth || 700) - 40);
-  const NX = Math.min(170, Math.round(avail * 0.28)), NW = Math.max(150, Math.min(360, avail - NX * 2)), W = NX * 2 + NW;
+  const NX = Math.max(96, Math.min(170, Math.round(avail * 0.28))), NW = Math.max(140, Math.min(360, avail - NX * 2)), W = NX * 2 + NW;
   const yOf = i => TOP + i * RH + RH / 2;
-  const edges = [];
+  const edges = []; const seen = new Set();
+  const push = e => { const k = [e.from, e.to, e.cls, e.label].join('|'); if (!seen.has(k)) { seen.add(k); edges.push(e); } };
   doc.stages.forEach((st, si) => {
     st.beats.forEach((bb, bi) => bb.options.forEach(o => {
-      if (o.goto.type === 'stage') { const t = findStage(o.goto.stageId); if (t) edges.push({ from: si, to: t.si, side: 1, cls: 'opt', label: `${si + 1}.${bi + 1}「${short(o.choice, 6)}」` }); }
-      else if (o.goto.type === 'end') edges.push({ from: si, to: null, side: 1, cls: 'end', label: `${si + 1}.${bi + 1}「${short(o.choice, 6)}」结束` });
+      if (o.goto.type === 'stage') { const t = findStage(o.goto.stageId); if (t) push({ from: si, to: t.si, side: 1, cls: 'opt', label: `${si + 1}.${bi + 1}「${short(o.choice, 6)}」` }); }
+      else if (o.goto.type === 'end') push({ from: si, to: null, side: 1, cls: 'end', label: `${si + 1}.${bi + 1}「${short(o.choice, 6)}」结束` });
     }));
-    if (st.mergeTo && st.mergeTo !== 'end') { const t = findStage(st.mergeTo); if (t) edges.push({ from: si, to: t.si, side: -1, cls: 'merge', label: '汇合' }); }
-    if (st.mergeTo === 'end') edges.push({ from: si, to: null, side: 1, cls: 'end', label: '这条线结束' });
-    const reqs = st.requires.concat(...st.beats.map(bb => bb.requires));
-    reqs.forEach(r => {
-      if (r.kind === 'fact') {
-        const fct = C.findFact(doc, r.id2); if (!fct) return;
-        const srcs = new Set(C.factUsage(doc, fct.id).setBy.filter(x => x.value !== r.negate).map(x => x.si));
-        srcs.forEach(fromSi => edges.push({ from: fromSi, to: si, side: -1, cls: 'req', label: `「${short(fct.name, 6)}」` }));
-        return;
-      }
-      let f = null; if (r.kind === 'stage') f = findStage(r.id2); else if (r.kind === 'beat' || r.kind === 'option') f = findBeat(r.id2);
-      if (f) edges.push({ from: f.si, to: si, side: -1, cls: 'req', label: '前置' });
-    });
+    if (st.mergeTo && st.mergeTo !== 'end') { const t = findStage(st.mergeTo); if (t) push({ from: si, to: t.si, side: -1, cls: 'merge', label: '汇合' }); }
+    if (st.mergeTo === 'end') push({ from: si, to: null, side: 1, cls: 'end', label: '这条线结束' });
+    /* 同一对子阶段之间的依赖只画一条线，细节看「逐个看」 */
+    st.needs.concat(...st.beats.map(bb => bb.needs)).forEach(nd => { const t = C.needTarget(doc, nd); if (t.ok && t.si !== null && t.si !== si) push({ from: t.si, to: si, side: -1, cls: 'req', label: '先发生' }); });
   });
-  const svg = S('svg', { width: W, height: TOP * 2 + n * RH, class: 'flowsvg' });
+  const svg = S('svg', { width: W + 90, height: TOP * 2 + n * RH, class: 'flowsvg', style: 'overflow:visible' });   // 右侧留出标签的地方
   const defs = S('defs', {});
   ['opt', 'merge', 'req'].forEach(c => { const m = S('marker', { id: 'ar-' + c, viewBox: '0 0 10 10', refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto-start-reverse' }); m.append(S('path', { d: 'M0,0 L10,5 L0,10 z', class: 'mk-' + c })); defs.append(m); });
   svg.append(defs);
   const count = { 1: 0, '-1': 0 };
   edges.forEach(e => {
-    const k = count[e.side]++ % 6; const bulge = 26 + k * 18;
+    const k = count[e.side]++ % 6; const bulge = 22 + k * 12;
     const x0 = e.side > 0 ? NX + NW : NX; const y1 = yOf(e.from);
     if (e.to === null) {
       svg.append(S('path', { d: `M${x0} ${y1 + 6} h${bulge}`, class: 'edge e-end' }));
@@ -1062,14 +1007,14 @@ function renderFlow(v) {
     const y2 = yOf(e.to) + (e.from === e.to ? 12 : 0); const yy1 = y1 + (e.from === e.to ? -12 : 0);
     const cx = x0 + e.side * bulge;
     svg.append(S('path', { d: `M${x0} ${yy1} C${cx} ${yy1} ${cx} ${y2} ${x0} ${y2}`, class: 'edge e-' + e.cls, 'marker-end': `url(#ar-${e.cls})` }));
-    const lx = e.side > 0 ? cx - bulge * 0.2 : cx + bulge * 0.2;
-    svg.append(S('text', { x: lx + (e.side > 0 ? 4 : -4), y: (yy1 + y2) / 2 + 4, class: 'elabel', 'text-anchor': e.side > 0 ? 'start' : 'end' }, e.label));
+    /* 标签放在弧线最外那一点旁边——那里没有别的线经过；同侧逐条错开 */
+    svg.append(S('text', { x: cx + e.side * 4, y: (yy1 + y2) / 2 + 4 + (k % 2) * 11, class: 'elabel', 'text-anchor': e.side > 0 ? 'start' : 'end' }, e.label));
   });
   doc.stages.forEach((st, si) => {
     const y = yOf(si);
     const g = S('g', { class: 'fnode' + (sel.type === 'stage' && sel.id === st.id ? ' on' : '') + (st.mode === 'branch' ? ' branch' : '') });
     g.append(S('rect', { x: NX, y: y - 20, width: NW, height: 40, rx: 8 }));
-    const badges = (st.mode === 'loop' ? ' ↻' : st.mode === 'parallel' ? ' ∥' : st.mode === 'branch' ? ' ⑂' : '') + (st.requires.length ? ' 🔒' : '');
+    const badges = (st.mode === 'loop' ? ' ↻' : st.mode === 'parallel' ? ' ∥' : st.mode === 'branch' ? ' ⑂' : '') + (st.needs.length ? ' 🔒' : '');
     g.append(S('text', { x: NX + 12, y: y + 5, class: 'fnode-t' }, `${si + 1}. ${short(st.title, Math.max(6, Math.floor(NW / 15)))}${badges}`));
     g.addEventListener('click', () => select({ type: 'stage', id: st.id }, { tab: 'detail' }));
     svg.append(g);
@@ -1078,34 +1023,16 @@ function renderFlow(v) {
   const lines = doc.stages.map((st, si) => {
     const src = C.optionSources(doc, st.id);
     const outs = []; st.beats.forEach((bb, bi) => bb.options.forEach(o => { if (o.goto.type !== 'next') outs.push(`拍 ${si + 1}.${bi + 1} 选「${short(o.choice, 10)}」→ ${C.gotoText(doc, o)}`); }));
-    const reqs = st.requires.map(r => C.requireText(doc, r));
+    const needs = st.needs.map(nd => C.needText(doc, nd)).concat(...st.beats.map((bb, bi) => bb.needs.map(nd => `拍 ${si + 1}.${bi + 1}：${C.needText(doc, nd)}`)));
     return h('div', { class: 'flowline', onclick: () => select({ type: 'stage', id: st.id }, { tab: 'detail' }) },
-      h('b', {}, `${si + 1}. ${st.title || '未命名'}`), h('span', { class: 'hint' }, '　' + (C.MODE_NAMES[st.mode] || '普通')),
+      h('b', {}, `${si + 1}. ${st.title || '未命名'}`), h('span', { class: 'hint' }, '　' + (C.MODE_NAMES[st.mode] || '普通') + (st.track === 'optional' ? ' · 可选' : '')),
+      st.mode === 'loop' ? h('div', { class: 'hint' }, '怎么出去：' + (st.loopExit || '（没写）')) : null,
       src.length ? h('div', { class: 'hint' }, '从：' + src.map(x => `拍 ${x.si + 1}.${x.bi + 1} 选「${short(x.o.choice, 10)}」`).join('；')) : null,
       outs.length ? h('div', { class: 'hint' }, '出：' + outs.join('；')) : null,
-      (st.mergeTo || st.mode === 'branch') ? h('div', { class: 'hint' }, '之后：' + C.mergeText(doc, st)) : null,
-      reqs.length ? h('div', { class: 'hint' }, '前置：' + reqs.join('；')) : null);
+      (st.mergeTo || st.mode === 'branch') ? h('div', { class: 'hint' }, '走完去哪：' + C.mergeText(doc, st)) : null,
+      needs.length ? h('div', { class: 'hint' }, '要先发生过：' + needs.join('；')) : null);
   });
   v.append(sec('逐个看', '', lines));
-  v.append(factsSec());
-}
-function factsSec() {
-  const rows = doc.facts.map((f, i) => {
-    const u = C.factUsage(doc, f.id);
-    const link = x => h('a', { class: 'lnk', onclick: () => select(x.where === 'stage' || x.where === 'loopExit' ? { type: 'stage', id: x.s.id } : { type: 'beat', id: x.b.id }, { tab: 'detail' }) }, C.usageText(x));
-    return h('div', { class: 'factrow', id: 'fact-' + f.id },
-      h('div', { class: 'mechhead' }, field(f, 'name', 'fact' + f.id, { ph: '状态名，如：撂过尸' }),
-        btn('删除', () => {
-          if (u.setBy.length || u.usedBy.length) { toast(`「${f.name}」还有 ${u.setBy.length + u.usedBy.length} 处在用，先去掉那些地方再删`, 'err'); return; }
-          mutate(() => doc.facts.splice(i, 1));
-        }, 'danger sm')),
-      h('div', { class: 'hint' }, '在哪设：', u.setBy.length ? u.setBy.map(x => [link(x), x.value ? '（成立）' : '（不再成立）']) : '（没有）'),
-      h('div', { class: 'hint' }, '在哪用：', u.usedBy.length ? u.usedBy.map(x => [link(x), x.negate ? '（要求不成立）' : '']) : '（没有）'));
-  });
-  return sec(`状态（${doc.facts.length}）`, '第 7 步',
-    h('p', { class: 'hint' }, '所有状态：在哪让它成立，在哪把它当条件。改名会同步到所有用到的地方。'),
-    doc.facts.length ? rows : h('p', { class: 'hint' }, '还没有状态。在选项的「选了之后」、拍的「这一拍发生后」、或者前置条件里新建。'),
-    h('div', { class: 'toolbar', style: 'margin-top:8px' }, btn('＋ 新建状态', async () => { const name = await askText('新建状态', '', '一件已经成立的事，用短语写'); if (name && name.trim()) mutate(() => doc.facts.push(C.newFact(name.trim()))); }, 'sm')));
 }
 
 /* ---------- 详情 ---------- */
@@ -1116,13 +1043,15 @@ function renderDetail(v) {
 }
 function designBlock(d, objId) {
   const oid = objId + '.design';
+  const helperFilled = filled(d.deleteTest) || filled(d.backward);
   return sec('设计目的', '第 2 步',
-    h('p', { class: 'hint' }, '切出这一段的时候就写，后面拆拍、标可砍、细化玩法都对照它。直接写不出来，用三个问法挤：① 删除测试 → ② 四格 → ③ 倒推，最后归纳成一两句。'),
-    frow('① 删除测试：把这一段整个删掉，后面哪里会坏？', field(d, 'deleteTest', oid, { multi: true }), '坏掉的那处就是它存在的理由'),
-    h('span', { class: 'flabel' }, '② 四格：玩家走完这一段，比进来前多了／少了什么（挑能填的填）', helpBtn('② 四格：玩家走完这一段，比进来前多了／少了什么（挑能填的填）')),
+    h('p', { class: 'hint' }, '切出这一段的时候就写，后面拆拍、标可砍、细化玩法都对照它。先填四格（挑能填的填），再归纳成一两句。'),
+    h('span', { class: 'flabel' }, '玩家走完这一段，比进来前多了／少了什么', helpBtn('玩家走完这一段，比进来前多了／少了什么')),
     h('div', { class: 'grid2' }, DESIGN_KEYS.map(([k, l, hint]) => frow(l, field(d, k, oid, { multi: true }), hint))),
-    frow('③ 倒推：后面的高潮需要玩家先具备什么？分到这一段的是', field(d, 'backward', oid, { multi: true })),
-    frow('设计目的（归纳）', field(d, 'summary', oid, { multi: true, cls: 'key' })));
+    frow('设计目的（归纳）', field(d, 'summary', oid, { multi: true, cls: 'key' })),
+    h('details', { class: 'ask', open: helperFilled }, h('summary', {}, '写不出来？换两个问法试试（可不填）'),
+      frow('删除测试', field(d, 'deleteTest', oid, { multi: true }), '把这一段整个删掉，后面哪里会坏？'),
+      frow('倒推', field(d, 'backward', oid, { multi: true }), '后面的高潮需要玩家先具备什么？分到这一段的是哪一样？')));
 }
 function detailTop(v) {
   const m = doc.meta;
@@ -1134,14 +1063,17 @@ function detailTop(v) {
     frow('关二狗的目的', field(m, 'goal', 'top', { multi: true }), '戏里的'),
     frow('体验目标', field(m, 'experience', 'top', { multi: true, cls: 'key' }), '要玩家整体体验什么')));
   if (!doc.stages.length) {
-    v.append(sec('下一步', '第 2 步', h('p', {}, '在左边大纲点「＋ 子阶段」，按「局面变了」来切。也可以先去「梗概」页贴原文，逐句拆成子阶段和拍。'),
+    v.append(sec('下一步', '第 2 步', h('p', {}, '在左边大纲点「＋ 子阶段」，按「局面变了」来切。也可以先去「梗概」页贴原文，逐句切成子阶段。'),
       h('div', { class: 'toolbar' }, btn('去梗概页', () => switchTab('synopsis')), btn('看指南', () => switchTab('guide')))));
     return;
   }
   v.append(sec('分段表一览', '第 2 步', h('p', { class: 'hint' }, '每个子阶段的设计目的，对着上面的体验目标看：每一段都在为它出力吗？点一行跳过去。'),
     doc.stages.map((s, si) => h('div', { class: 'refline', onclick: () => select({ type: 'stage', id: s.id }) },
-      h('b', {}, `${si + 1}. ${s.title || '未命名'}`), s.track === 'optional' ? h('span', { class: 'chip', style: 'margin-left:6px' }, '可选') : null, '：',
+      h('b', {}, `${si + 1}. ${s.title || '未命名'}`), s.track === 'optional' ? h('span', { class: 'chip', style: 'margin-left:6px' }, '可选') : null, s.ready ? h('span', { class: 'chip', style: 'margin-left:6px' }, '拆完了') : null, '：',
       s.design.summary || h('span', { class: 'warnline', style: 'display:inline;margin:0' }, '设计目的还没写')))));
+  const open = C.openItems(doc);
+  v.append(sec(`未定清单（${open.length}）`, '第 9 步', h('p', { class: 'hint' }, '你标了「没想好」和写了卡点的地方，全在这里。导出给别人时它排在最前面——照着做的人读到这些会回来问你，不会自己猜。'),
+    open.length ? open.map(x => h('div', { class: 'refline', onclick: () => select(x.target, { tab: 'detail' }) }, x.text)) : h('p', { class: 'hint' }, '（没有）')));
 }
 function detailStage(v, s, si) {
   const oid = s.id;
@@ -1161,24 +1093,34 @@ function detailStage(v, s, si) {
     frow('关二狗的目的', field(s, 'goal', oid, { multi: true }), '戏里的'),
     h('div', { class: 'grid2' }, frow('开始时局面', field(s, 'start', oid, { multi: true })), frow('结束时局面', field(s, 'end', oid, { multi: true }))),
     h('div', { class: 'warnline', dataset: { inline: 'same:' + s.id } }),
-    h('div', { class: 'grid2' }, frow('登场角色与物件', field(s, 'cast', oid, { multi: true })), frow('伏线', field(s, 'foreshadow', oid, { multi: true }), '埋了什么、收了什么')),
+    h('div', { class: 'grid2' }, frow('登场角色与物件', field(s, 'cast', oid, { multi: true })), frow('伏线', field(s, 'foreshadow', oid, { multi: true }), '埋了什么、收了什么；别的章节的也写这里')),
     h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '结构', helpBtn('结构')), seg([['normal', '普通'], ['loop', '循环'], ['parallel', '并行'], ['branch', '分支']], s.mode, val => mutate(() => { s.mode = val || 'normal'; }))),
-    s.mode === 'parallel' ? frow('并行组', field(s, 'parallelGroup', oid), '同组的子阶段不分先后，填同一个组名') : null));
+    s.mode === 'parallel' ? frow('并行组', field(s, 'parallelGroup', oid), '同组的子阶段不分先后，填同一个组名') : null,
+    s.mode === 'loop' ? h('div', { class: 'hint', style: 'margin:-4px 0 10px' }, '循环怎么出去，写在下面「接线」里。') : null,
+    frow('卡点', field(s, 'stuck', oid, { multi: true }), '这一段里你还没想好的事，如实写在这里')));
   v.append(designBlock(s.design, s.id));
   v.append(sec(`这一段的拍（${s.beats.length}）`, '第 3 · 4 步',
     h('p', { class: 'hint' }, '一拍＝局面变一次：发生了什么 → 关二狗怎么反应 → 结果。这一步不想玩法。拍拆完，对照设计目的，跟目的无关的拍在行尾勾「可砍」。'),
     h('div', { class: 'purposebox' }, h('div', { class: 'flabel', style: 'margin-bottom:2px' }, '对照：这一段的设计目的'),
-      filled(s.design.summary) ? h('div', { class: 'purpose' }, syncSpan(`${s.id}.design:summary`, s.design.summary)) : h('div', { class: 'warnline', style: 'margin:0' }, '设计目的还没写——先写上面的设计目的，才判断得了哪一拍可砍。')),
+      h('div', { class: 'purpose' }, syncSpan(`${s.id}.design:summary`, s.design.summary, '（还没写——先写上面的设计目的，才判断得了哪一拍可砍）'))),
     h('div', { class: 'blist' }, s.beats.map((b, bi) => h('div', { class: 'brow', onclick: () => select({ type: 'beat', id: b.id }) },
       h('span', { class: 'num' }, `${si + 1}.${bi + 1}`), kindBadge(b), h('span', { class: 'ell' }, `${short(b.text, 30)} → ${short(b.reaction, 16)} → ${short(b.result, 16)}`), b.map ? h('span', { class: 'chip' }, b.map) : null,
       h('label', { class: 'cutbox', title: '跟这一段的设计目的无关，删了不影响', onclick: e => e.stopPropagation() },
         h('input', { type: 'checkbox', checked: b.cuttable, onchange: e => mutate(() => { b.cuttable = e.target.checked; }) }), '可砍')))),
-    h('div', { class: 'toolbar', style: 'margin-top:8px' }, btn('＋ 在末尾加一拍', () => { let id; mutate(() => { const nb = newBeat(); s.collapsed = false; s.beats.push(nb); id = nb.id; }); focusOutline(id); }), helpBtn('可砍'))));
-  v.append(sec('泳道判定', '第 4 步', h('p', { class: 'hint' }, '勾上＝这个系统不属于这一段，检查时不再报「整段空着」。'),
-    doc.lanes.map(l => h('label', { class: 'checkline' },
-      h('input', { type: 'checkbox', checked: s.laneExclude.includes(l.id), onchange: e => mutate(() => { s.laneExclude = e.target.checked ? [...s.laneExclude, l.id] : s.laneExclude.filter(x => x !== l.id); }) }),
-      `「${l.name}」不属于这一段`))));
+    h('div', { class: 'toolbar', style: 'margin-top:8px' }, btn('＋ 在末尾加一拍', () => { let id; mutate(() => { const nb = newBeat(); s.collapsed = false; s.beats.push(nb); id = nb.id; sel = { type: 'beat', id }; }); focusKey(`f:${id}:text`); }), helpBtn('可砍'))));
+  v.append(sec('泳道判定', '第 4 步', h('p', { class: 'hint' }, '每条泳道在这一段是哪种情况。标了「不属于」或「没想好」的，检查不再报「整段空着」；「没想好」的会进未定清单。'),
+    doc.lanes.map(l => {
+      const cur = s.laneExclude.includes(l.id) ? 'no' : s.laneUndecided.includes(l.id) ? 'undecided' : 'yes';
+      return h('div', { class: 'laneedit' }, h('span', { class: 'flabel', style: 'margin:0' }, l.name),
+        seg([['yes', '要填'], ['no', '不属于这一段'], ['undecided', '属于，但没想好']], cur, val => mutate(() => {
+          const v2 = val || 'yes';
+          s.laneExclude = s.laneExclude.filter(x => x !== l.id); s.laneUndecided = s.laneUndecided.filter(x => x !== l.id);
+          if (v2 === 'no') s.laneExclude.push(l.id); if (v2 === 'undecided') s.laneUndecided.push(l.id);
+        })));
+    })));
   v.append(stageNetworkSec(s, si));
+  v.append(sec('交接', '第 9 步',
+    h('label', { class: 'checkline' }, h('input', { type: 'checkbox', checked: s.ready, onchange: e => mutate(() => { s.ready = e.target.checked; }) }), '这一段拆完了，可以交出去照着做', helpBtn('这一段拆完了'))));
 }
 function detailBeat(v, f) {
   const { b, s, si, bi } = f; const oid = b.id;
@@ -1202,43 +1144,48 @@ function detailBeat(v, f) {
       frow('发生了什么', field(b, 'text', oid, { multi: true })), h('span', { class: 'arrow' }, '→'),
       frow('关二狗怎么反应', field(b, 'reaction', oid, { multi: true })), h('span', { class: 'arrow' }, '→'),
       frow('结果', field(b, 'result', oid, { multi: true }))),
-    h('div', { class: 'grid2' }, frow('地图', mapIn, '场所，只是标签'), frow('在场者', field(b, 'who', oid))),
+    h('div', { class: 'grid2' }, frow('地图', mapIn, '场所，只是标签'), frow('在场者', field(b, 'who', oid), '人、尸、鬼；物件不算')),
     frow('原文摘句', field(b, 'source', oid, { multi: true, cls: 'quote' }), '梗概里的原句'),
     b.cuttable ? h('div', { class: 'hint' }, '这一拍标了可砍（在子阶段页对照设计目的勾的）。') : null));
   v.append(sec('泳道', '第 4 步', h('p', { class: 'hint' }, '这一拍在各条泳道上的值。去「泳道」页整张填更快。'),
     doc.lanes.map(l => h('div', { class: 'laneedit' }, h('span', { class: 'flabel', style: 'margin:0' }, l.name, helpBtn('泳道值:' + (l.id === 'emotion' ? 'emotion' : l.kind))), laneEditor(b, l)))));
-  v.append(sec('看／做／选', '第 5 步', h('p', { class: 'hint' }, '判据：这一拍的变化，能不能由玩家的动作触发？能就做／选，不能才看。' + (isPhone() ? '再点一次取消。' : '大纲里选中这一拍按 Alt+1～3 更快。再点一次取消。')),
-    seg(KINDS, b.kind, val => mutate(() => { b.kind = val; }))));
-  const stuckRow = () => [frow('卡点', field(b, 'stuck', oid, { multi: true }), '填不出就写卡在哪——判决切片要验证的点'),
+  v.append(sec('看／做／选', '第 5 步',
+    h('p', { class: 'hint' }, '这一拍的变化能不能由玩家的动作触发？不能＝看。能，且有一个目标、玩家想办法达成＝做（办法可以有好几种）。能，且没有对错、选哪边都要付代价＝选。真没想好就标「没想好」。'),
+    seg(KINDS, b.kind, val => mutate(() => { b.kind = val; })),
+    b.kind === C.UNDECIDED ? h('p', { class: 'hint', style: 'margin:8px 0 0' }, '已进未定清单。把拿不准的地方写进下面的卡点，想好了再回来标。') : null));
+  const stuckRow = hint => [frow('卡点', field(b, 'stuck', oid, { multi: true }), hint),
     h('details', { class: 'ask' }, h('summary', {}, '卡住时问自己三个问题'),
-      h('ol', {}, h('li', {}, '这一刻关二狗想干嘛？玩家想干嘛？一致吗？不一致的地方往往就是戏。'), h('li', {}, '不靠提示文字，玩家怎么知道该做这个？'), h('li', {}, '做错了会怎样？什么都不会发生，玩法就不成立。')))];
+      h('ol', {}, h('li', {}, '这一刻关二狗想干嘛？玩家想干嘛？一致吗？不一致的地方往往就是戏。'), h('li', {}, '不靠提示文字，玩家怎么知道该做这个？'), h('li', {}, '做错了、或者不做，会怎样？')))];
   if (b.kind === '做') {
+    const showCells = !C.realOptions(b).length || Object.values(b.cells).some(filled);
     v.append(sec('细化 · 做', '第 6 步',
       h('span', { class: 'flabel' }, '公式：玩家动词 ＋ 对象 ＋ 阻力', helpBtn('公式：玩家动词 ＋ 对象 ＋ 阻力')),
       h('div', { class: 'formula frow' }, field(b, 'formula.verb', oid, { ph: '动词：走／破解／捡…' }), '＋', field(b, 'formula.object', oid, { ph: '对象' }), '＋', field(b, 'formula.resistance', oid, { ph: '阻力' })),
-      h('div', { class: 'warnrow', dataset: { inline: 'res:' + b.id } }, '写不出阻力，这一拍可能不是玩法——', btn('改回「看」', () => mutate(() => { b.kind = '看'; }), 'sm')),
-      b.options.length
-        ? h('p', { class: 'hint' }, '下面已经列了做法表，四格不用再填。')
-        : h('div', { class: 'grid2' },
-          frow('玩家看到什么', field(b, 'cells.see', oid, { multi: true })),
-          frow('玩家做什么', field(b, 'cells.act', oid, { multi: true })),
-          frow('游戏怎么回应', field(b, 'cells.respond', oid, { multi: true })),
-          frow('做错了会怎样', field(b, 'cells.wrong', oid, { multi: true }), '什么都不会发生＝玩法不成立')),
-      ...stuckRow()));
+      h('div', { class: 'warnrow', hidden: filled(b.formula.resistance), dataset: { inline: 'res:' + b.id } }, '写不出阻力，这一拍可能不是玩法——', btn('改回「看」', () => mutate(() => { b.kind = '看'; }), 'sm')),
+      showCells ? h('div', { class: 'grid2' },
+        frow('玩家看到什么', field(b, 'cells.see', oid, { multi: true })),
+        frow('玩家做什么', field(b, 'cells.act', oid, { multi: true })),
+        frow('游戏怎么回应', field(b, 'cells.respond', oid, { multi: true })),
+        frow('做错了会怎样', field(b, 'cells.wrong', oid, { multi: true }), '或者不做会怎样；走不错的拍，写代价'))
+        : h('p', { class: 'hint' }, '下面列了做法表，四格不用再填。'),
+      ...stuckRow('填不出就写卡在哪——判决切片要验证的点')));
     v.append(optionsSec(b));
   }
   if (b.kind === '选') {
-    v.append(sec('细化 · 选', '第 6 步', frow('两难', field(b, 'dilemma', oid, { multi: true, cls: 'key' }), '选每一边，各要失去什么'), ...stuckRow()));
+    v.append(sec('细化 · 选', '第 6 步', frow('两难', field(b, 'dilemma', oid, { multi: true, cls: 'key' }), '选每一边，各要失去什么'), ...stuckRow('填不出就写卡在哪')));
     v.append(optionsSec(b));
   }
+  if (b.kind === C.UNDECIDED || b.kind === '看' || !b.kind) {
+    if (b.kind === C.UNDECIDED || filled(b.stuck)) v.append(sec('卡点', '第 6 步', ...stuckRow('这一拍你拿不准的地方')));
+  }
   if (isAct(b)) {
-    const nameIn = h('input', { class: 'inp sm', placeholder: '新玩法名' });
-    v.append(sec('归入玩法', '第 8 步', h('p', { class: 'hint' }, '这一拍在哪个玩法里担任哪一格：起（教）承（用）转（变）合（极）。玩法从哪来，看「玩法」页的按动词分组。'),
+    const nameIn = h('input', { class: 'inp sm', placeholder: '新玩法名', 'aria-label': '新玩法名' });
+    v.append(sec('归入玩法', '第 8 步', h('p', { class: 'hint' }, '这一拍玩的是哪个玩法，在里面担任哪一格：起（教）承（用）转（变）合（极）。已经想好的玩法直接在这里新建。'),
       doc.mechanics.length ? doc.mechanics.map(m => h('div', { class: 'mechrow' }, h('span', { class: 'name' }, m.name || '未命名玩法'),
         h('div', { class: 'seg' }, ARC.map(([k, t]) => h('button', { class: m.arc[k].includes(b.id) ? 'on' : '', title: ARC.find(a => a[0] === k)[2], onclick: () => mutate(() => { m.arc[k] = m.arc[k].includes(b.id) ? m.arc[k].filter(x => x !== b.id) : [...m.arc[k], b.id]; }) }, t))))) : h('p', { class: 'hint' }, '还没有玩法。'),
       h('div', { class: 'toolbar', style: 'margin-top:8px' }, nameIn, btn('新建玩法', () => { const n = nameIn.value.trim(); if (!n) { nameIn.focus(); return; } mutate(() => { const m = newMechanic(); m.name = n; doc.mechanics.push(m); }); }, 'sm'))));
   }
-  v.append(beatRequiresSec(b));
+  v.append(beatNeedsSec(b));
 }
 function laneEditor(b, l) {
   const cur = b.lanes[l.id];
@@ -1256,14 +1203,14 @@ function renderTable(v) {
   const setF = (k, val) => { tableFilter[k] = val; renderView(); };
   v.append(sec('拍表', '第 5 · 6 步', h('p', { class: 'hint' }, '筛出「做／选」，就只剩要设计的那几拍。点一行进详情。'),
     h('div', { class: 'toolbar' },
-      '类型', h('select', { onchange: e => setF('kind', e.target.value) }, opt('all', '全部', f.kind), opt('act', '做＋选', f.kind), ...['看', '做', '选'].map(k => opt(k, k, f.kind)), opt('none', '未标', f.kind)),
+      '类型', h('select', { onchange: e => setF('kind', e.target.value) }, opt('all', '全部', f.kind), opt('act', '做＋选', f.kind), ...KINDS.map(([k]) => opt(k, k === C.UNDECIDED ? '没想好' : k, f.kind)), opt('none', '未标', f.kind)),
       '地图', h('select', { onchange: e => setF('map', e.target.value) }, opt('all', '全部', f.map), opt('', '（未标）', f.map), maps.map(m => opt(m, m, f.map))),
       '子阶段', h('select', { onchange: e => setF('stage', e.target.value) }, opt('all', '全部', f.stage), doc.stages.map((s, si) => opt(s.id, `${si + 1}. ${short(s.title, 14)}`, f.stage))),
       h('label', { class: 'checkline', style: 'margin:0' }, h('input', { type: 'checkbox', checked: f.bad, onchange: e => setF('bad', e.target.checked) }), '只看待处理的'))));
   const rows = allBeats().filter(x => {
     if (f.kind === 'act' && !isAct(x.b)) return false;
     if (f.kind === 'none' && x.b.kind) return false;
-    if (['看', '做', '选'].includes(f.kind) && x.b.kind !== f.kind) return false;
+    if (KINDS.some(([k]) => k === f.kind) && x.b.kind !== f.kind) return false;
     if (f.map !== 'all' && x.b.map.trim() !== f.map) return false;
     if (f.stage !== 'all' && x.s.id !== f.stage) return false;
     if (f.bad && !bad.has(x.b.id)) return false;
@@ -1274,7 +1221,7 @@ function renderTable(v) {
     h('thead', {}, h('tr', {}, ['#', '子阶段', '发生 → 反应 → 结果', '类型', '地图', '公式／两难', '细化', '卡点', '可砍', ''].map(t => h('th', {}, t)))),
     h('tbody', {}, rows.map(x => {
       const b = x.b;
-      const kindSel = h('select', { onclick: e => e.stopPropagation(), onchange: e => mutate(() => { b.kind = e.target.value; }) }, opt('', '?', b.kind), ['看', '做', '选'].map(k => opt(k, k, b.kind)));
+      const kindSel = h('select', { onclick: e => e.stopPropagation(), onchange: e => mutate(() => { b.kind = e.target.value; }) }, opt('', '?', b.kind), KINDS.map(([k]) => opt(k, k === C.UNDECIDED ? '没想好' : k, b.kind)));
       return h('tr', { class: 'click' + (sel.type === 'beat' && sel.id === b.id ? ' selrow' : ''), onclick: () => select({ type: 'beat', id: b.id }, { tab: 'detail' }) },
         h('td', {}, `${x.si + 1}.${x.bi + 1}`),
         h('td', {}, short(x.s.title, 10)),
@@ -1391,7 +1338,7 @@ function beatSelect(onPick) {
 }
 function renderMech(v) {
   v.append(sec('玩法', '第 8 步',
-    h('p', { class: 'hint' }, '玩法从做／选的拍里归纳：同一个动词反复出现，就是一个玩法。每个玩法走一遍起承转合：教 → 用 → 变 → 极；哪一格空了（红框），就去对应子阶段补拍。判决句写清楚——以后试玩就拿它验收。'),
+    h('p', { class: 'hint' }, '玩法从做／选的拍里归纳：同一个动词反复出现，就是一个玩法。每个玩法走一遍起承转合：教 → 用 → 变 → 极；哪一格空了（红框）：补拍，或者在备注里写明它在别的章节／还没想好。判决句写清楚——以后试玩就拿它验收。'),
     h('div', { class: 'toolbar' }, btn('＋ 新建玩法', () => { let id; mutate(() => { const m = newMechanic(); doc.mechanics.push(m); id = m.id; }); focusKey(`f:${id}:name`); }, 'primary'))));
   const groups = C.verbGroups(doc).map(g => ({ verb: g.verb, beats: g.beats.filter(x => !mechOfBeat(x.b.id).length) })).filter(g => g.beats.length);
   if (groups.length) v.append(sec(`还没归入玩法的做／选拍 · 按动词分组（${groups.reduce((n, g) => n + g.beats.length, 0)} 拍）`, '',
@@ -1419,25 +1366,27 @@ function renderMech(v) {
 /* ---------- 地图 ---------- */
 function renderMaps(v) {
   const groups = mapGroups(); const nomap = allBeats().filter(x => !filled(x.b.map));
-  v.append(sec('地图汇总', '第 9 步', h('p', { class: 'hint' }, '交接用：按地图把拍反过来汇总，给做场景的人看每次来时是什么样。「能做什么」从这张图上的做／选拍自动列出。地图名改完按 Enter，所有拍一起改。'),
+  v.append(sec('地图汇总', '第 9 步', h('p', { class: 'hint' }, '交接用：每张图在哪几段出现、那时的地点·时段·氛围、谁在场、能做什么，都是从你前面写的东西自动列出来的，不用再抄。只有「光与场景备注」可以补一句。地图名改完按 Enter，所有拍一起改。'),
     nomap.length ? h('div', { class: 'warnbox' }, `${nomap.length} 拍还没标地图：`, nomap.map(x => h('a', { class: 'lnk', title: x.b.text, onclick: () => select({ type: 'beat', id: x.b.id }, { tab: 'detail' }) }, `${x.si + 1}.${x.bi + 1}`))) : null,
     !groups.length ? h('p', { class: 'hint' }, '还没有拍标了地图。') : null));
   groups.forEach(g => {
-    const nameIn = h('input', { class: 'inp big', value: g.map, style: 'max-width:320px' });
+    const nameIn = h('input', { class: 'inp big', value: g.map, style: 'max-width:320px', 'aria-label': '地图名' });
     nameIn.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) { const nv = nameIn.value.trim(); if (nv && nv !== g.map) mutate(() => renameMap(g.map, nv)); } });
     v.append(h('div', { class: 'sec' },
       h('div', { class: 'mechhead' }, nameIn, h('span', { class: 'hint' }, `出现在 ${g.visits.length} 个子阶段`)),
       h('div', { style: 'overflow-x:auto' }, h('table', { class: 'tbl' },
-        h('thead', {}, h('tr', {}, ['子阶段', '出现的拍', '时段', '光', '谁在场', '能做什么（自动）'].map(t => h('th', {}, t, helpBtn('地图·' + t))))),
+        h('thead', {}, h('tr', {}, ['子阶段', '地点·时段·氛围', '拍', '谁在场', '能做什么', '光与场景备注'].map(t => h('th', {}, t, helpBtn('地图·' + t))))),
         h('tbody', {}, g.visits.map(vs => {
           const key = visitKey(g.map, vs.stage.id);
-          const mv = doc.mapVisits[key] || (doc.mapVisits[key] = { time: '', light: '', who: '' });
-          const oid = 'mv' + hashKey(key);
+          const mv = doc.mapVisits[key] || (doc.mapVisits[key] = { light: '' });
+          const light = field(mv, 'light', 'mv' + hashKey(key), { multi: true, rows: 1, cls: 'cellta' }); light.setAttribute('aria-label', '光与场景备注');
           return h('tr', {},
-            h('td', { style: 'white-space:nowrap' }, h('a', { class: 'lnk', onclick: () => select({ type: 'stage', id: vs.stage.id }, { tab: 'detail' }) }, `${vs.si + 1}. ${short(vs.stage.title, 12)}`), filled(vs.stage.setting) ? h('div', { class: 'hint', style: 'white-space:normal;max-width:160px' }, vs.stage.setting) : null),
+            h('td', { style: 'white-space:nowrap' }, h('a', { class: 'lnk', onclick: () => select({ type: 'stage', id: vs.stage.id }, { tab: 'detail' }) }, `${vs.si + 1}. ${short(vs.stage.title, 12)}`)),
+            h('td', { style: 'min-width:140px' }, vs.stage.setting || h('span', { class: 'hint' }, '（子阶段里没写）')),
             h('td', {}, vs.beats.map(({ b, bi }) => h('a', { class: 'lnk', title: b.text, onclick: () => select({ type: 'beat', id: b.id }, { tab: 'detail' }) }, `${vs.si + 1}.${bi + 1}`))),
-            ['time', 'light', 'who'].map(k => h('td', { style: 'min-width:120px' }, field(mv, k, oid, { multi: true, rows: 1, cls: 'cellta' }))),
-            h('td', { style: 'min-width:140px' }, C.mapCanText(vs) || h('span', { class: 'hint' }, '（这张图上这一段没有做／选拍）')));
+            h('td', { style: 'min-width:100px' }, C.mapWhoText(vs) || h('span', { class: 'hint' }, '（只有关二狗）')),
+            h('td', { style: 'min-width:140px' }, C.mapCanText(vs) || h('span', { class: 'hint' }, '（没有做／选拍）')),
+            h('td', { style: 'min-width:140px' }, light));
         }))))));
   });
 }
@@ -1447,7 +1396,6 @@ function jumpTo(i) {
   const t = i.target;
   if (t.type === 'mech') { tab = 'mech'; renderTabs(); renderView(); const el = document.getElementById('mech-' + t.id); if (el) el.scrollIntoView({ block: 'start' }); return; }
   if (t.type === 'map') { tab = 'maps'; renderTabs(); renderView(); return; }
-  if (t.type === 'fact') { tab = 'flow'; renderTabs(); renderView(); const el = document.getElementById('fact-' + t.id); if (el) el.scrollIntoView({ block: 'center' }); return; }
   select(t.type === 'top' ? { type: 'top' } : t, { tab: i.tab === 'lanes' ? 'lanes' : 'detail' });
   renderTabs(); renderView();
 }
@@ -1489,16 +1437,21 @@ function renderSynopsis(v) {
       listBox.append(h('div', { class: 'sent' + (used.length ? ' used' : '') },
         h('div', { class: 't' }, s, used.length ? h('span', { class: 'chip', style: 'margin-left:6px' }, '已用 ' + used.map(x => `${x.si + 1}.${x.bi + 1}`).join(' ')) : null),
         h('div', { class: 'acts' },
-          btn('→ 新拍', () => { const id = addBeatNearSel(s, s); select({ type: 'beat', id }); }, 'sm', '接在选中的拍后面；选中子阶段则放到末尾'),
-          btn('→ 新子阶段', () => { let id; const cs = currentStageId(); mutate(() => { const ns = newStage(); ns.title = s; const f = cs ? findStage(cs) : null; doc.stages.splice(f ? f.si + 1 : doc.stages.length, 0, ns); id = ns.id; }); select({ type: 'stage', id }); }, 'sm'),
+          btn('从这句起新开一段', async () => {
+            const name = await askText('这一段叫什么', '', `从这句开始：${short(s, 40)}`);
+            if (name == null) return;
+            const cs = currentStageId();
+            mutate(() => { const ns = newStage(); ns.title = name.trim(); const f = cs ? findStage(cs) : null; doc.stages.splice(f ? f.si + 1 : doc.stages.length, 0, ns); sel = { type: 'stage', id: ns.id }; });
+          }, 'sm', '第 2 步：按「局面变了」切子阶段'),
+          btn('→ 新拍', () => { addBeatNearSel(s, s); }, 'sm', '第 3 步：接在选中的拍后面；选中子阶段则放到末尾'),
           selBeat ? btn('并入选中拍', () => mutate(() => { selBeat.b.source = filled(selBeat.b.source) ? selBeat.b.source + s : s; }), 'sm', `追加到拍 ${selBeat.si + 1}.${selBeat.bi + 1} 的原文摘句`) : null)));
     });
   };
   const ta = field(doc, 'synopsis', 'doc', { multi: true, rows: 8, ph: '把这一段的梗概原文贴进来', onInput: () => { clearTimeout(timer); timer = setTimeout(rebuild, 400); } });
   const selInfo = sel.type === 'beat' ? (() => { const f = findBeat(sel.id); return `当前选中：拍 ${f.si + 1}.${f.bi + 1}（新拍会接在它后面）`; })()
-    : sel.type === 'stage' ? (() => { const f = findStage(sel.id); return `当前选中：子阶段 ${f.si + 1}（新拍放到它末尾）`; })() : '当前没选中子阶段（新拍放到最后一个子阶段末尾）';
-  v.append(sec('梗概原文', '起点', h('p', { class: 'hint' }, '贴原文 → 逐句决定：切成子阶段、变成拍、或并入某一拍的原文摘句。灰掉的句子是已经用过的。'), ta));
-  v.append(sec('逐句拆', '第 2 · 3 步', h('p', { class: 'hint' }, selInfo), listBox));
+    : sel.type === 'stage' ? (() => { const f = findStage(sel.id); return `当前选中：子阶段 ${f.si + 1}「${short(f.s.title, 12)}」（新拍放到它末尾，新的一段接在它后面）`; })() : '当前没选中子阶段';
+  v.append(sec('梗概原文', '起点', h('p', { class: 'hint' }, '贴原文，下面会按句拆开。'), ta));
+  v.append(sec('逐句拆', '第 2 · 3 步', h('p', { class: 'hint' }, '先做第 2 步：只用「从这句起新开一段」把整段切成几个子阶段，回详情把每一段填完。等要拆拍了（第 3 步）再回来用「→ 新拍」。灰掉的句子是已经用过的。'), h('p', { class: 'hint' }, selInfo), listBox));
   rebuild();
 }
 
@@ -1533,7 +1486,7 @@ function renderGuide(v) {
   const cnt = {}; issues.forEach(i => { if (i.level !== 'info') cnt[i.step] = (cnt[i.step] || 0) + 1; });
   const nb = allBeats().length;
   const hasData = { 1: true, 2: doc.stages.length > 0, 3: nb > 0, 4: nb > 0, 5: nb > 0, 6: allBeats().some(x => isAct(x.b)), 7: nb > 0, 8: doc.mechanics.length > 0, 9: allBeats().some(x => filled(x.b.map)) };
-  v.append(sec('两条总规矩', '', h('ol', { style: 'margin:0;padding-left:20px' }, C.GUIDE_RULES.map(r => h('li', {}, r)))));
+  v.append(sec('总规矩', '', h('ol', { style: 'margin:0;padding-left:20px' }, C.GUIDE_RULES.map(r => h('li', {}, r)))));
   v.append(sec('步骤', '', h('p', { class: 'hint' }, '每一步只用到前面几步已经写好的东西。'), C.GUIDE_STEPS.map(g => {
     const done = hasData[g.n] && !cnt[g.n];
     return h('div', { class: 'stepline' }, h('div', { class: 'stepno' + (done ? ' done' : '') }, done ? '✓' : String(g.n)),
@@ -1542,7 +1495,7 @@ function renderGuide(v) {
       GUIDE_GO[g.n] ? btn('去做', GUIDE_GO[g.n], 'sm') : null);
   })));
   v.append(sec('卡住时问三个问题', '', h('ol', { style: 'margin:0;padding-left:20px' },
-    h('li', {}, '这一刻关二狗想干嘛？玩家想干嘛？一致吗？'), h('li', {}, '不靠提示文字，玩家怎么知道该做这个？'), h('li', {}, '做错了会怎样？什么都不会发生＝玩法不成立。'))));
+    h('li', {}, '这一刻关二狗想干嘛？玩家想干嘛？一致吗？'), h('li', {}, '不靠提示文字，玩家怎么知道该做这个？'), h('li', {}, '做错了会怎样？没有任何后果、也没有代价，这一拍多半是「看」；走不错但要付代价（耗火把、耗时间）的，照实写代价。'))));
   v.append(sec('倒推技巧', '', h('p', { style: 'margin:0' }, '先定高潮（比如坠潭、三把火一把一把熄、香粉味浮起来），再往回问：要让这一刻最狠，玩家前面得先学会什么、拥有过什么、失去过什么？答案分派给前面的子阶段。')));
   v.append(sec('方法从哪来', '', h('p', { class: 'hint' }, '这套步骤不是凭空编的，每一步对应下面这些公开做法：'),
     h('ul', { style: 'margin:0;padding-left:20px' }, C.METHOD_SOURCES.map(x => h('li', {}, h('a', { class: 'lnk', href: x.url, target: '_blank', rel: 'noopener' }, x.name))))));

@@ -223,7 +223,7 @@ function refOf(doc, target) {
 }
 function resolveRef(doc, raw) {
   const r = String(raw).trim(); let m;
-  const named = { top: 'top', 顶层: 'top', 梗概: 'synopsis', synopsis: 'synopsis', 停车场: 'parking', parking: 'parking', 泳道: 'lanes', lanes: 'lanes', 流向: 'flow', flow: 'flow', 状态: 'facts', facts: 'facts', 全文: 'all', all: 'all', 玩法: 'mechs', mechanics: 'mechs', 地图: 'maps', maps: 'maps' };
+  const named = { top: 'top', 顶层: 'top', 梗概: 'synopsis', synopsis: 'synopsis', 停车场: 'parking', parking: 'parking', 泳道: 'lanes', lanes: 'lanes', 流向: 'flow', flow: 'flow', 未定: 'open', 未定清单: 'open', open: 'open', 全文: 'all', all: 'all', 玩法: 'mechs', mechanics: 'mechs', 地图: 'maps', maps: 'maps' };
   if (named[r]) return { type: named[r] };
   if ((m = r.match(/^(?:子阶段)?\s*(\d+)$/))) { const s = doc.stages[+m[1] - 1]; if (!s) throw notFound(`没有子阶段 ${m[1]}（共 ${doc.stages.length} 个）`); return { type: 'stage', id: s.id }; }
   if ((m = r.match(/^(?:拍)?\s*(\d+)\.(\d+)$/))) { const s = doc.stages[+m[1] - 1]; const b = s && s.beats[+m[2] - 1]; if (!b) throw notFound(`没有拍 ${m[1]}.${m[2]}`); return { type: 'beat', id: b.id }; }
@@ -251,11 +251,11 @@ function resolveRef(doc, raw) {
 }
 
 /* ================= 渲染片段 ================= */
-function kindCounts(beats) { const c = { 看: 0, 做: 0, 选: 0, 未标: 0 }; beats.forEach(b => { c[c.hasOwnProperty(b.kind) ? b.kind : '未标']++; }); return c; }
-const kindText = c => `看${c.看}／做${c.做}／选${c.选}／未标${c.未标}`;
+function kindCounts(beats) { const c = { 看: 0, 做: 0, 选: 0, 未定: 0, 未标: 0 }; beats.forEach(b => { c[c.hasOwnProperty(b.kind) ? b.kind : '未标']++; }); return c; }
+const kindText = c => `看${c.看}／做${c.做}／选${c.选}／没想好${c.未定}／未标${c.未标}`;
 function beatLine(x) {
   const b = x.b;
-  return `${x.si + 1}.${x.bi + 1} [${b.kind || '?'}] ${oneLine(b.text) || '（未写）'} → ${oneLine(b.reaction) || '…'} → ${oneLine(b.result) || '…'}`
+  return `${x.si + 1}.${x.bi + 1} [${b.kind === C.UNDECIDED ? '没想好' : b.kind || '?'}] ${oneLine(b.text) || '（未写）'} → ${oneLine(b.reaction) || '…'} → ${oneLine(b.result) || '…'}`
     + (C.filled(b.map) ? `　@${b.map.trim()}` : '') + (b.cuttable ? '　〔可砍〕' : '');
 }
 function issueLine(doc, i) { const ref = refOf(doc, i.target); return `[${LVL[i.level]}] ${i.text}${ref ? `　→ show ${ref}` : ''}`; }
@@ -275,11 +275,11 @@ function stageModeText(s) {
 
 function networkLines(doc, s) {
   const src = C.optionSources(doc, s.id);
-  const L = ['### 网状关系'];
+  const L = ['### 接线'];
+  if (s.mode === 'loop') L.push(`- 循环怎么出去：${V(s.loopExit)}`);
   L.push(`- 从哪来：${src.length ? src.map(x => `拍 ${x.si + 1}.${x.bi + 1} 选「${oneLine(x.o.choice)}」`).join('；') : (s.mode === 'branch' ? '（标了分支，但没有任何选项通向它）' : '按顺序走到')}`);
-  L.push(`- 之后：${C.mergeText(doc, s)}`);
-  L.push(`- 前置条件：${s.requires.length ? s.requires.map(r => C.requireText(doc, r)).join('；') : '（无）'}`);
-  if (s.mode === 'loop') L.push(`- 循环退出条件（满足任一）：${s.loopExitWhen.length ? s.loopExitWhen.map(r => C.requireText(doc, r)).join('；') : '（没设）'}`);
+  L.push(`- 走完去哪：${C.mergeText(doc, s)}`);
+  L.push(`- 要先发生过：${s.needs.length ? s.needs.map(n => C.needText(doc, n)).join('；') : '（无）'}`);
   return L;
 }
 function optionLines(doc, b) {
@@ -287,26 +287,17 @@ function optionLines(doc, b) {
   return b.options.flatMap((o, i) => [
     `${i + 1}. ${isDo ? '做法' : '选项'}：${oneLine(o.choice) || '（未写）'}${isDo ? `〔${C.WORKS_NAMES[o.works] || '没标灵不灵'}〕` : ''}`,
     `   - 他的反应：${oneLine(o.reaction) || '（空）'}`,
-    `   - 结果：${oneLine(o.result) || '（空）'}`,
-    `   - 后果：${oneLine(o.effect) || '（空）'}`,
-    `   - 状态变化：${o.sets.length ? C.setsText(doc, o.sets) : '（无）'}`,
+    `   - 当场结果：${oneLine(o.result) || '（空）'}`,
+    `   - 长远后果：${oneLine(o.effect) || '（空）'}`,
     `   - 去向：${C.gotoText(doc, o)}`
   ]);
 }
-function showFacts(ctx) {
-  const { doc } = ctx;
-  const L = [`## 状态（${doc.facts.length}）`, '', '一件已经成立的事。选项、拍让它成立或不再成立；前置条件、循环退出条件读它。', ''];
-  const data = doc.facts.map(fct => {
-    const u = C.factUsage(doc, fct.id);
-    L.push(`### ${fct.name || '（未命名状态）'}`);
-    L.push(`- 在哪设：${u.setBy.length ? u.setBy.map(x => C.usageText(x) + (x.value ? '（成立）' : '（不再成立）')).join('；') : '（没有）'}`);
-    L.push(`- 在哪用：${u.usedBy.length ? u.usedBy.map(x => C.usageText(x) + (x.negate ? '（要求不成立）' : '')).join('；') : '（没有）'}`, '');
-    return { id: fct.id, name: fct.name, setBy: u.setBy.map(x => ({ where: C.usageText(x), value: x.value })), usedBy: u.usedBy.map(x => ({ where: C.usageText(x), negate: !!x.negate })) };
-  });
-  if (!doc.facts.length) L.push('（还没有状态）');
-  const iss = ctx.issues.filter(i => i.target.type === 'fact');
-  L.push(...issuesBlock(doc, iss, '检查（状态）'));
-  return { text: L.join('\n'), data: { facts: data, issues: iss } };
+function showOpen(ctx) {
+  const { doc } = ctx; const open = C.openItems(doc);
+  const L = [`## 未定清单（${open.length}）`, '', '制作人自己标了「没想好」、写了卡点的地方。这些是他的开放问题，不是缺陷；别替他编答案。', ''];
+  if (!open.length) L.push('（没有）');
+  open.forEach(x => L.push(`- ${x.text}　→ show ${refOf(doc, x.target)}`));
+  return { text: L.join('\n'), data: { open: open.map(x => ({ text: x.text, ref: refOf(doc, x.target), target: x.target })) } };
 }
 function showFlow(ctx) {
   const { doc } = ctx;
@@ -315,19 +306,20 @@ function showFlow(ctx) {
     const src = C.optionSources(doc, s.id);
     const outs = [];
     s.beats.forEach((b, bi) => b.options.forEach(o => { if (o.goto.type !== 'next') outs.push({ from: `${si + 1}.${bi + 1}`, choice: o.choice, to: C.gotoText(doc, o) }); }));
-    const reqs = s.requires.map(r => C.requireText(doc, r));
-    const beatReqs = s.beats.flatMap((b, bi) => b.requires.map(r => `拍 ${si + 1}.${bi + 1}：${C.requireText(doc, r)}`));
+    const reqs = s.needs.map(n => C.needText(doc, n));
+    const beatReqs = s.beats.flatMap((b, bi) => b.needs.map(n => `拍 ${si + 1}.${bi + 1}：${C.needText(doc, n)}`));
     L.push(`### ${si + 1}. ${oneLine(s.title) || '未命名'} ${stageModeText(s)}`);
     if (src.length) L.push(`- 从：${src.map(x => `拍 ${x.si + 1}.${x.bi + 1} 选「${oneLine(x.o.choice)}」`).join('；')}`);
     outs.forEach(o => L.push(`- 出：拍 ${o.from} 选「${oneLine(o.choice)}」→ ${o.to}`));
-    if (s.mergeTo || s.mode === 'branch') L.push(`- 之后：${C.mergeText(doc, s)}`);
-    if (reqs.length) L.push(`- 前置：${reqs.join('；')}`);
-    beatReqs.forEach(t => L.push(`- 拍前置：${t}`));
+    if (s.mode === 'loop') L.push(`- 怎么出去：${oneLine(s.loopExit) || '（没写）'}`);
+    if (s.mergeTo || s.mode === 'branch') L.push(`- 走完去哪：${C.mergeText(doc, s)}`);
+    if (reqs.length) L.push(`- 要先发生过：${reqs.join('；')}`);
+    beatReqs.forEach(t => L.push(`- 要先发生过（${t}）`));
     L.push('');
     return { ref: String(si + 1), id: s.id, title: s.title, mode: s.mode, from: src.map(x => ({ beat: `${x.si + 1}.${x.bi + 1}`, choice: x.o.choice })), outs, after: C.mergeText(doc, s), requires: reqs, beatRequires: beatReqs };
   });
-  const iss = ctx.issues.filter(i => /选项|做法|分支|前置|汇合|去向/.test(i.text));
-  L.push(...issuesBlock(doc, iss, '检查（网状关系）'));
+  const iss = ctx.issues.filter(i => i.step === 7);
+  L.push(...issuesBlock(doc, iss, '检查（接线）'));
   return { text: L.join('\n'), data: { stages: data, issues: iss } };
 }
 function showTop(ctx) {
@@ -348,7 +340,7 @@ function showStage(ctx, id) {
   const park = doc.parking.filter(p => p.stageId === id);
   const L = [`## 子阶段 ${si + 1}「${oneLine(s.title) || '未命名'}」${stageModeText(s)}`, '',
     `- 落位：${C.TRACK_NAMES[s.track] || '主线'}`, `- 地点·时段·氛围：${V(s.setting)}`, `- 关二狗的目的：${V(s.goal)}`, `- 开始时局面：${V(s.start)}`, `- 结束时局面：${V(s.end)}`,
-    `- 登场角色与物件：${V(s.cast)}`, `- 伏线：${V(s.foreshadow)}`,
+    `- 登场角色与物件：${V(s.cast)}`, `- 伏线：${V(s.foreshadow)}`, `- 卡点：${V(s.stuck)}`, `- 拆完了（交接范围）：${s.ready ? '是' : '否'}`,
     `- 判定不属于这一段的泳道：${excl.length ? excl.join('、') : '（无）'}`, '', '### 设计目的', ...designLines(s.design), '',
     `### 拍（${s.beats.length}）`, ...(s.beats.length ? s.beats.map((b, bi) => '- ' + beatLine({ b, s, si, bi })) : ['（还没拆拍）']), '', ...networkLines(doc, s), ''];
   if (park.length) L.push('### 挂在这一段的停车场', ...park.map(p => `- [${p.done ? 'x' : ' '}] ${oneLine(p.text)}`), '');
@@ -363,12 +355,12 @@ function showBeat(ctx, id, contextN) {
   const neighbors = seq.slice(Math.max(0, idx - contextN), idx + contextN + 1);
   const iss = ctx.issues.filter(i => i.target.type === 'beat' && i.target.id === id);
   const L = [`## 拍 ${si + 1}.${bi + 1}「${oneLine(b.text) || '未写'}」`, `（属于子阶段 ${si + 1}「${oneLine(s.title) || '未命名'}」）`, '',
-    `- 类型：${b.kind || '（未标）'}`, `- 发生了什么：${V(b.text)}`, `- 关二狗怎么反应：${V(b.reaction)}`, `- 结果：${V(b.result)}`,
+    `- 类型：${b.kind === C.UNDECIDED ? '没想好' : b.kind || '（未标）'}`, `- 发生了什么：${V(b.text)}`, `- 关二狗怎么反应：${V(b.reaction)}`, `- 结果：${V(b.result)}`,
     `- 地图：${V(b.map)}`, `- 在场者：${V(b.who)}`, `- 原文摘句：${V(b.source)}`, `- 可砍：${b.cuttable ? '是' : '否'}`,
     `- 所在子阶段的设计目的：${V(s.design.summary)}`];
   if (b.kind === '做') {
     L.push(`- 公式：${oneLine(b.formula.verb) || '＿'} ＋ ${oneLine(b.formula.object) || '＿'} ＋ ${oneLine(b.formula.resistance) || '＿'}`);
-    if (b.options.length) L.push('- 四格：（列了做法表，不填四格）');
+    if (C.realOptions(b).length && !Object.values(b.cells).some(C.filled)) L.push('- 四格：（列了做法表，不填四格）');
     else L.push(`- 四格·玩家看到什么：${V(b.cells.see)}`, `- 四格·玩家做什么：${V(b.cells.act)}`, `- 四格·游戏怎么回应：${V(b.cells.respond)}`, `- 四格·做错了会怎样：${V(b.cells.wrong)}`);
   }
   if (b.kind === '选') L.push(`- 两难：${V(b.dilemma)}`);
@@ -376,8 +368,8 @@ function showBeat(ctx, id, contextN) {
     L.push(`- 细化完成：${C.detailDone(b) ? '是' : '否'}`, `- 卡点：${V(b.stuck)}`,
       `- 归入玩法：${mechs.length ? mechs.map(x => `${x.m.name || '未命名'}（${x.slots.join('、')}）`).join('；') : '（无）'}`);
   }
-  if (b.requires.length) L.push(`- 前置条件：${b.requires.map(r => C.requireText(doc, r)).join('；')}`);
-  if (b.sets.length) L.push(`- 这一拍发生后：${C.setsText(doc, b.sets)}`);
+  if (b.needs.length) L.push(`- 要先发生过：${b.needs.map(n => C.needText(doc, n)).join('；')}`);
+  if (b.kind === '做' && (b.options.length >= 2 || b.tryMode)) L.push(`- 几种做法怎么算过：${C.TRY_NAMES[b.tryMode] || '（没写）'}`);
   if (b.options.length) { L.push('', `### ${b.kind === '做' ? '做法' : '选项'}（${b.options.length}）`, ...optionLines(doc, b), ''); }
   L.push(`- 泳道：${lanes.map(x => `${x.name} ${x.value === null ? (x.excludedInStage ? '〔不属于这段〕' : '—') : (typeof x.value === 'number' && x.value > 0 ? '+' + x.value : oneLine(String(x.value)))}`).join('；')}`, '');
   L.push('### 前后文', ...neighbors.map(x => (x.b.id === id ? '▶ ' : '  ') + beatLine(x)), '');
@@ -470,7 +462,7 @@ function renderTarget(ctx, target, flags) {
     case 'synopsis': return showSynopsis(ctx);
     case 'parking': return showParking(ctx);
     case 'flow': return showFlow(ctx);
-    case 'facts': return showFacts(ctx);
+    case 'open': return showOpen(ctx);
     case 'all': return showAll(ctx, Number(flags.page) || 1);
   }
   throw new CliError(EXIT.INTERNAL, '未知条目类型 ' + target.type);
@@ -534,6 +526,8 @@ function cmdBrief(flags) {
     '- 完成标准：', ...crit.map(c => `  - [${c.ok ? 'x' : ' '}] ${c.text}`),
     `- 规模：子阶段 ${scale.stages}，拍 ${scale.beats}（${kindText(scale.kinds)}），玩法 ${scale.mechanics}，地图 ${scale.maps}，停车场未处理 ${scale.parkingOpen}`,
     '- 子阶段：', ...(doc.stages.length ? doc.stages.map((s, si) => `  ${si + 1}. ${oneLine(s.title) || '（未命名）'} ${stageModeText(s)}— ${s.beats.length} 拍`) : ['  （还没有）']));
+  const openN = C.openItems(doc).length; const readyS = doc.stages.map((s, si) => ({ s, si })).filter(x => x.s.ready);
+  L.push(`- 交接范围（他勾了「拆完了」的子阶段）：${readyS.length ? readyS.map(x => `${x.si + 1}. ${oneLine(x.s.title)}`).join('；') : '还没有'}`, `- 未定清单：${openN} 条（chaipai show 未定）——这些是他的开放问题，不是缺陷`);
   if (vw) L.push(`- 制作人正在看：「${vw.tab}」页 · ${vw.selection.label}；光标${vw.focus ? `在 ${vw.focus.label}` : '不在输入框里'}（细节跑 chaipai now）`);
   L.push('', '## 接下来可用', ...NEXT.map(n => `- ${n}`));
   emit(flags, {
@@ -658,7 +652,7 @@ const HELP = `chaipai ${CLI_VERSION} —— 拆拍台只读 CLI（agent 访问�
                           3.2            拍 3.2（--context N 带前后 N 拍，默认 2）
                           玩法 / 玩法:名字 / 地图 / 地图:名字 / 梗概 / 停车场 / 泳道
                           流向           整张网：分支、选项跳转、汇合、前置条件
-                          状态           所有状态：在哪让它成立、在哪当条件用
+                          未定           未定清单：制作人标了「没想好」和写了卡点的地方
                           全文           整份 Markdown（--page N 翻页，每页 ${PAGE_LINES} 行）
                           id:<id>        按 id 精确定位（编号会随制作人挪动而变，id 不变）
   checks                检查结果（和页面同一套规则）。--step N 只看第 N 步；--level miss,warn,info
