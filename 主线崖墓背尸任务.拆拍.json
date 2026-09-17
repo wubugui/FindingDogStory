@@ -139,17 +139,17 @@
           "result": "点燃火把",
           "source": "",
           "map": "跑马梁",
-          "kind": "",
+          "kind": "做",
           "formula": {
-            "verb": "",
-            "object": "",
-            "resistance": ""
+            "verb": "点燃",
+            "object": "火把",
+            "resistance": "不知道怎么点"
           },
           "cells": {
-            "see": "",
-            "act": "",
-            "respond": "",
-            "wrong": ""
+            "see": "火把熄灭了，风吹的呼呼的",
+            "act": "在教学下按下t",
+            "respond": "火把点燃，看清路",
+            "wrong": "继续教学"
           },
           "stuck": "",
           "cuttable": false,
