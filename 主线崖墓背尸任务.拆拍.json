@@ -45,8 +45,10 @@
       "end": "",
       "endCondition": "",
       "mode": "normal",
-      "loopExit": "",
+      "loopExitWhen": [],
       "parallelGroup": "",
+      "mergeTo": "",
+      "requires": [],
       "design": {
         "learn": "",
         "know": "",
@@ -72,8 +74,10 @@
       "end": "",
       "endCondition": "",
       "mode": "normal",
-      "loopExit": "",
+      "loopExitWhen": [],
       "parallelGroup": "",
+      "mergeTo": "",
+      "requires": [],
       "design": {
         "learn": "",
         "know": "",
@@ -95,8 +99,10 @@
       "end": "",
       "endCondition": "",
       "mode": "normal",
-      "loopExit": "",
+      "loopExitWhen": [],
       "parallelGroup": "",
+      "mergeTo": "",
+      "requires": [],
       "design": {
         "learn": "",
         "know": "",
@@ -107,7 +113,7 @@
         "summary": ""
       },
       "laneExclude": [],
-      "collapsed": false,
+      "collapsed": true,
       "beats": []
     },
     {
@@ -118,8 +124,10 @@
       "end": "找到了路，继续前进",
       "endCondition": "找到了路",
       "mode": "normal",
-      "loopExit": "",
+      "loopExitWhen": [],
       "parallelGroup": "",
+      "mergeTo": "",
+      "requires": [],
       "design": {
         "learn": "",
         "know": "",
@@ -156,7 +164,10 @@
           "lanes": {
             "emotion": 0,
             "puyhi4itnf": "要去的方向"
-          }
+          },
+          "options": [],
+          "requires": [],
+          "sets": []
         },
         {
           "id": "eioubvq7d1",
@@ -183,7 +194,10 @@
             "emotion": 0,
             "2web49itnf": "平",
             "puyhi4itnf": "学会使用基础的火把"
-          }
+          },
+          "options": [],
+          "requires": [],
+          "sets": []
         }
       ]
     },
@@ -195,8 +209,10 @@
       "end": "",
       "endCondition": "",
       "mode": "normal",
-      "loopExit": "",
+      "loopExitWhen": [],
       "parallelGroup": "",
+      "mergeTo": "",
+      "requires": [],
       "design": {
         "learn": "",
         "know": "",
@@ -218,8 +234,10 @@
       "end": "",
       "endCondition": "",
       "mode": "normal",
-      "loopExit": "",
+      "loopExitWhen": [],
       "parallelGroup": "",
+      "mergeTo": "",
+      "requires": [],
       "design": {
         "learn": "",
         "know": "",
@@ -241,8 +259,10 @@
       "end": "",
       "endCondition": "",
       "mode": "normal",
-      "loopExit": "",
+      "loopExitWhen": [],
       "parallelGroup": "",
+      "mergeTo": "",
+      "requires": [],
       "design": {
         "learn": "",
         "know": "",
@@ -264,8 +284,10 @@
       "end": "",
       "endCondition": "",
       "mode": "normal",
-      "loopExit": "",
+      "loopExitWhen": [],
       "parallelGroup": "",
+      "mergeTo": "",
+      "requires": [],
       "design": {
         "learn": "",
         "know": "",
@@ -287,8 +309,10 @@
       "end": "",
       "endCondition": "",
       "mode": "normal",
-      "loopExit": "",
+      "loopExitWhen": [],
       "parallelGroup": "",
+      "mergeTo": "",
+      "requires": [],
       "design": {
         "learn": "",
         "know": "",
@@ -310,8 +334,10 @@
       "end": "",
       "endCondition": "",
       "mode": "normal",
-      "loopExit": "",
+      "loopExitWhen": [],
       "parallelGroup": "",
+      "mergeTo": "",
+      "requires": [],
       "design": {
         "learn": "",
         "know": "",
@@ -333,8 +359,10 @@
       "end": "",
       "endCondition": "",
       "mode": "normal",
-      "loopExit": "",
+      "loopExitWhen": [],
       "parallelGroup": "",
+      "mergeTo": "",
+      "requires": [],
       "design": {
         "learn": "",
         "know": "",
@@ -382,5 +410,6 @@
     }
   ],
   "mapVisits": {},
-  "parking": []
+  "parking": [],
+  "facts": []
 }
