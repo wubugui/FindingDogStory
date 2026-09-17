@@ -172,6 +172,29 @@ body[data-layout="phone"].kbd-open #toasts{bottom:12px}
 .purposebox{border-left:3px solid var(--accent);background:var(--bg);border-radius:0 6px 6px 0;padding:8px 10px;margin-bottom:10px}
 .purposebox .purpose{font-weight:600;margin-bottom:4px;white-space:pre-wrap}
 .purposebox .hint{white-space:pre-wrap}
+.optcard{border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:10px;background:var(--bg)}
+.reqrow{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) auto;gap:6px;align-items:start;margin-bottom:6px}
+.reqsel{width:100%}
+body[data-layout="phone"] .reqrow{grid-template-columns:1fr auto}
+body[data-layout="phone"] .reqrow .reqsel{grid-column:1 / -1}
+details.reqfold>summary{cursor:pointer;color:var(--accent2);font-size:13px}
+details.reqfold[open]>summary{margin-bottom:8px}
+.flowwrap{max-height:none;padding:6px 0;margin-bottom:14px}
+.flowsvg{display:block;margin:0 auto}
+.fnode{cursor:pointer}
+.fnode rect{fill:var(--panel2);stroke:var(--line);stroke-width:1.5}
+.fnode.branch rect{stroke-dasharray:6 4;stroke:var(--accent)}
+.fnode.on rect{stroke:var(--accent2);stroke-width:2.5}
+.fnode-t{fill:var(--text);font-size:13px;font-weight:600}
+.edge{fill:none;stroke-width:1.8}
+.e-opt{stroke:var(--accent)} .mk-opt{fill:var(--accent)}
+.e-merge{stroke:var(--accent2)} .mk-merge{fill:var(--accent2)}
+.e-req{stroke:var(--muted);stroke-dasharray:5 4} .mk-req{fill:var(--muted)}
+.e-end{stroke:var(--warn)} .e-end-t{fill:var(--warn)}
+.elabel{fill:var(--muted);font-size:11px}
+.flowline{padding:8px 6px;border-bottom:1px solid var(--line);cursor:pointer}
+.flowline:hover{background:var(--sel)}
+.flowline:last-child{border-bottom:0}
 /* outline */
 .outline-head{display:flex;flex-direction:column;padding:2px 12px 6px;border-bottom:1px solid var(--line);margin-bottom:4px}
 .outline-head b{font-size:13px}
@@ -489,7 +512,24 @@ const HELP = {
   '标题': { what: '这个子阶段的名字。', how: ['按局面起名，不按地图起名。'], eg: '鬼打墙、坠潭' },
   '开始时局面': { what: '这个子阶段开始那一刻，关二狗处在什么情况。', how: ['写他知道什么、手里有什么、以为接下来会怎样。'], eg: '背着尸往下走，以为很快就到山脚。' },
   '结束时局面': { what: '这个子阶段结束那一刻的情况。', how: ['必须和开始时不一样。', '一样就说明这一段没推进：删掉，或者并到相邻子阶段。'], eg: '老辈人的招全使完了，碑石还在前头。' },
-  '结构': { what: '这个子阶段怎么走。', how: ['普通：按顺序走一遍。', '循环：同一段会重复发生（比如鬼打墙），必须写退出条件。', '并行：几个子阶段不分先后（比如城里几件事随便先做哪件），给它们填同一个并行组名。'] },
+  '结构': { what: '这个子阶段怎么走。', how: ['普通：按顺序走一遍。', '循环：同一段会重复发生（比如鬼打墙），必须写退出条件。', '并行：几个子阶段都要做，只是不分先后（比如城里几件事随便先做哪件），给它们填同一个并行组名。', '分支：只有玩家选了某个选项才会走这一段，走完要写「之后」汇合到哪，或这条线结束。'] },
+  '网状关系': { what: '这个子阶段在整张网里的位置：从哪来、之后去哪、要满足什么条件才发生。', how: ['线性的段落这里基本不用动。', '分支、开放世界里随时能触发的段落，要在这里写清楚。'] },
+  '从哪来': { what: '哪些拍的哪些选项，去向指到了这个子阶段。自动算出来的，不用填。', how: ['标了「分支」却没有任何来源，玩家就到不了这里。', '要加来源，去那一拍的选项表里把「去向」改成这个子阶段。'] },
+  '之后': { what: '走完这个子阶段接着去哪。', how: ['按顺序接下一个子阶段：线性的默认值。', '汇合到某个子阶段：分支走完回到主线的哪里。', '这条线在这里结束：这条分支到此为止（比如死了、离开了）。'], eg: '「撂尸逃跑」这条分支走完，汇合到「坠潭」。' },
+  '前置条件': { what: '要先满足这些条件，这一段（或这一拍）才会发生。开放世界里的门控就写在这里，以后对应叙事状态机的条件。', how: ['能指到具体东西就选：某个子阶段走完、某一拍发生过、某一拍选过某个选项。', '指不到的就选「只写文字说明」，把条件写清楚。', '有多条时默认要全部满足；是「满足其一」的话，在说明里写清楚。'], eg: '「去义庄还钱」要求：拍 5.2 选了「私吞帕子包里的钱」。' },
+  '选项（开放拍）': { what: '「选」的拍里，玩家能选的每一个选项。', how: ['先问：这个选择会不会改变后面的流程？', '不会（只差后果）：去向选「继续下一拍」，差别写在「后果」里——大部分选项应该是这种。', '会：去向选「跳到某个子阶段」，那个子阶段结构标「分支」，写好之后汇合到哪。', '选项之间的差别要让玩家看得出来，否则等于没得选。'] },
+  '做法（多种解法）': { what: '同一个目标有好几种做法时，逐个列出来。', how: ['每种做法标灵不灵，写游戏怎么回应、有什么后果。', '都指向同一个目标，去向一般是「继续下一拍」；某种做法会把戏带到别处，才改去向。'], eg: '鬼打墙：反穿鞋（不灵）、撒尿画界（不灵）、撒糙米（看情况）、求告（不灵）。' },
+  '玩家选什么': { what: '这个选项是什么，用玩家看到的说法写。', eg: '撂下尸体就跑' },
+  '这种做法': { what: '这一种做法具体是什么。', eg: '脱鞋反穿' },
+  '灵不灵': { what: '这种做法能不能达到目标。', how: ['灵：做了就成。', '不灵：做了没用（但可以有后果）。', '看情况：要满足别的条件才灵，把条件写进结果或后果。'] },
+  '他的反应': { what: '关二狗对这个选项／这种做法的反应。', how: ['贴着人物写，同一个人面对不同选项，反应要像同一个人。'] },
+  '这个选项的结果': { what: '选了这个之后，局面变成什么。', how: ['只写这个选项特有的结果；所有选项都一样的结果，写在这一拍上面的「结果」里。'] },
+  '这种做法的结果': { what: '用了这种做法之后，局面变成什么。' },
+  '后果（影响什么）': { what: '这个选择带来的长期影响：状态、物件、别人的态度，以及以后哪些条件会因此成立。', how: ['写得具体，以后别处的前置条件会引用它。', '会影响泳道的（火暗一把、更重）也写在这里。'], eg: '工钱没了；三把火暗一把；之后「去义庄」这条线打不开。' },
+  '去向': { what: '选了这个之后，戏往哪走。', how: ['继续下一拍：流程不变，只差后果。', '跳到某个子阶段：进入分支，那个子阶段要标「分支」并写汇合。', '这条线结束：这条路到头了。'] },
+  '这一拍的前置条件': { what: '要先满足这些条件，这一拍才会发生。', how: ['比如只有带着某样东西、或者之前选过某个选项，才出现这一拍。'] },
+  '流向': { what: '整张网：子阶段按顺序排，选项跳转、分支汇合、前置条件画成连线。', how: ['看有没有到不了的分支（没有橙线进来的 ⑂）。', '看分支有没有回来（蓝线），或者明确结束（⊗）。', '前置条件的虚线从下往上指，说明依赖的是后面才发生的事——检查是不是写反了。'] },
+  '逐个看': { what: '每个子阶段的来源、出口、之后、前置条件，用文字列出来。' },
   '退出条件': { what: '循环什么时候结束。', how: ['写成能触发的事件。', '没有退出条件的循环，玩家就卡死在里面。'], eg: '把老辈人的招都试一遍之后。' },
   '并行组': { what: '标记哪几个子阶段不分先后。', how: ['不分先后的几个子阶段，填同一个组名。'], eg: '城里打听' },
   '这一段的拍': { what: '这个子阶段拆出来的拍。一拍＝局面变一次。', how: ['每拍写一行：发生了什么 → 关二狗怎么反应 → 结果。', '这一步不想玩法。'] },
@@ -588,7 +628,8 @@ document.addEventListener('pointerdown', e => { const p = $('#helppop'); if (p &
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeHelp(); });
 const frow = (label, ctrl, hint) => h('div', { class: 'frow' }, h('span', { class: 'flabel' }, label, helpBtn(label), hint ? h('span', { class: 'hint' }, ' · ' + hint) : null), ctrl);
 const kindBadge = b => h('span', { class: 'kb k-' + KCLS[b.kind || ''], title: b.kind ? b.kind : '还没标看/做/选/略' }, b.kind || '?');
-const modeBadge = s => s.mode === 'loop' ? h('span', { class: 'mb', title: '循环' }, '↻') : s.mode === 'parallel' ? h('span', { class: 'mb', title: '并行' }, '∥') : null;
+const modeBadge = s => [s.mode === 'loop' ? h('span', { class: 'mb', title: '循环' }, '↻') : s.mode === 'parallel' ? h('span', { class: 'mb', title: '并行' }, '∥') : s.mode === 'branch' ? h('span', { class: 'mb', title: '分支：只有选了某个选项才走' }, '⑂') : null,
+  s.requires && s.requires.length ? h('span', { class: 'mb', title: '有前置条件' }, '🔒') : null];
 
 function refreshDerived() {
   clearTimeout(derivedTimer);
@@ -671,6 +712,8 @@ function renderOutline() {
         kindBadge(b),
         outlineInput(b, 'text', '发生了什么', { type: 'beat', id: b.id }),
         h('span', { class: 'chip', dataset: { sync: `${b.id}:map` } }, b.map),
+        b.options.length ? h('span', { class: 'chip', title: '这一拍列了' + (b.kind === '做' ? '几种做法' : '几个选项') }, `${b.options.length}${b.kind === '做' ? '做法' : '选项'}`) : null,
+        b.requires.length ? h('span', { class: 'mb', title: '有前置条件' }, '🔒') : null,
         b.cuttable ? h('span', { class: 'chip cut', title: '标了可砍：跟所在子阶段的设计目的无关' }, '可砍') : null,
         h('span', { class: 'dot', dataset: { dotFor: b.id } }), goBtn({ type: 'beat', id: b.id }));
       r.addEventListener('click', e => { if (e.target.tagName !== 'INPUT') rowTap({ type: 'beat', id: b.id }); });
@@ -798,7 +841,7 @@ function moveNode(src, dst, after) {
 }
 
 /* ---------- 标签页 ---------- */
-const TABS = [['detail', '详情'], ['table', '拍表'], ['lanes', '泳道'], ['mech', '玩法'], ['maps', '地图'], ['checks', '检查'], ['synopsis', '梗概'], ['parking', '停车场'], ['guide', '指南']];
+const TABS = [['detail', '详情'], ['table', '拍表'], ['lanes', '泳道'], ['flow', '流向'], ['mech', '玩法'], ['maps', '地图'], ['checks', '检查'], ['synopsis', '梗概'], ['parking', '停车场'], ['guide', '指南']];
 function renderTabs() {
   const n = $('#tabs'); n.innerHTML = '';
   TABS.forEach(([k, t]) => n.append(h('button', { class: 'tab' + (tab === k ? ' on' : ''), onclick: () => switchTab(k) }, t, h('span', { class: 'tcount', dataset: { tabCount: k } }))));
@@ -812,13 +855,147 @@ function renderView() {
   const st = v.scrollTop; const scrollers = {};
   v.querySelectorAll('[data-scroll]').forEach(el => { scrollers[el.dataset.scroll] = { l: el.scrollLeft, t: el.scrollTop }; });
   v.innerHTML = ''; v.dataset.tab = tab; v.dataset.sel = selKey;
-  ({ detail: renderDetail, table: renderTable, lanes: renderLanes, mech: renderMech, maps: renderMaps, checks: renderChecks, synopsis: renderSynopsis, parking: renderParking, guide: renderGuide })[tab](v);
+  ({ detail: renderDetail, table: renderTable, lanes: renderLanes, flow: renderFlow, mech: renderMech, maps: renderMaps, checks: renderChecks, synopsis: renderSynopsis, parking: renderParking, guide: renderGuide })[tab](v);
   if (sameTab && (tab !== 'detail' || sameSel)) {
     v.scrollTop = st;
     v.querySelectorAll('[data-scroll]').forEach(el => { const s = scrollers[el.dataset.scroll]; if (s) { el.scrollLeft = s.l; el.scrollTop = s.t; } });
   }
   if (tab === 'lanes' && !sameSel) { const c = v.querySelector('.beatcell.selcol'); if (c) c.scrollIntoView({ block: 'nearest', inline: 'center' }); }
   refreshDerived();
+}
+
+/* ---------- 网状叙事：前置条件 / 选项与做法 / 分支 / 流向 ---------- */
+function refChoices() {
+  const out = [['free:', '只写文字说明（下面填）']];
+  doc.stages.forEach((st, si) => {
+    out.push([`stage:${st.id}`, `子阶段 ${si + 1}「${short(st.title, 14)}」走完`]);
+    st.beats.forEach((bb, bi) => {
+      out.push([`beat:${bb.id}`, `　拍 ${si + 1}.${bi + 1}「${short(bb.text, 14)}」发生过`]);
+      bb.options.forEach(o => out.push([`option:${bb.id}:${o.id}`, `　　拍 ${si + 1}.${bi + 1} 选了「${short(o.choice, 12)}」`]));
+    });
+  });
+  return out;
+}
+function requiresEditor(owner) {
+  const rows = owner.requires.map((r, i) => {
+    const cur = r.kind === 'free' ? 'free:' : r.kind === 'option' ? `option:${r.id2}:${r.optionId}` : `${r.kind}:${r.id2}`;
+    const ok = C.requireTarget(doc, r).ok;
+    const pick = h('select', { class: 'reqsel', onchange: e => mutate(() => { const [k, a, o] = e.target.value.split(':'); r.kind = k; r.id2 = a || ''; r.optionId = o || ''; }) },
+      ok ? null : h('option', { value: cur, selected: true }, '（指向的东西已经删了，请重选）'),
+      refChoices().map(([val, txt]) => h('option', { value: val, selected: ok && val === cur }, txt)));
+    return h('div', { class: 'reqrow' }, pick,
+      field(r, 'note', 'req' + r.id, { ph: r.kind === 'free' ? '写清楚条件，如：身上带着桃木' : '补充说明（可选）' }),
+      btn('✕', () => mutate(() => owner.requires.splice(i, 1)), 'sm', '删掉这条前置条件'));
+  });
+  return h('div', {}, rows, btn('＋ 前置条件', () => mutate(() => owner.requires.push(C.newRequire())), 'sm'));
+}
+function stageNetworkSec(st, si) {
+  const src = C.optionSources(doc, st.id);
+  const mergeSel = h('select', { onchange: e => mutate(() => { st.mergeTo = e.target.value; }) },
+    h('option', { value: '', selected: !st.mergeTo }, '按顺序接下一个子阶段'),
+    h('option', { value: 'end', selected: st.mergeTo === 'end' }, '这条线在这里结束'),
+    st.mergeTo && st.mergeTo !== 'end' && !findStage(st.mergeTo) ? h('option', { value: st.mergeTo, selected: true }, '（汇合的子阶段已删除，请重选）') : null,
+    doc.stages.map((x, xi) => x.id === st.id ? null : h('option', { value: x.id, selected: st.mergeTo === x.id }, `汇合到 子阶段 ${xi + 1}「${short(x.title, 14)}」`)));
+  return sec('网状关系', '第 2 步',
+    h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '从哪来', helpBtn('从哪来')),
+      src.length ? h('div', { class: 'blist' }, src.map(x => h('div', { class: 'brow', onclick: () => select({ type: 'beat', id: x.b.id }, { tab: 'detail' }) },
+        h('span', { class: 'num' }, `${x.si + 1}.${x.bi + 1}`), kindBadge(x.b), h('span', { class: 'ell' }, `选「${short(x.o.choice, 24)}」→ 到这里`))))
+        : h('div', { class: 'hint' }, st.mode === 'branch' ? '还没有任何选项通向这里——去某一拍的选项表里，把「去向」指到这个子阶段。' : '没有选项专门跳到这里，按顺序走到。')),
+    frow('之后', mergeSel),
+    h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '前置条件', helpBtn('前置条件'), h('span', { class: 'hint' }, ' · 满足了才会发生，没有就空着')), requiresEditor(st)));
+}
+function beatRequiresSec(bb) {
+  const body = [h('p', { class: 'hint' }, '这一拍要满足条件才会发生时填；没有就空着。'), requiresEditor(bb)];
+  if (bb.requires.length) return sec('这一拍的前置条件', '网状', ...body);
+  return h('details', { class: 'sec reqfold' }, h('summary', {}, '这一拍要满足条件才会发生？（前置条件）', helpBtn('前置条件')), ...body);
+}
+function optionsSec(bb) {
+  const isDo = bb.kind === '做'; const word = isDo ? '做法' : '选项';
+  const cards = bb.options.map((o, i) => {
+    const gotoSel = h('select', { onchange: e => mutate(() => { const val = e.target.value; o.goto = val === 'next' || val === 'end' ? { type: val, stageId: '' } : { type: 'stage', stageId: val }; }) },
+      h('option', { value: 'next', selected: o.goto.type === 'next' }, '继续下一拍'),
+      h('option', { value: 'end', selected: o.goto.type === 'end' }, '这条线结束'),
+      o.goto.type === 'stage' && !findStage(o.goto.stageId) ? h('option', { value: o.goto.stageId, selected: true }, '（目标子阶段已删除，请重选）') : null,
+      doc.stages.map((x, xi) => h('option', { value: x.id, selected: o.goto.type === 'stage' && o.goto.stageId === x.id }, `跳到 子阶段 ${xi + 1}「${short(x.title, 14)}」`)));
+    const oid = 'opt' + o.id;
+    return h('div', { class: 'optcard' },
+      h('div', { class: 'mechhead' }, h('b', { style: 'flex:1' }, `${word} ${i + 1}`),
+        btn('↑', () => mutate(() => moveArr(bb.options, i, -1)), 'sm', '上移'),
+        btn('↓', () => mutate(() => moveArr(bb.options, i, 1)), 'sm', '下移'),
+        btn('删除', () => { if (confirm(`删除${word} ${i + 1}？`)) mutate(() => bb.options.splice(i, 1)); }, 'danger sm')),
+      frow(isDo ? '这种做法' : '玩家选什么', field(o, 'choice', oid)),
+      isDo ? h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '灵不灵', helpBtn('灵不灵')), seg([['yes', '灵'], ['no', '不灵'], ['maybe', '看情况']], o.works, val => mutate(() => { o.works = val; }))) : null,
+      h('div', { class: 'grid2' },
+        frow('他的反应', field(o, 'reaction', oid, { multi: true })),
+        frow(isDo ? '这种做法的结果' : '这个选项的结果', field(o, 'result', oid, { multi: true }))),
+      frow('后果（影响什么）', field(o, 'effect', oid, { multi: true })),
+      frow('去向', gotoSel));
+  });
+  return sec(isDo ? '做法（多种解法）' : '选项（开放拍）', '第 5 步',
+    h('p', { class: 'hint' }, isDo ? '同一个目标有好几种做法时，逐个列出来；只有一种做法就不用填。' : '每个选项：玩家选什么 → 他的反应 → 结果 → 后果 → 去向。结果不同但后面流程一样的，去向都选「继续下一拍」。'),
+    cards, h('div', { class: 'toolbar', style: 'margin-top:8px' }, btn('＋ ' + word, () => mutate(() => bb.options.push(C.newOption())), 'sm')));
+}
+function renderFlow(v) {
+  v.append(sec('流向', '网状', h('p', { class: 'hint' }, '子阶段从上到下按顺序排。右边橙线＝选项跳过去；左边蓝线＝分支汇合回来；左边灰虚线＝前置条件（从条件出发，指向需要它的地方）。点子阶段进详情。')));
+  if (!doc.stages.length) { v.append(h('p', { class: 'hint' }, '还没有子阶段。')); return; }
+  const NS = 'http://www.w3.org/2000/svg';
+  const S = (t, a, txt) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (txt != null) e.textContent = txt; return e; };
+  const n = doc.stages.length, RH = 64, TOP = 16;
+  const avail = Math.max(340, ($('#view').clientWidth || 700) - 40);
+  const NX = Math.min(170, Math.round(avail * 0.28)), NW = Math.max(150, Math.min(360, avail - NX * 2)), W = NX * 2 + NW;
+  const yOf = i => TOP + i * RH + RH / 2;
+  const edges = [];
+  doc.stages.forEach((st, si) => {
+    st.beats.forEach((bb, bi) => bb.options.forEach(o => {
+      if (o.goto.type === 'stage') { const t = findStage(o.goto.stageId); if (t) edges.push({ from: si, to: t.si, side: 1, cls: 'opt', label: `${si + 1}.${bi + 1}「${short(o.choice, 6)}」` }); }
+      else if (o.goto.type === 'end') edges.push({ from: si, to: null, side: 1, cls: 'end', label: `${si + 1}.${bi + 1}「${short(o.choice, 6)}」结束` });
+    }));
+    if (st.mergeTo && st.mergeTo !== 'end') { const t = findStage(st.mergeTo); if (t) edges.push({ from: si, to: t.si, side: -1, cls: 'merge', label: '汇合' }); }
+    if (st.mergeTo === 'end') edges.push({ from: si, to: null, side: 1, cls: 'end', label: '这条线结束' });
+    const reqs = st.requires.concat(...st.beats.map(bb => bb.requires));
+    reqs.forEach(r => { let f = null; if (r.kind === 'stage') f = findStage(r.id2); else if (r.kind === 'beat' || r.kind === 'option') f = findBeat(r.id2); if (f) edges.push({ from: f.si, to: si, side: -1, cls: 'req', label: '前置' }); });
+  });
+  const svg = S('svg', { width: W, height: TOP * 2 + n * RH, class: 'flowsvg' });
+  const defs = S('defs', {});
+  ['opt', 'merge', 'req'].forEach(c => { const m = S('marker', { id: 'ar-' + c, viewBox: '0 0 10 10', refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto-start-reverse' }); m.append(S('path', { d: 'M0,0 L10,5 L0,10 z', class: 'mk-' + c })); defs.append(m); });
+  svg.append(defs);
+  const count = { 1: 0, '-1': 0 };
+  edges.forEach(e => {
+    const k = count[e.side]++ % 6; const bulge = 26 + k * 18;
+    const x0 = e.side > 0 ? NX + NW : NX; const y1 = yOf(e.from);
+    if (e.to === null) {
+      svg.append(S('path', { d: `M${x0} ${y1 + 6} h${bulge}`, class: 'edge e-end' }));
+      svg.append(S('text', { x: x0 + bulge + 4, y: y1 + 10, class: 'elabel e-end-t' }, '⊗ ' + e.label));
+      return;
+    }
+    const y2 = yOf(e.to) + (e.from === e.to ? 12 : 0); const yy1 = y1 + (e.from === e.to ? -12 : 0);
+    const cx = x0 + e.side * bulge;
+    svg.append(S('path', { d: `M${x0} ${yy1} C${cx} ${yy1} ${cx} ${y2} ${x0} ${y2}`, class: 'edge e-' + e.cls, 'marker-end': `url(#ar-${e.cls})` }));
+    const lx = e.side > 0 ? cx - bulge * 0.2 : cx + bulge * 0.2;
+    svg.append(S('text', { x: lx + (e.side > 0 ? 4 : -4), y: (yy1 + y2) / 2 + 4, class: 'elabel', 'text-anchor': e.side > 0 ? 'start' : 'end' }, e.label));
+  });
+  doc.stages.forEach((st, si) => {
+    const y = yOf(si);
+    const g = S('g', { class: 'fnode' + (sel.type === 'stage' && sel.id === st.id ? ' on' : '') + (st.mode === 'branch' ? ' branch' : '') });
+    g.append(S('rect', { x: NX, y: y - 20, width: NW, height: 40, rx: 8 }));
+    const badges = (st.mode === 'loop' ? ' ↻' : st.mode === 'parallel' ? ' ∥' : st.mode === 'branch' ? ' ⑂' : '') + (st.requires.length ? ' 🔒' : '');
+    g.append(S('text', { x: NX + 12, y: y + 5, class: 'fnode-t' }, `${si + 1}. ${short(st.title, Math.max(6, Math.floor(NW / 15)))}${badges}`));
+    g.addEventListener('click', () => select({ type: 'stage', id: st.id }, { tab: 'detail' }));
+    svg.append(g);
+  });
+  v.append(h('div', { class: 'lanes-scroll flowwrap', dataset: { scroll: 'flow' } }, svg));
+  const lines = doc.stages.map((st, si) => {
+    const src = C.optionSources(doc, st.id);
+    const outs = []; st.beats.forEach((bb, bi) => bb.options.forEach(o => { if (o.goto.type !== 'next') outs.push(`拍 ${si + 1}.${bi + 1} 选「${short(o.choice, 10)}」→ ${C.gotoText(doc, o)}`); }));
+    const reqs = st.requires.map(r => C.requireText(doc, r));
+    return h('div', { class: 'flowline', onclick: () => select({ type: 'stage', id: st.id }, { tab: 'detail' }) },
+      h('b', {}, `${si + 1}. ${st.title || '未命名'}`), h('span', { class: 'hint' }, '　' + (C.MODE_NAMES[st.mode] || '普通')),
+      src.length ? h('div', { class: 'hint' }, '从：' + src.map(x => `拍 ${x.si + 1}.${x.bi + 1} 选「${short(x.o.choice, 10)}」`).join('；')) : null,
+      outs.length ? h('div', { class: 'hint' }, '出：' + outs.join('；')) : null,
+      (st.mergeTo || st.mode === 'branch') ? h('div', { class: 'hint' }, '之后：' + C.mergeText(doc, st)) : null,
+      reqs.length ? h('div', { class: 'hint' }, '前置：' + reqs.join('；')) : null);
+  });
+  v.append(sec('逐个看', '', lines));
 }
 
 /* ---------- 详情 ---------- */
@@ -871,9 +1048,10 @@ function detailStage(v, s, si) {
     h('div', { class: 'grid2' }, frow('开始时局面', field(s, 'start', oid, { multi: true })), frow('结束时局面', field(s, 'end', oid, { multi: true }))),
     h('div', { class: 'warnline', dataset: { inline: 'same:' + s.id } }),
     frow('结束条件', field(s, 'endCondition', oid, { multi: true }), '以后就是叙事状态机里推进的信号'),
-    h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '结构', helpBtn('结构')), seg([['normal', '普通'], ['loop', '循环'], ['parallel', '并行']], s.mode, val => mutate(() => { s.mode = val || 'normal'; }))),
+    h('div', { class: 'frow' }, h('span', { class: 'flabel' }, '结构', helpBtn('结构')), seg([['normal', '普通'], ['loop', '循环'], ['parallel', '并行'], ['branch', '分支']], s.mode, val => mutate(() => { s.mode = val || 'normal'; }))),
     s.mode === 'loop' ? frow('退出条件', field(s, 'loopExit', oid, { multi: true }), '重复到什么时候为止') : null,
     s.mode === 'parallel' ? frow('并行组', field(s, 'parallelGroup', oid), '同组的子阶段不分先后，填同一个组名') : null));
+  v.append(stageNetworkSec(s, si));
   v.append(sec(`这一段的拍（${s.beats.length}）`, '第 3 步',
     h('p', { class: 'hint' }, '一拍＝局面变一次。每拍写：发生了什么 → 关二狗怎么反应 → 结果。这一步不想玩法。'),
     h('div', { class: 'blist' }, s.beats.map((b, bi) => h('div', { class: 'brow', onclick: () => select({ type: 'beat', id: b.id }) },
@@ -908,6 +1086,7 @@ function detailBeat(v, f) {
       frow('关二狗怎么反应', field(b, 'reaction', oid, { multi: true })), h('span', { class: 'arrow' }, '→'),
       frow('结果', field(b, 'result', oid, { multi: true }))),
     h('div', { class: 'grid2' }, frow('地图', mapIn, '标签，不是层级'), frow('原文摘句', field(b, 'source', oid, { multi: true, cls: 'quote' }), '梗概里的原句'))));
+  v.append(beatRequiresSec(b));
   v.append(sec('看／做／选／略', '第 4 步', h('p', { class: 'hint' }, isPhone() ? '再点一次取消。' : '大纲里选中这一拍按 Alt+1～4 更快。再点一次取消。'),
     seg(KINDS, b.kind, val => mutate(() => { b.kind = val; }))));
   if (isAct(b)) {
@@ -923,6 +1102,7 @@ function detailBeat(v, f) {
       frow('卡点', field(b, 'stuck', oid, { multi: true }), '四格填不出就写卡在哪——判决切片要验证的点'),
       h('details', { class: 'ask' }, h('summary', {}, '卡住时问自己三个问题'),
         h('ol', {}, h('li', {}, '这一刻关二狗想干嘛？玩家想干嘛？一致吗？不一致的地方往往就是戏。'), h('li', {}, '不靠提示文字，玩家怎么知道该做这个？'), h('li', {}, '做错了会怎样？什么都不会发生，玩法就不成立。')))));
+    v.append(optionsSec(b));
     const nameIn = h('input', { class: 'inp sm', placeholder: '新玩法名' });
     v.append(sec('归入玩法', '第 8 步', h('p', { class: 'hint' }, '这一拍在哪个玩法里担任哪一格：起（教）承（用）转（变）合（极）。'),
       doc.mechanics.length ? doc.mechanics.map(m => h('div', { class: 'mechrow' }, h('span', { class: 'name' }, m.name || '未命名玩法'),

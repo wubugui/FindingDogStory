@@ -24,6 +24,7 @@ brief 会给你：你的角色和规则、制作人的十步拆法、当前任�
 | 他正在看哪、光标在哪、刚改了什么 | `chaipai now` |
 | 看某个子阶段／拍／玩法／地图 | `chaipai show 2` / `show 2.1 --context 1` / `show 玩法:名字` / `show 地图:名字` |
 | 看泳道、梗概、停车场、全文 | `chaipai show 泳道` / `show 梗概` / `show 停车场` / `show 全文 --page 2` |
+| 看整张网（分支、选项跳转、汇合、前置条件） | `chaipai show 流向` |
 | 检查结果 | `chaipai checks --step 5` |
 | 有哪些任务 | `chaipai list`，指定任务加 `--task 名字` |
 | 盯着他改（有新改动才返回） | `chaipai wait --since <brief/now 给的游标> --timeout 120` |

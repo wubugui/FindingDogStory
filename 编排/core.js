@@ -18,15 +18,16 @@
   const ARC = [['qi', '起', '教：安全地学会'], ['cheng', '承', '用：正常使用'], ['zhuan', '转', '变：规则被扭一下'], ['he', '合', '极：用到头或崩掉']];
   const KINDS = [['看', '看 · 演出'], ['做', '做 · 玩家操作'], ['选', '选 · 玩家决定'], ['略', '略 · 跳过']];
   const KCLS = { '看': 'see', '做': 'do', '选': 'choose', '略': 'skip', '': 'none' };
-  const MODE_NAMES = { normal: '普通', loop: '循环', parallel: '并行' };
+  const MODE_NAMES = { normal: '普通', loop: '循环', parallel: '并行', branch: '分支' };
+  const WORKS_NAMES = { yes: '灵', no: '不灵', maybe: '看情况' };
   const LANE_KIND_NAMES = { curve: '曲线（-3～+3）', trend: '升降', text: '文字' };
   const STEP_NAMES = { 1: '顶层', 2: '切子阶段', 3: '拆拍', 4: '标看／做／选／略', 5: '细化做／选', 6: '回填设计目的', 7: '泳道', 8: '起承转合', 9: '地图汇总', 10: '判决句' };
   const GUIDE_STEPS = [
     { n: 1, name: '顶层', text: '填：这段讲什么（一句话）／关二狗从什么变成什么／关二狗的目的／结束条件。设计目的先空着。' },
-    { n: 2, name: '切子阶段', text: '切点是「局面变了」，换地图不算。每个写：关二狗的目的、开始局面、结束局面、结束条件。开始＝结束的删掉或并掉。循环写退出条件，不分先后的标并行。' },
+    { n: 2, name: '切子阶段', text: '切点是「局面变了」，换地图不算。每个写：关二狗的目的、开始局面、结束局面、结束条件。开始＝结束的删掉或并掉。循环写退出条件，不分先后的标并行；只有选了某个选项才走的标分支，写汇合到哪；要满足条件才发生的写前置条件。' },
     { n: 3, name: '拆拍', text: '一拍＝局面变一次。每拍：发生 → 反应 → 结果，标地图。这一步不想玩法。所有子阶段拆完才往下。' },
     { n: 4, name: '标看／做／选／略', text: '每拍标一个字。到这里，真正要设计的只剩标了「做」「选」的拍。' },
-    { n: 5, name: '细化做／选', text: '公式：动词＋对象＋阻力，写不出阻力改回「看」。四格：看到什么／做什么／游戏怎么回应／做错会怎样。填不出写卡点。' },
+    { n: 5, name: '细化做／选', text: '公式：动词＋对象＋阻力，写不出阻力改回「看」。四格：看到什么／做什么／游戏怎么回应／做错会怎样。填不出写卡点。「选」的拍列出每个选项的结果、后果和去向；一个目标有几种做法的「做」拍，列出每种做法灵不灵。' },
     { n: 6, name: '回填设计目的', text: '先子阶段、后顶层：删除测试 → 四格（学会／知道／感受／得失）→ 倒推 → 归纳。跟设计目的无关的拍标可砍。' },
     { n: 7, name: '泳道', text: '空泳道：补上或判定不属于这段；情绪平了：加一个「转」；多条泳道同一拍一起变：联动点，重点设计、重点试玩。' },
     { n: 8, name: '起承转合', text: '每个玩法走一遍：教 → 用 → 变 → 极。缺哪格，去对应子阶段补拍。' },
@@ -59,8 +60,12 @@
       stages: [], mechanics: [], mapVisits: {}, parking: []
     };
   }
-  const newStage = () => ({ id: uid(), title: '', goal: '', start: '', end: '', endCondition: '', mode: 'normal', loopExit: '', parallelGroup: '', design: newDesign(), laneExclude: [], collapsed: false, beats: [] });
-  const newBeat = () => ({ id: uid(), text: '', reaction: '', result: '', source: '', map: '', kind: '', formula: { verb: '', object: '', resistance: '' }, cells: { see: '', act: '', respond: '', wrong: '' }, stuck: '', cuttable: false, lanes: {} });
+  const newStage = () => ({ id: uid(), title: '', goal: '', start: '', end: '', endCondition: '', mode: 'normal', loopExit: '', parallelGroup: '', mergeTo: '', requires: [], design: newDesign(), laneExclude: [], collapsed: false, beats: [] });
+  const newBeat = () => ({ id: uid(), text: '', reaction: '', result: '', source: '', map: '', kind: '', formula: { verb: '', object: '', resistance: '' }, cells: { see: '', act: '', respond: '', wrong: '' }, stuck: '', cuttable: false, lanes: {}, options: [], requires: [] });
+  /* 选项（「选」的拍）/ 做法（「做」的拍）。goto：next 继续下一拍 / stage 跳到某子阶段 / end 这条线结束 */
+  const newOption = () => ({ id: uid(), choice: '', works: '', reaction: '', result: '', effect: '', goto: { type: 'next', stageId: '' } });
+  /* 前置条件：kind = stage（子阶段走完）/ beat（某拍发生过）/ option（某拍选过某选项）/ free（只写文字） */
+  const newRequire = () => ({ id: uid(), kind: 'free', id2: '', optionId: '', note: '' });
   const newMechanic = () => ({ id: uid(), name: '', ok: '', wrong: '', note: '', arc: { qi: [], cheng: [], zhuan: [], he: [] } });
 
   function normalize(d) {
@@ -75,11 +80,15 @@
       const ns = Object.assign(newStage(), s);
       ns.design = Object.assign(newDesign(), s.design || {});
       ns.laneExclude = s.laneExclude || [];
+      ns.requires = (s.requires || []).map(r => Object.assign(newRequire(), r));
+      ns.mergeTo = s.mergeTo || '';
       ns.beats = (s.beats || []).map(b => {
         const nb = Object.assign(newBeat(), b);
         nb.formula = Object.assign(newBeat().formula, b.formula || {});
         nb.cells = Object.assign(newBeat().cells, b.cells || {});
         nb.lanes = b.lanes || {};
+        nb.options = (b.options || []).map(o => { const no = Object.assign(newOption(), o); no.goto = Object.assign({ type: 'next', stageId: '' }, o.goto || {}); return no; });
+        nb.requires = (b.requires || []).map(r => Object.assign(newRequire(), r));
         return nb;
       });
       return ns;
@@ -108,6 +117,42 @@
       vs.get(s.id).beats.push({ b, bi });
     }));
     return [...m].map(([map, vs]) => ({ map, visits: [...vs.values()] }));
+  }
+
+  /* ---------- 网状关系 ---------- */
+  /* 哪些拍的哪些选项通向某个子阶段 */
+  function optionSources(d, stageId) {
+    const out = [];
+    allBeats(d).forEach(x => x.b.options.forEach(o => { if (o.goto && o.goto.type === 'stage' && o.goto.stageId === stageId) out.push(Object.assign({ o }, x)); }));
+    return out;
+  }
+  function optionLabel(o, b) { return oneLineText(o.choice) || '（未写选项）'; }
+  function oneLineText(t) { return (t || '').replace(/\s+/g, ' ').trim(); }
+  function stageRefText(d, stageId) { const f = findStage(d, stageId); return f ? `子阶段 ${f.si + 1}「${short(f.s.title, 14)}」` : '（已删除的子阶段）'; }
+  function gotoText(d, o) {
+    const g = o.goto || { type: 'next' };
+    if (g.type === 'stage') return '跳到 ' + stageRefText(d, g.stageId);
+    if (g.type === 'end') return '这条线结束';
+    return '继续下一拍';
+  }
+  function mergeText(d, s) {
+    if (!s.mergeTo) return '按顺序接下一个子阶段';
+    if (s.mergeTo === 'end') return '这条线在这里结束';
+    return '汇合到 ' + stageRefText(d, s.mergeTo);
+  }
+  /* 前置条件是否还指得到东西 */
+  function requireTarget(d, r) {
+    if (r.kind === 'stage') { const f = findStage(d, r.id2); return f ? { ok: true, text: `子阶段 ${f.si + 1}「${short(f.s.title, 14)}」走完` } : { ok: false, text: '（已删除的子阶段）' }; }
+    if (r.kind === 'beat') { const f = findBeat(d, r.id2); return f ? { ok: true, text: `拍 ${f.si + 1}.${f.bi + 1}「${short(f.b.text, 14)}」发生过` } : { ok: false, text: '（已删除的拍）' }; }
+    if (r.kind === 'option') {
+      const f = findBeat(d, r.id2); const o = f && f.b.options.find(x => x.id === r.optionId);
+      return o ? { ok: true, text: `拍 ${f.si + 1}.${f.bi + 1} 选了「${short(o.choice, 14)}」` } : { ok: false, text: '（已删除的选项）' };
+    }
+    return { ok: true, text: '' };
+  }
+  function requireText(d, r) {
+    const t = requireTarget(d, r);
+    return [t.text, oneLineText(r.note)].filter(Boolean).join('：') || '（空的前置条件）';
   }
 
   /* ---------- 泳道分析 ---------- */
@@ -173,8 +218,24 @@
           if (filled(b.stuck)) add('info', 5, B, `${bn}：卡点，留给判决切片验证——${short(b.stuck, 30)}`);
           if (!mechOfBeat(d, b.id).length) add('warn', 8, B, `${bn}：没归入任何玩法`);
         }
+        if (b.kind === '选' && b.options.length < 2) add('warn', 5, B, `${bn}：「选」的拍只有 ${b.options.length} 个选项——至少列两个`);
+        b.options.forEach((o, oi) => {
+          const on = `${bn} ${b.kind === '做' ? '做法' : '选项'} ${oi + 1}「${short(o.choice, 10)}」`;
+          if (!filled(o.choice)) add('miss', 5, B, `${on}：没写${b.kind === '做' ? '怎么做' : '玩家选什么'}`);
+          if (!filled(o.result)) add('miss', 5, B, `${on}：没写结果`);
+          if (!filled(o.effect)) add('warn', 5, B, `${on}：没写后果（影响什么）`);
+          if (b.kind === '做' && !o.works) add('warn', 5, B, `${on}：没标灵不灵`);
+          if (o.goto && o.goto.type === 'stage' && !findStage(d, o.goto.stageId)) add('miss', 2, B, `${on}：去向指向的子阶段不存在`);
+        });
+        b.requires.forEach(r => { if (!requireTarget(d, r).ok) add('miss', 2, B, `${bn}：前置条件指向的东西已经删了`); if (r.kind === 'free' && !filled(r.note)) add('warn', 2, B, `${bn}：有一条前置条件是空的`); });
         if (b.cuttable) add('info', 6, B, `${bn}：标了可砍`);
       });
+      if (s.mode === 'branch') {
+        if (!optionSources(d, s.id).length) add('miss', 2, S, `${nm}：标了分支，但没有任何选项通向它——玩家到不了`);
+        if (!s.mergeTo) add('warn', 2, S, `${nm}：分支没写汇合到哪（或者标「这条线在这里结束」）`);
+      }
+      if (s.mergeTo && s.mergeTo !== 'end' && !findStage(d, s.mergeTo)) add('miss', 2, S, `${nm}：汇合到的子阶段不存在`);
+      s.requires.forEach(r => { if (!requireTarget(d, r).ok) add('miss', 2, S, `${nm}：前置条件指向的东西已经删了`); if (r.kind === 'free' && !filled(r.note)) add('warn', 2, S, `${nm}：有一条前置条件是空的`); });
       if (!filled(s.design.summary)) add('miss', 6, S, `${nm}：设计目的还空着`);
       if (s.beats.length) d.lanes.forEach(l => {
         if ((s.laneExclude || []).includes(l.id)) return;
@@ -273,6 +334,9 @@
       L.push(`- **关二狗的目的**：${mdEsc(s.goal)}`, `- **开始**：${mdEsc(s.start)}`, `- **结束**：${mdEsc(s.end)}`, `- **结束条件**：${mdEsc(s.endCondition)}`, ...D(s.design));
       const excl = d.lanes.filter(l => (s.laneExclude || []).includes(l.id)).map(l => l.name);
       if (excl.length) L.push(`- **判定不属于这一段的泳道**：${excl.join('、')}`);
+      if (s.mode === 'branch') { const src = optionSources(d, s.id); L.push(`- **从哪来**：${src.length ? src.map(x => `拍 ${x.si + 1}.${x.bi + 1} 选「${mdEsc(x.o.choice)}」`).join('；') : '（没有选项通向它）'}`); }
+      if (s.mergeTo || s.mode === 'branch') L.push(`- **之后**：${mergeText(d, s)}`);
+      if (s.requires.length) L.push(`- **前置条件**：${s.requires.map(r => mdEsc(requireText(d, r))).join('；')}`);
       L.push('');
       if (s.beats.length) {
         L.push('| # | 发生 | 反应 | 结果 | 类型 | 地图 | 可砍 | 原文摘句 |', '|---|---|---|---|---|---|---|---|');
@@ -284,6 +348,14 @@
           L.push(`- **公式**：${mdEsc(b.formula.verb) || '＿'} ＋ ${mdEsc(b.formula.object) || '＿'} ＋ ${mdEsc(b.formula.resistance) || '＿'}`);
           L.push(`- 玩家看到什么：${mdEsc(b.cells.see)}`, `- 玩家做什么：${mdEsc(b.cells.act)}`, `- 游戏怎么回应：${mdEsc(b.cells.respond)}`, `- 做错了会怎样：${mdEsc(b.cells.wrong)}`);
           if (filled(b.stuck)) L.push(`- **卡点**：${mdEsc(b.stuck)}`);
+          if (b.requires.length) L.push(`- **前置条件**：${b.requires.map(r => mdEsc(requireText(d, r))).join('；')}`);
+          if (b.options.length) {
+            const isDo = b.kind === '做';
+            L.push('', isDo ? '| 做法 | 灵不灵 | 反应 | 结果 | 后果 | 去向 |' : '| 选项 | 反应 | 结果 | 后果 | 去向 |', isDo ? '|---|---|---|---|---|---|' : '|---|---|---|---|---|');
+            b.options.forEach(o => L.push(isDo
+              ? `| ${mdEsc(o.choice)} | ${WORKS_NAMES[o.works] || ''} | ${mdEsc(o.reaction)} | ${mdEsc(o.result)} | ${mdEsc(o.effect)} | ${gotoText(d, o)} |`
+              : `| ${mdEsc(o.choice)} | ${mdEsc(o.reaction)} | ${mdEsc(o.result)} | ${mdEsc(o.effect)} | ${gotoText(d, o)} |`));
+          }
           L.push('');
         });
       }
@@ -320,9 +392,10 @@
 
   const api = {
     uid, filled, short, hashKey, mdEsc,
-    DESIGN_KEYS, ARC, KINDS, KCLS, MODE_NAMES, LANE_KIND_NAMES, STEP_NAMES, GUIDE_STEPS, GUIDE_RULES, FIELD_LABELS,
+    DESIGN_KEYS, ARC, KINDS, KCLS, MODE_NAMES, WORKS_NAMES, LANE_KIND_NAMES, STEP_NAMES, GUIDE_STEPS, GUIDE_RULES, FIELD_LABELS,
     newDesign, newDoc, newStage, newBeat, newMechanic, normalize,
     allBeats, findStage, findBeat, mechOfBeat, laneFilled, isAct, visitKey, mapGroups,
+    newOption, newRequire, optionSources, gotoText, mergeText, requireTarget, requireText, stageRefText,
     flatEmotionIds, laneChanges, computeIssues, criteria, progress,
     objLabel, keyLabel, buildMarkdown
   };
