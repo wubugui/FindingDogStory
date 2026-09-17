@@ -133,6 +133,29 @@
       "collapsed": false,
       "beats": [
         {
+          "id": "v9w3suylbt",
+          "text": "上梁顶，风吹的呼呼的，关二狗骂骂咧咧，走来走去，找不到路，突然发现有一把钱纸被大风吹过来",
+          "reaction": "骂骂咧咧，走来走去",
+          "result": "找到了",
+          "source": "",
+          "map": "",
+          "kind": "",
+          "formula": {
+            "verb": "",
+            "object": "",
+            "resistance": ""
+          },
+          "cells": {
+            "see": "",
+            "act": "",
+            "respond": "",
+            "wrong": ""
+          },
+          "stuck": "",
+          "cuttable": false,
+          "lanes": {}
+        },
+        {
           "id": "eioubvq7d1",
           "text": "关二狗来到梁上，风吹的呼呼的，把他的火把直接吹灭，他又点燃火把",
           "reaction": "习以为常的点燃火把",
@@ -158,29 +181,6 @@
             "2web49itnf": "平",
             "puyhi4itnf": "学会使用基础的火把"
           }
-        },
-        {
-          "id": "v9w3suylbt",
-          "text": "继续往前走，风变大，再次吹灭火把，寻找",
-          "reaction": "骂骂咧咧",
-          "result": "",
-          "source": "",
-          "map": "",
-          "kind": "",
-          "formula": {
-            "verb": "",
-            "object": "",
-            "resistance": ""
-          },
-          "cells": {
-            "see": "",
-            "act": "",
-            "respond": "",
-            "wrong": ""
-          },
-          "stuck": "",
-          "cuttable": false,
-          "lanes": {}
         }
       ]
     },
