@@ -113,9 +113,9 @@
     {
       "id": "raanp54wje",
       "title": "初上跑马梁",
-      "goal": "",
-      "start": "",
-      "end": "",
+      "goal": "找到去向任务地的路",
+      "start": "一片懵逼，不知道往那边走",
+      "end": "找到了路，",
       "endCondition": "",
       "mode": "normal",
       "loopExit": "",
