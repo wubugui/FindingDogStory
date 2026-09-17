@@ -651,7 +651,11 @@ function showHelp(key, anchor) {
 }
 document.addEventListener('pointerdown', e => { const p = $('#helppop'); if (p && !p.contains(e.target) && !(e.target.classList && e.target.classList.contains('help'))) closeHelp(); }, true);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeHelp(); });
-const frow = (label, ctrl, hint) => h('div', { class: 'frow' }, h('span', { class: 'flabel' }, label, helpBtn(label), hint ? h('span', { class: 'hint' }, ' · ' + hint) : null), ctrl);
+/* 每个格子带上自己的名字（读屏、自动化工具靠它认格子） */
+const frow = (label, ctrl, hint) => {
+  if (ctrl && ctrl.setAttribute && /^(INPUT|TEXTAREA|SELECT)$/.test(ctrl.tagName)) ctrl.setAttribute('aria-label', label);
+  return h('div', { class: 'frow' }, h('span', { class: 'flabel' }, label, helpBtn(label), hint ? h('span', { class: 'hint' }, ' · ' + hint) : null), ctrl);
+};
 const kindBadge = b => h('span', { class: 'kb k-' + KCLS[b.kind || ''], title: b.kind ? b.kind : '还没标看/做/选' }, b.kind || '?');
 const modeBadge = s => [s.mode === 'loop' ? h('span', { class: 'mb', title: '循环' }, '↻') : s.mode === 'parallel' ? h('span', { class: 'mb', title: '并行' }, '∥') : s.mode === 'branch' ? h('span', { class: 'mb', title: '分支：只有选了某个选项才走' }, '⑂') : null,
   s.requires && s.requires.length ? h('span', { class: 'mb', title: '有前置条件' }, '🔒') : null];
