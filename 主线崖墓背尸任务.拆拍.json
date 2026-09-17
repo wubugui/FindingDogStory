@@ -151,9 +151,13 @@
             "respond": "火把点燃，看清路",
             "wrong": "继续教学"
           },
-          "stuck": "",
+          "stuck": "这是教学",
           "cuttable": false,
-          "lanes": {}
+          "lanes": {
+            "emotion": 0,
+            "2web49itnf": "平",
+            "puyhi4itnf": "学会使用基础的火把"
+          }
         }
       ]
     },
@@ -319,7 +323,38 @@
       "beats": []
     }
   ],
-  "mechanics": [],
+  "mechanics": [
+    {
+      "id": "ot4nmawkmr",
+      "name": "起",
+      "ok": "",
+      "wrong": "",
+      "note": "",
+      "arc": {
+        "qi": [
+          "eioubvq7d1"
+        ],
+        "cheng": [],
+        "zhuan": [],
+        "he": []
+      }
+    },
+    {
+      "id": "15gns6x5h1",
+      "name": "火把玩法",
+      "ok": "",
+      "wrong": "",
+      "note": "",
+      "arc": {
+        "qi": [
+          "eioubvq7d1"
+        ],
+        "cheng": [],
+        "zhuan": [],
+        "he": []
+      }
+    }
+  ],
   "mapVisits": {},
   "parking": []
 }
