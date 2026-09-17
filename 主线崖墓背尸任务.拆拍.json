@@ -1,0 +1,43 @@
+{
+  "app": "拆拍台",
+  "version": 1,
+  "meta": {
+    "title": "未命名任务",
+    "summary": "",
+    "changeFrom": "",
+    "changeTo": "",
+    "goal": "",
+    "endCondition": "",
+    "design": {
+      "learn": "",
+      "know": "",
+      "feel": "",
+      "gain": "",
+      "deleteTest": "",
+      "backward": "",
+      "summary": ""
+    }
+  },
+  "synopsis": "",
+  "lanes": [
+    {
+      "id": "emotion",
+      "name": "情绪",
+      "kind": "curve"
+    },
+    {
+      "id": "2web49itnf",
+      "name": "三把火",
+      "kind": "trend"
+    },
+    {
+      "id": "puyhi4itnf",
+      "name": "玩家知道什么",
+      "kind": "text"
+    }
+  ],
+  "stages": [],
+  "mechanics": [],
+  "mapVisits": {},
+  "parking": []
+}
