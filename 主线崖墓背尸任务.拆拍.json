@@ -158,6 +158,29 @@
             "2web49itnf": "平",
             "puyhi4itnf": "学会使用基础的火把"
           }
+        },
+        {
+          "id": "v9w3suylbt",
+          "text": "继续往前走，风变大，再次吹灭火把，寻找",
+          "reaction": "骂骂咧咧",
+          "result": "",
+          "source": "",
+          "map": "",
+          "kind": "",
+          "formula": {
+            "verb": "",
+            "object": "",
+            "resistance": ""
+          },
+          "cells": {
+            "see": "",
+            "act": "",
+            "respond": "",
+            "wrong": ""
+          },
+          "stuck": "",
+          "cuttable": false,
+          "lanes": {}
         }
       ]
     },
