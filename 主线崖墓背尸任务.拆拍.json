@@ -36,7 +36,31 @@
       "kind": "text"
     }
   ],
-  "stages": [],
+  "stages": [
+    {
+      "id": "04fi2xo5f0",
+      "title": "",
+      "goal": "",
+      "start": "",
+      "end": "",
+      "endCondition": "",
+      "mode": "normal",
+      "loopExit": "",
+      "parallelGroup": "",
+      "design": {
+        "learn": "",
+        "know": "",
+        "feel": "",
+        "gain": "",
+        "deleteTest": "",
+        "backward": "",
+        "summary": ""
+      },
+      "laneExclude": [],
+      "collapsed": false,
+      "beats": []
+    }
+  ],
   "mechanics": [],
   "mapVisits": {},
   "parking": []
