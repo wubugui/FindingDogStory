@@ -169,6 +169,9 @@ body[data-layout="phone"].kbd-open #toasts{bottom:12px}
 .helppop ul,.modal ul{margin:4px 0 8px;padding-left:18px}
 .helppop li,.modal li{margin:2px 0}
 .helpeg{color:var(--muted)}
+.purposebox{border-left:3px solid var(--accent);background:var(--bg);border-radius:0 6px 6px 0;padding:8px 10px;margin-bottom:10px}
+.purposebox .purpose{font-weight:600;margin-bottom:4px;white-space:pre-wrap}
+.purposebox .hint{white-space:pre-wrap}
 /* outline */
 .outline-head{display:flex;flex-direction:column;padding:2px 12px 6px;border-bottom:1px solid var(--line);margin-bottom:4px}
 .outline-head b{font-size:13px}
@@ -926,7 +929,18 @@ function detailBeat(v, f) {
         h('div', { class: 'seg' }, ARC.map(([k, t]) => h('button', { class: m.arc[k].includes(b.id) ? 'on' : '', title: ARC.find(a => a[0] === k)[2], onclick: () => mutate(() => { m.arc[k] = m.arc[k].includes(b.id) ? m.arc[k].filter(x => x !== b.id) : [...m.arc[k], b.id]; }) }, t))))) : h('p', { class: 'hint' }, '还没有玩法。'),
       h('div', { class: 'toolbar', style: 'margin-top:8px' }, nameIn, btn('新建玩法', () => { const n = nameIn.value.trim(); if (!n) { nameIn.focus(); return; } mutate(() => { const m = newMechanic(); m.name = n; doc.mechanics.push(m); }); }, 'sm'))));
   }
+  // 判断可砍要对照所在子阶段的设计目的：直接摆出来，不用回去翻
+  const dg = s.design;
+  const purposeBox = h('div', { class: 'purposebox' },
+    h('div', { class: 'flabel', style: 'margin-bottom:4px' }, `对照：子阶段 ${si + 1}「${short(s.title, 16)}」的设计目的`,
+      h('a', { class: 'lnk', style: 'margin-left:8px', onclick: () => select({ type: 'stage', id: s.id }, { tab: 'detail' }) }, '去改')),
+    C.filled(dg.summary)
+      ? h('div', { class: 'purpose' }, dg.summary)
+      : h('div', { class: 'warnline', style: 'margin:0' }, '这个子阶段的设计目的还没写——先去写了，才判断得了这一拍该不该砍。'),
+    [['deleteTest', '删除测试'], ...C.DESIGN_KEYS.map(([k, l]) => [k, l]), ['backward', '倒推']].filter(([k]) => C.filled(dg[k])).map(([k, l]) => h('div', { class: 'hint' }, `${l}：${dg[k]}`)),
+    C.filled(s.goal) ? h('div', { class: 'hint' }, `关二狗的目的：${s.goal}`) : null);
   v.append(sec('可砍 · 泳道', '第 6 · 7 步',
+    purposeBox,
     h('label', { class: 'checkline' }, h('input', { type: 'checkbox', checked: b.cuttable, onchange: e => mutate(() => { b.cuttable = e.target.checked; }) }), '可砍：这一拍跟所在子阶段的设计目的无关，删了不影响这段要给玩家的东西（只是标记，不会删）', helpBtn('可砍')),
     doc.lanes.map(l => h('div', { class: 'laneedit' }, h('span', { class: 'flabel', style: 'margin:0' }, l.name, helpBtn('泳道值:' + (l.id === 'emotion' ? 'emotion' : l.kind))), laneEditor(b, l)))));
 }
