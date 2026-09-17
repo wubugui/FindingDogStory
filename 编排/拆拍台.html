@@ -529,7 +529,7 @@ function renderHeader() {
 function renderOutline() {
   const box = $('#outline'); const st = box.scrollTop; box.innerHTML = '';
   box.append(h('div', { class: 'outline-head' }, h('b', {}, '大纲 · 任务 → 子阶段 → 拍'),
-    h('span', { class: 'hint' }, 'Enter 新行（光标后的字带过去）· Tab 降为拍 · Shift+Tab 升为子阶段 · Alt+↑↓ 移动 · Alt+1~4 标 看/做/选/略 · 拖编号排序 · 空行 Backspace 删除')));
+    h('span', { class: 'hint' }, 'Enter 新行（光标后的字带过去）· Tab 降为拍 · Shift+Tab 升为子阶段 · Alt+↑↓ 移动 · Alt+1~4 标 看/做/选/略 · 拖编号排序')));
   box.append(h('div', { class: 'row top' + (sel.type === 'top' ? ' selected' : ''), dataset: { id: 'top' }, onclick: () => rowTap({ type: 'top' }) },
     h('span', { class: 'num' }, '任务'), h('span', { class: 'label', style: 'flex:1' }, syncSpan('top:title', doc.meta.title, '未命名任务')), h('span', { class: 'dot', dataset: { dotFor: 'top' } }), goBtn({ type: 'top' })));
   doc.stages.forEach((s, si) => {
@@ -651,20 +651,6 @@ function outlineKey(e, target, el) {
     const kd = ['看', '做', '选', '略'][+k - 1]; const f = findBeat(target.id);
     mutate(() => { f.b.kind = f.b.kind === kd ? '' : kd; });
     focusOutline(target.id, true); return;
-  }
-  if (k === 'Backspace' && el.value === '' && !e.repeat) {
-    const all = rows(); const i = all.indexOf(el); const prevKey = i > 0 ? all[i - 1].dataset.focusKey : null;
-    if (target.type === 'beat') {
-      e.preventDefault(); const f = findBeat(target.id);
-      if (beatHasContent(f.b) && !confirm('这一拍还有细化内容，删掉？')) return;
-      mutate(() => f.s.beats.splice(f.bi, 1));
-    } else {
-      const f = findStage(target.id); if (f.s.beats.length) return;
-      e.preventDefault();
-      if (stageHasContent(f.s) && !confirm('这个子阶段还写了目的、局面等内容，删掉？')) return;
-      mutate(() => doc.stages.splice(f.si, 1));
-    }
-    if (prevKey) focusKey(prevKey, true);
   }
 }
 let drag = null;
@@ -1136,7 +1122,7 @@ function renderGuide(v) {
     h('li', {}, '这一刻关二狗想干嘛？玩家想干嘛？一致吗？'), h('li', {}, '不靠提示文字，玩家怎么知道该做这个？'), h('li', {}, '做错了会怎样？什么都不会发生＝玩法不成立。'))));
   v.append(sec('倒推技巧', '', h('p', { style: 'margin:0' }, '先定高潮（比如坠潭、三把火一把一把熄、香粉味浮起来），再往回问：要让这一刻最狠，玩家前面得先学会什么、拥有过什么、失去过什么？答案分派给前面的子阶段。')));
   v.append(sec('快捷键', '', h('div', {},
-    ['Enter：新建同级（光标后的字带到新行）', 'Ctrl+Enter（子阶段行）：在它下面加第一拍', 'Tab：子阶段降为上一个子阶段的拍', 'Shift+Tab：拍升为子阶段（后面的拍跟过去）', '↑ ↓：上下切换行', 'Alt+↑ ↓：移动', 'Alt+1～4：标 看／做／选／略', '空行 Backspace：删除', '拖动编号：排序', 'Ctrl+S 保存 · Ctrl+Z 撤销 · Ctrl+Y 重做'].map(t => h('div', {}, t)))));
+    ['Enter：新建同级（光标后的字带到新行）', 'Ctrl+Enter（子阶段行）：在它下面加第一拍', 'Tab：子阶段降为上一个子阶段的拍', 'Shift+Tab：拍升为子阶段（后面的拍跟过去）', '↑ ↓：上下切换行', 'Alt+↑ ↓：移动', 'Alt+1～4：标 看／做／选／略', '拖动编号：排序', 'Ctrl+S 保存 · Ctrl+Z 撤销 · Ctrl+Y 重做'].map(t => h('div', {}, t)))));
 }
 
 /* ====================================================================
