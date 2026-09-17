@@ -13,7 +13,7 @@ description: 拆拍台只读陪拆。制作人谈到拆拍台、编排、拆拍�
 - Git Bash / macOS / Linux：`sh 编排/chaipai brief`
 - Windows cmd / PowerShell：`编排\chaipai.cmd brief`
 
-brief 会给你：你的角色和规则、制作人的十步拆法、当前任务进度、他正在看哪。**规则和方法以 brief 的输出为准**，这份 skill 只管入口。
+brief 会给你：你的角色和规则、制作人的九步拆法、当前任务进度、他正在看哪。**规则和方法以 brief 的输出为准**，这份 skill 只管入口。
 ## 常用命令（全部只读，都支持 --json）
 
 | 要干什么 | 命令 |

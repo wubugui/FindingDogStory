@@ -251,8 +251,8 @@ function resolveRef(doc, raw) {
 }
 
 /* ================= 渲染片段 ================= */
-function kindCounts(beats) { const c = { 看: 0, 做: 0, 选: 0, 略: 0, 未标: 0 }; beats.forEach(b => { c[b.kind || '未标']++; }); return c; }
-const kindText = c => `看${c.看}／做${c.做}／选${c.选}／略${c.略}／未标${c.未标}`;
+function kindCounts(beats) { const c = { 看: 0, 做: 0, 选: 0, 未标: 0 }; beats.forEach(b => { c[c.hasOwnProperty(b.kind) ? b.kind : '未标']++; }); return c; }
+const kindText = c => `看${c.看}／做${c.做}／选${c.选}／未标${c.未标}`;
 function beatLine(x) {
   const b = x.b;
   return `${x.si + 1}.${x.bi + 1} [${b.kind || '?'}] ${oneLine(b.text) || '（未写）'} → ${oneLine(b.reaction) || '…'} → ${oneLine(b.result) || '…'}`
@@ -334,9 +334,9 @@ function showTop(ctx) {
   const { doc } = ctx; const m = doc.meta;
   const L = [`## 顶层 · ${m.title || '未命名任务'}`, '',
     `- 这段讲什么：${V(m.summary)}`, `- 关二狗怎么变了：从 ${V(m.changeFrom)} 到 ${V(m.changeTo)}`,
-    `- 关二狗的目的：${V(m.goal)}`, `- 结束条件：${V(m.endCondition)}`, '', '### 设计目的', ...designLines(m.design), '',
+    `- 关二狗的目的：${V(m.goal)}`, `- 体验目标：${V(m.experience)}`, '',
     `### 子阶段（${doc.stages.length}）`];
-  doc.stages.forEach((s, si) => L.push(`${si + 1}. ${oneLine(s.title) || '（未命名）'} ${stageModeText(s)}— ${s.beats.length} 拍（${kindText(kindCounts(s.beats))}）`));
+  doc.stages.forEach((s, si) => L.push(`${si + 1}. ${oneLine(s.title) || '（未命名）'} ${stageModeText(s)}${s.track === 'optional' ? '〔可选〕' : ''}— ${s.beats.length} 拍（${kindText(kindCounts(s.beats))}）；设计目的：${oneLine(s.design.summary) || '（空）'}`));
   L.push('', ...issuesBlock(doc, ctx.issues.filter(i => i.target.type === 'top'), '检查（顶层）'));
   return { text: L.join('\n'), data: { ref: 'top', meta: m, stages: doc.stages.map((s, si) => ({ ref: String(si + 1), id: s.id, title: s.title, mode: s.mode, beats: s.beats.length, kinds: kindCounts(s.beats) })), issues: ctx.issues.filter(i => i.target.type === 'top') } };
 }
@@ -347,9 +347,10 @@ function showStage(ctx, id) {
   const excl = doc.lanes.filter(l => s.laneExclude.includes(l.id)).map(l => l.name);
   const park = doc.parking.filter(p => p.stageId === id);
   const L = [`## 子阶段 ${si + 1}「${oneLine(s.title) || '未命名'}」${stageModeText(s)}`, '',
-    `- 关二狗的目的：${V(s.goal)}`, `- 开始时局面：${V(s.start)}`, `- 结束时局面：${V(s.end)}`, `- 结束条件：${V(s.endCondition)}`,
-    `- 判定不属于这一段的泳道：${excl.length ? excl.join('、') : '（无）'}`, '', ...networkLines(doc, s), '', '### 设计目的', ...designLines(s.design), '',
-    `### 拍（${s.beats.length}）`, ...(s.beats.length ? s.beats.map((b, bi) => '- ' + beatLine({ b, s, si, bi })) : ['（还没拆拍）']), ''];
+    `- 落位：${C.TRACK_NAMES[s.track] || '主线'}`, `- 地点·时段·氛围：${V(s.setting)}`, `- 关二狗的目的：${V(s.goal)}`, `- 开始时局面：${V(s.start)}`, `- 结束时局面：${V(s.end)}`,
+    `- 登场角色与物件：${V(s.cast)}`, `- 伏线：${V(s.foreshadow)}`,
+    `- 判定不属于这一段的泳道：${excl.length ? excl.join('、') : '（无）'}`, '', '### 设计目的', ...designLines(s.design), '',
+    `### 拍（${s.beats.length}）`, ...(s.beats.length ? s.beats.map((b, bi) => '- ' + beatLine({ b, s, si, bi })) : ['（还没拆拍）']), '', ...networkLines(doc, s), ''];
   if (park.length) L.push('### 挂在这一段的停车场', ...park.map(p => `- [${p.done ? 'x' : ' '}] ${oneLine(p.text)}`), '');
   L.push(...issuesBlock(doc, iss, '检查（这个子阶段和它的拍）'));
   return { text: L.join('\n'), data: { ref: String(si + 1), stage: s, excludedLanes: excl, parking: park, issues: iss } };
@@ -363,11 +364,16 @@ function showBeat(ctx, id, contextN) {
   const iss = ctx.issues.filter(i => i.target.type === 'beat' && i.target.id === id);
   const L = [`## 拍 ${si + 1}.${bi + 1}「${oneLine(b.text) || '未写'}」`, `（属于子阶段 ${si + 1}「${oneLine(s.title) || '未命名'}」）`, '',
     `- 类型：${b.kind || '（未标）'}`, `- 发生了什么：${V(b.text)}`, `- 关二狗怎么反应：${V(b.reaction)}`, `- 结果：${V(b.result)}`,
-    `- 地图：${V(b.map)}`, `- 原文摘句：${V(b.source)}`, `- 可砍：${b.cuttable ? '是' : '否'}`];
+    `- 地图：${V(b.map)}`, `- 在场者：${V(b.who)}`, `- 原文摘句：${V(b.source)}`, `- 可砍：${b.cuttable ? '是' : '否'}`,
+    `- 所在子阶段的设计目的：${V(s.design.summary)}`];
+  if (b.kind === '做') {
+    L.push(`- 公式：${oneLine(b.formula.verb) || '＿'} ＋ ${oneLine(b.formula.object) || '＿'} ＋ ${oneLine(b.formula.resistance) || '＿'}`);
+    if (b.options.length) L.push('- 四格：（列了做法表，不填四格）');
+    else L.push(`- 四格·玩家看到什么：${V(b.cells.see)}`, `- 四格·玩家做什么：${V(b.cells.act)}`, `- 四格·游戏怎么回应：${V(b.cells.respond)}`, `- 四格·做错了会怎样：${V(b.cells.wrong)}`);
+  }
+  if (b.kind === '选') L.push(`- 两难：${V(b.dilemma)}`);
   if (C.isAct(b)) {
-    L.push(`- 公式：${oneLine(b.formula.verb) || '＿'} ＋ ${oneLine(b.formula.object) || '＿'} ＋ ${oneLine(b.formula.resistance) || '＿'}`,
-      `- 四格·玩家看到什么：${V(b.cells.see)}`, `- 四格·玩家做什么：${V(b.cells.act)}`, `- 四格·游戏怎么回应：${V(b.cells.respond)}`, `- 四格·做错了会怎样：${V(b.cells.wrong)}`,
-      `- 卡点：${V(b.stuck)}`,
+    L.push(`- 细化完成：${C.detailDone(b) ? '是' : '否'}`, `- 卡点：${V(b.stuck)}`,
       `- 归入玩法：${mechs.length ? mechs.map(x => `${x.m.name || '未命名'}（${x.slots.join('、')}）`).join('；') : '（无）'}`);
   }
   if (b.requires.length) L.push(`- 前置条件：${b.requires.map(r => C.requireText(doc, r)).join('；')}`);
@@ -495,7 +501,7 @@ function readRules() {
   catch (e) { throw new CliError(EXIT.READ_FAIL, `读不了规则文件 ${path.basename(RULES_FILE)}：${e.message}`); }
 }
 function methodText() {
-  return ['## 方法：制作人的十步拆法', '', '两条总规矩：', ...C.GUIDE_RULES.map(r => `- ${r}`), '', ...C.GUIDE_STEPS.map(g => `${g.n}. **${g.name}**：${g.text}`)].join('\n');
+  return ['## 方法：制作人的九步拆法（每一步只依赖前面的步骤）', '', '两条总规矩：', ...C.GUIDE_RULES.map(r => `- ${r}`), '', ...C.GUIDE_STEPS.map(g => `${g.n}. **${g.name}**：${g.text}`)].join('\n');
 }
 const NEXT = [
   'chaipai now —— 他正在看哪、光标在哪、最近改了什么，附选中条目的内容',
@@ -514,7 +520,7 @@ function cmdBrief(flags) {
     return EXIT.OK;
   }
   const ctx = openTask(flags); const { doc } = ctx; const fr = freshness(ctx); const vw = viewing(ctx); const pg = ctx.progress;
-  const crit = C.criteria(doc).map(([text, ok]) => ({ text, ok }));
+  const crit = C.criteria(doc, ctx.issues).map(([text, ok]) => ({ text, ok }));
   const beats = C.allBeats(doc).map(x => x.b);
   const scale = { stages: doc.stages.length, beats: beats.length, kinds: kindCounts(beats), mechanics: doc.mechanics.length, maps: C.mapGroups(doc).length, parkingOpen: doc.parking.filter(p => !p.done).length };
   const rules = readRules();
@@ -523,7 +529,7 @@ function cmdBrief(flags) {
     `- 新鲜度：${fr.text}`,
     `- 文件：${fr.file || '还没存成文件'}${fr.unsaved ? '（有未保存的改动）' : ''}`];
   if (fr.cursor) L.push(`- 游标：${fr.cursor}（给 chaipai wait --since 用）`);
-  L.push(`- 当前进度：${pg.current ? `卡在第 ${pg.current} 步「${pg.currentName}」` : '十步都没有待处理项'}`,
+  L.push(`- 当前进度：${pg.current ? `卡在第 ${pg.current} 步「${pg.currentName}」` : '九步都没有待处理项'}`,
     `- 各步待处理：${Object.entries(pg.pending).map(([n, c]) => `${circled(+n)}${c}`).join(' ')}`,
     '- 完成标准：', ...crit.map(c => `  - [${c.ok ? 'x' : ' '}] ${c.text}`),
     `- 规模：子阶段 ${scale.stages}，拍 ${scale.beats}（${kindText(scale.kinds)}），玩法 ${scale.mechanics}，地图 ${scale.maps}，停车场未处理 ${scale.parkingOpen}`,
@@ -575,7 +581,7 @@ function cmdChecks(flags) {
     list = list.filter(i => want.includes(i.level));
   }
   const crit = C.criteria(doc).map(([text, ok]) => ({ text, ok }));
-  const L = [`# 检查 · ${doc.meta.title || ctx.task.name}`, '', `- 新鲜度：${fr.text}`, `- 当前进度：${ctx.progress.current ? `卡在第 ${ctx.progress.current} 步「${ctx.progress.currentName}」` : '十步都没有待处理项'}`, '', '## 完成标准', ...crit.map(c => `- [${c.ok ? 'x' : ' '}] ${c.text}`), ''];
+  const L = [`# 检查 · ${doc.meta.title || ctx.task.name}`, '', `- 新鲜度：${fr.text}`, `- 当前进度：${ctx.progress.current ? `卡在第 ${ctx.progress.current} 步「${ctx.progress.currentName}」` : '九步都没有待处理项'}`, '', '## 完成标准', ...crit.map(c => `- [${c.ok ? 'x' : ' '}] ${c.text}`), ''];
   const byStep = {}; list.forEach(i => { (byStep[i.step] = byStep[i.step] || []).push(i); });
   const steps = Object.keys(byStep).map(Number).sort((a, b) => a - b);
   if (!steps.length) L.push('（没有符合条件的检查项）');
