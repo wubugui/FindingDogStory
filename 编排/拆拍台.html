@@ -1430,6 +1430,8 @@ async function saveFile(as) {
       if (input == null) { toast('取消了，没保存', 'info'); return; }
       name = await freeName(input.trim().replace(/[\\/:*?"<>|]/g, '_') || '未命名任务');
       if (!curName) await idbDel(draftKey(null));
+      // 任务名和文件名保持一致：保存时填的名字就是任务名（顶栏显示的就是它）
+      if (doc.meta.title !== baseName(name)) { doc.meta.title = baseName(name); changeSeq++; renderAll(); }
     }
     if (LOCAL_MODE) {
       if (name !== curName || !fileHandle) { fileHandle = await localHandle(name, true); curName = name; }
@@ -1482,12 +1484,16 @@ function scheduleAutosave() {
 function loadDoc(obj, opts = {}) {
   const keep = opts.keepView ? { sel, tab } : null;
   doc = normalize(obj); curName = opts.name || null; fileHandle = opts.handle || null;
+  // 旧文件任务名没填（还是默认的「未命名任务」）：用文件名当任务名；内容变了，下次同步会把修正推上去
+  const fixTitle = curName && (!C.filled(doc.meta.title) || doc.meta.title.trim() === '未命名任务');
+  if (fixTitle) doc.meta.title = baseName(curName);
   undoStack = []; redoStack = []; lastSnap = JSON.stringify(doc);
   sel = keep ? keep.sel : { type: 'top' }; tab = keep ? keep.tab : 'detail';
   dirty = false; saveError = ''; lastSaved = null;
   recent.length = 0;
   renderAll();
   scheduleLive();
+  if (fixTitle) { dirty = true; changeSeq++; updateStatus(); scheduleAutosave(); }   // 把修正后的任务名存下来并同步
 }
 async function openFile() {
   if (!curName && dirty) { if (!confirm('当前新任务还没保存，丢掉？')) return; await idbDel(draftKey(null)); }
