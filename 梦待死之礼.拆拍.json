@@ -1,0 +1,159 @@
+{
+  "app": "拆拍台",
+  "version": 1,
+  "meta": {
+    "title": "梦待死之礼",
+    "summary": "",
+    "changeFrom": "",
+    "changeTo": "",
+    "goal": "",
+    "endCondition": "",
+    "design": {
+      "learn": "",
+      "know": "",
+      "feel": "",
+      "gain": "",
+      "deleteTest": "",
+      "backward": "",
+      "summary": ""
+    }
+  },
+  "synopsis": "",
+  "lanes": [
+    {
+      "id": "emotion",
+      "name": "情绪",
+      "kind": "curve"
+    },
+    {
+      "id": "w0ekyaro73",
+      "name": "三把火",
+      "kind": "trend"
+    },
+    {
+      "id": "0dj3vqro73",
+      "name": "玩家知道什么",
+      "kind": "text"
+    }
+  ],
+  "stages": [
+    {
+      "id": "hpy0c4sdbq",
+      "title": "夜路",
+      "goal": "",
+      "start": "",
+      "end": "",
+      "endCondition": "",
+      "mode": "normal",
+      "loopExit": "",
+      "parallelGroup": "",
+      "design": {
+        "learn": "",
+        "know": "",
+        "feel": "",
+        "gain": "",
+        "deleteTest": "",
+        "backward": "",
+        "summary": ""
+      },
+      "laneExclude": [],
+      "collapsed": false,
+      "beats": []
+    },
+    {
+      "id": "74qcrhsg61",
+      "title": "进门",
+      "goal": "",
+      "start": "",
+      "end": "",
+      "endCondition": "",
+      "mode": "normal",
+      "loopExit": "",
+      "parallelGroup": "",
+      "design": {
+        "learn": "",
+        "know": "",
+        "feel": "",
+        "gain": "",
+        "deleteTest": "",
+        "backward": "",
+        "summary": ""
+      },
+      "laneExclude": [],
+      "collapsed": false,
+      "beats": []
+    },
+    {
+      "id": "wvv1dtsnch",
+      "title": "吃饭睡觉",
+      "goal": "",
+      "start": "",
+      "end": "",
+      "endCondition": "",
+      "mode": "normal",
+      "loopExit": "",
+      "parallelGroup": "",
+      "design": {
+        "learn": "",
+        "know": "",
+        "feel": "",
+        "gain": "",
+        "deleteTest": "",
+        "backward": "",
+        "summary": ""
+      },
+      "laneExclude": [],
+      "collapsed": false,
+      "beats": []
+    },
+    {
+      "id": "7mklpdswe2",
+      "title": "尾声",
+      "goal": "",
+      "start": "",
+      "end": "",
+      "endCondition": "",
+      "mode": "normal",
+      "loopExit": "",
+      "parallelGroup": "",
+      "design": {
+        "learn": "",
+        "know": "",
+        "feel": "",
+        "gain": "",
+        "deleteTest": "",
+        "backward": "",
+        "summary": ""
+      },
+      "laneExclude": [],
+      "collapsed": false,
+      "beats": []
+    },
+    {
+      "id": "svuuzrszuw",
+      "title": "",
+      "goal": "",
+      "start": "",
+      "end": "",
+      "endCondition": "",
+      "mode": "normal",
+      "loopExit": "",
+      "parallelGroup": "",
+      "design": {
+        "learn": "",
+        "know": "",
+        "feel": "",
+        "gain": "",
+        "deleteTest": "",
+        "backward": "",
+        "summary": ""
+      },
+      "laneExclude": [],
+      "collapsed": false,
+      "beats": []
+    }
+  ],
+  "mechanics": [],
+  "mapVisits": {},
+  "parking": []
+}
