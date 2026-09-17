@@ -529,7 +529,7 @@ function renderHeader() {
 function renderOutline() {
   const box = $('#outline'); const st = box.scrollTop; box.innerHTML = '';
   box.append(h('div', { class: 'outline-head' }, h('b', {}, '大纲 · 任务 → 子阶段 → 拍'),
-    h('span', { class: 'hint' }, 'Enter 新行（光标后的字带过去）· Tab 降为拍 · Shift+Tab 升为子阶段 · Alt+↑↓ 移动 · Alt+1~4 标 看/做/选/略 · 拖编号排序')));
+    h('span', { class: 'hint' }, 'Enter 在下面新建一行 · Alt+↑↓ 移动 · Alt+1~4 标 看/做/选/略 · 拖编号排序 · 升降级、删除在详情里')));
   box.append(h('div', { class: 'row top' + (sel.type === 'top' ? ' selected' : ''), dataset: { id: 'top' }, onclick: () => rowTap({ type: 'top' }) },
     h('span', { class: 'num' }, '任务'), h('span', { class: 'label', style: 'flex:1' }, syncSpan('top:title', doc.meta.title, '未命名任务')), h('span', { class: 'dot', dataset: { dotFor: 'top' } }), goBtn({ type: 'top' })));
   doc.stages.forEach((s, si) => {
@@ -614,26 +614,16 @@ function outlineKey(e, target, el) {
   const k = e.key;
   const rows = () => [...document.querySelectorAll('#outline .otext')];
   if (k === 'Enter') {
+    // 只在下面新建一行，不拆当前这行的字（拆字容易误操作，已删）
     e.preventDefault();
-    const pos = el.selectionStart ?? el.value.length; const head = el.value.slice(0, pos), tail = el.value.slice(pos);
     let nid;
     if (target.type === 'stage') {
       if (e.ctrlKey) { mutate(() => { const f = findStage(target.id); const nb = newBeat(); f.s.collapsed = false; f.s.beats.unshift(nb); nid = nb.id; }); focusOutline(nid); return; }
-      mutate(() => { const f = findStage(target.id); if (tail) f.s.title = head; const ns = newStage(); ns.title = tail; doc.stages.splice(f.si + 1, 0, ns); nid = ns.id; });
+      mutate(() => { const f = findStage(target.id); const ns = newStage(); doc.stages.splice(f.si + 1, 0, ns); nid = ns.id; });
     } else {
-      mutate(() => { const f = findBeat(target.id); if (tail) f.b.text = head; const nb = newBeat(); nb.text = tail; f.s.beats.splice(f.bi + 1, 0, nb); nid = nb.id; });
+      mutate(() => { const f = findBeat(target.id); const nb = newBeat(); f.s.beats.splice(f.bi + 1, 0, nb); nid = nb.id; });
     }
-    focusOutline(nid); const ne = document.querySelector(`[data-focus-key="o:${nid}"]`); if (ne) try { ne.setSelectionRange(0, 0); } catch (x) { }
-    return;
-  }
-  if (k === 'Tab' && !e.shiftKey) {
-    e.preventDefault();
-    if (target.type === 'stage' && demoteStage(target.id)) focusOutline(target.id, true);
-    return;
-  }
-  if (k === 'Tab' && e.shiftKey) {
-    e.preventDefault();
-    if (target.type === 'beat' && promoteBeat(target.id)) focusOutline(target.id, true);
+    focusOutline(nid);
     return;
   }
   if ((k === 'ArrowUp' || k === 'ArrowDown') && e.altKey) {
@@ -1122,7 +1112,7 @@ function renderGuide(v) {
     h('li', {}, '这一刻关二狗想干嘛？玩家想干嘛？一致吗？'), h('li', {}, '不靠提示文字，玩家怎么知道该做这个？'), h('li', {}, '做错了会怎样？什么都不会发生＝玩法不成立。'))));
   v.append(sec('倒推技巧', '', h('p', { style: 'margin:0' }, '先定高潮（比如坠潭、三把火一把一把熄、香粉味浮起来），再往回问：要让这一刻最狠，玩家前面得先学会什么、拥有过什么、失去过什么？答案分派给前面的子阶段。')));
   v.append(sec('快捷键', '', h('div', {},
-    ['Enter：新建同级（光标后的字带到新行）', 'Ctrl+Enter（子阶段行）：在它下面加第一拍', 'Tab：子阶段降为上一个子阶段的拍', 'Shift+Tab：拍升为子阶段（后面的拍跟过去）', '↑ ↓：上下切换行', 'Alt+↑ ↓：移动', 'Alt+1～4：标 看／做／选／略', '拖动编号：排序', 'Ctrl+S 保存 · Ctrl+Z 撤销 · Ctrl+Y 重做'].map(t => h('div', {}, t)))));
+    ['Enter：在下面新建一行（不动当前这行的字）', 'Ctrl+Enter（子阶段行）：在它下面加第一拍', '↑ ↓：上下切换行', 'Alt+↑ ↓：移动', 'Alt+1～4：标 看／做／选／略', '拖动编号：排序', 'Ctrl+S 保存 · Ctrl+O 打开 · Ctrl+Z 撤销 · Ctrl+Y 重做', '升为子阶段、降为拍、删除：在详情里点按钮（没有快捷键，防误操作）'].map(t => h('div', {}, t)))));
 }
 
 /* ====================================================================
