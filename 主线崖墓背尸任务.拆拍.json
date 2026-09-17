@@ -39,7 +39,7 @@
   "stages": [
     {
       "id": "03c797r70w",
-      "title": "实际上就是空间斯卡",
+      "title": "接取任务",
       "goal": "",
       "start": "",
       "end": "",
@@ -66,6 +66,29 @@
     },
     {
       "id": "0icofdr87j",
+      "title": "自由活动",
+      "goal": "",
+      "start": "",
+      "end": "",
+      "endCondition": "",
+      "mode": "normal",
+      "loopExit": "",
+      "parallelGroup": "",
+      "design": {
+        "learn": "",
+        "know": "",
+        "feel": "",
+        "gain": "",
+        "deleteTest": "",
+        "backward": "",
+        "summary": ""
+      },
+      "laneExclude": [],
+      "collapsed": false,
+      "beats": []
+    },
+    {
+      "id": "zw79ed57o8",
       "title": "",
       "goal": "",
       "start": "",
