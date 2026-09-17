@@ -115,8 +115,8 @@
       "title": "初上跑马梁",
       "goal": "找到去向任务地的路",
       "start": "一片懵逼，不知道往那边走",
-      "end": "找到了路，",
-      "endCondition": "",
+      "end": "找到了路，继续前进",
+      "endCondition": "找到了路",
       "mode": "normal",
       "loopExit": "",
       "parallelGroup": "",
@@ -131,7 +131,31 @@
       },
       "laneExclude": [],
       "collapsed": false,
-      "beats": []
+      "beats": [
+        {
+          "id": "eioubvq7d1",
+          "text": "关二狗来到梁上，风吹的呼呼的，把他的火把直接吹灭，他又点燃火把",
+          "reaction": "习以为常的点燃火把",
+          "result": "点燃火把",
+          "source": "",
+          "map": "跑马梁",
+          "kind": "",
+          "formula": {
+            "verb": "",
+            "object": "",
+            "resistance": ""
+          },
+          "cells": {
+            "see": "",
+            "act": "",
+            "respond": "",
+            "wrong": ""
+          },
+          "stuck": "",
+          "cuttable": false,
+          "lanes": {}
+        }
+      ]
     },
     {
       "id": "hk1lyo56kh",
