@@ -153,9 +153,11 @@
         "gain": "",
         "deleteTest": "",
         "backward": "",
-        "summary": "学会操作火把，直到如何应用"
+        "summary": "学会操作火把，直到如何应用气味找线索，知道熄灭火把的后果，知道三把火的用途"
       },
-      "laneExclude": [],
+      "laneExclude": [
+        "emotion"
+      ],
       "laneUndecided": [],
       "ready": false,
       "collapsed": false,
@@ -484,6 +486,10 @@
       }
     }
   ],
-  "mapVisits": {},
+  "mapVisits": {
+    "跑马梁||raanp54wje": {
+      "light": ""
+    }
+  },
   "parking": []
 }
