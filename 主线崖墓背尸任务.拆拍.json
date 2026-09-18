@@ -1,22 +1,14 @@
 {
   "app": "拆拍台",
-  "version": 1,
+  "version": 3,
   "meta": {
     "title": "主线崖墓背尸任务",
     "summary": "",
     "changeFrom": "",
     "changeTo": "",
     "goal": "",
-    "endCondition": "",
-    "design": {
-      "learn": "",
-      "know": "",
-      "feel": "",
-      "gain": "",
-      "deleteTest": "",
-      "backward": "",
-      "summary": ""
-    }
+    "experience": "",
+    "redline": ""
   },
   "synopsis": "",
   "lanes": [
@@ -40,15 +32,20 @@
     {
       "id": "03c797r70w",
       "title": "接取任务",
+      "track": "main",
+      "setting": "",
       "goal": "",
       "start": "",
       "end": "",
-      "endCondition": "",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
       "mode": "normal",
-      "loopExitWhen": [],
+      "loopExit": "",
       "parallelGroup": "",
       "mergeTo": "",
-      "requires": [],
+      "needs": [],
       "design": {
         "learn": "",
         "know": "",
@@ -63,21 +60,28 @@
         "2web49itnf",
         "puyhi4itnf"
       ],
+      "laneUndecided": [],
+      "ready": false,
       "collapsed": false,
       "beats": []
     },
     {
       "id": "0icofdr87j",
       "title": "自由活动",
+      "track": "main",
+      "setting": "",
       "goal": "",
       "start": "",
       "end": "",
-      "endCondition": "",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
       "mode": "normal",
-      "loopExitWhen": [],
+      "loopExit": "",
       "parallelGroup": "",
       "mergeTo": "",
-      "requires": [],
+      "needs": [],
       "design": {
         "learn": "",
         "know": "",
@@ -88,21 +92,28 @@
         "summary": ""
       },
       "laneExclude": [],
+      "laneUndecided": [],
+      "ready": false,
       "collapsed": false,
       "beats": []
     },
     {
       "id": "zw79ed57o8",
       "title": "上梁准备",
+      "track": "main",
+      "setting": "",
       "goal": "",
       "start": "",
       "end": "",
-      "endCondition": "",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
       "mode": "normal",
-      "loopExitWhen": [],
+      "loopExit": "",
       "parallelGroup": "",
       "mergeTo": "",
-      "requires": [],
+      "needs": [],
       "design": {
         "learn": "",
         "know": "",
@@ -113,21 +124,28 @@
         "summary": ""
       },
       "laneExclude": [],
+      "laneUndecided": [],
+      "ready": false,
       "collapsed": true,
       "beats": []
     },
     {
       "id": "raanp54wje",
       "title": "初上跑马梁",
+      "track": "main",
+      "setting": "",
       "goal": "找到去向任务地的路",
       "start": "一片懵逼，不知道往那边走",
       "end": "找到了路，继续前进",
-      "endCondition": "找到了路",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
       "mode": "normal",
-      "loopExitWhen": [],
+      "loopExit": "",
       "parallelGroup": "",
       "mergeTo": "",
-      "requires": [],
+      "needs": [],
       "design": {
         "learn": "",
         "know": "",
@@ -138,6 +156,8 @@
         "summary": ""
       },
       "laneExclude": [],
+      "laneUndecided": [],
+      "ready": false,
       "collapsed": false,
       "beats": [
         {
@@ -147,6 +167,7 @@
           "result": "找到了前进的大致方向",
           "source": "",
           "map": "跑马梁",
+          "who": "",
           "kind": "看",
           "formula": {
             "verb": "",
@@ -159,15 +180,17 @@
             "respond": "",
             "wrong": ""
           },
+          "dilemma": "",
           "stuck": "",
           "cuttable": false,
+          "anytime": false,
           "lanes": {
             "emotion": 0,
             "puyhi4itnf": "要去的方向"
           },
           "options": [],
-          "requires": [],
-          "sets": []
+          "tryMode": "",
+          "needs": []
         },
         {
           "id": "eioubvq7d1",
@@ -176,6 +199,7 @@
           "result": "和人搭话或者",
           "source": "",
           "map": "跑马梁",
+          "who": "",
           "kind": "做",
           "formula": {
             "verb": "点燃",
@@ -188,31 +212,38 @@
             "respond": "火把点燃，看清路",
             "wrong": "继续教学"
           },
+          "dilemma": "",
           "stuck": "这是教学",
           "cuttable": false,
+          "anytime": false,
           "lanes": {
             "emotion": 0,
             "2web49itnf": "平",
             "puyhi4itnf": "学会使用基础的火把"
           },
           "options": [],
-          "requires": [],
-          "sets": []
+          "tryMode": "",
+          "needs": []
         }
       ]
     },
     {
       "id": "hk1lyo56kh",
       "title": "入口",
+      "track": "main",
+      "setting": "",
       "goal": "",
       "start": "",
       "end": "",
-      "endCondition": "",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
       "mode": "normal",
-      "loopExitWhen": [],
+      "loopExit": "",
       "parallelGroup": "",
       "mergeTo": "",
-      "requires": [],
+      "needs": [],
       "design": {
         "learn": "",
         "know": "",
@@ -223,21 +254,28 @@
         "summary": ""
       },
       "laneExclude": [],
+      "laneUndecided": [],
+      "ready": false,
       "collapsed": false,
       "beats": []
     },
     {
       "id": "h77q765h4r",
       "title": "去的途中",
+      "track": "main",
+      "setting": "",
       "goal": "",
       "start": "",
       "end": "",
-      "endCondition": "",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
       "mode": "normal",
-      "loopExitWhen": [],
+      "loopExit": "",
       "parallelGroup": "",
       "mergeTo": "",
-      "requires": [],
+      "needs": [],
       "design": {
         "learn": "",
         "know": "",
@@ -248,21 +286,28 @@
         "summary": ""
       },
       "laneExclude": [],
+      "laneUndecided": [],
+      "ready": false,
       "collapsed": false,
       "beats": []
     },
     {
       "id": "ji909h5vhe",
       "title": "目的地",
+      "track": "main",
+      "setting": "",
       "goal": "",
       "start": "",
       "end": "",
-      "endCondition": "",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
       "mode": "normal",
-      "loopExitWhen": [],
+      "loopExit": "",
       "parallelGroup": "",
       "mergeTo": "",
-      "requires": [],
+      "needs": [],
       "design": {
         "learn": "",
         "know": "",
@@ -273,21 +318,28 @@
         "summary": ""
       },
       "laneExclude": [],
+      "laneUndecided": [],
+      "ready": false,
       "collapsed": false,
       "beats": []
     },
     {
       "id": "fyt8hp66y4",
       "title": "背尸下山",
+      "track": "main",
+      "setting": "",
       "goal": "",
       "start": "",
       "end": "",
-      "endCondition": "",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
       "mode": "normal",
-      "loopExitWhen": [],
+      "loopExit": "",
       "parallelGroup": "",
       "mergeTo": "",
-      "requires": [],
+      "needs": [],
       "design": {
         "learn": "",
         "know": "",
@@ -298,21 +350,28 @@
         "summary": ""
       },
       "laneExclude": [],
+      "laneUndecided": [],
+      "ready": false,
       "collapsed": false,
       "beats": []
     },
     {
       "id": "xviuqm6kmr",
       "title": "坠入牛头凼",
+      "track": "main",
+      "setting": "",
       "goal": "",
       "start": "",
       "end": "",
-      "endCondition": "",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
       "mode": "normal",
-      "loopExitWhen": [],
+      "loopExit": "",
       "parallelGroup": "",
       "mergeTo": "",
-      "requires": [],
+      "needs": [],
       "design": {
         "learn": "",
         "know": "",
@@ -323,21 +382,28 @@
         "summary": ""
       },
       "laneExclude": [],
+      "laneUndecided": [],
+      "ready": false,
       "collapsed": false,
       "beats": []
     },
     {
       "id": "4us8nk7bnm",
       "title": "尾声",
+      "track": "main",
+      "setting": "",
       "goal": "",
       "start": "",
       "end": "",
-      "endCondition": "",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
       "mode": "normal",
-      "loopExitWhen": [],
+      "loopExit": "",
       "parallelGroup": "",
       "mergeTo": "",
-      "requires": [],
+      "needs": [],
       "design": {
         "learn": "",
         "know": "",
@@ -348,21 +414,28 @@
         "summary": ""
       },
       "laneExclude": [],
+      "laneUndecided": [],
+      "ready": false,
       "collapsed": false,
       "beats": []
     },
     {
       "id": "tw1agk7eh4",
       "title": "",
+      "track": "main",
+      "setting": "",
       "goal": "",
       "start": "",
       "end": "",
-      "endCondition": "",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
       "mode": "normal",
-      "loopExitWhen": [],
+      "loopExit": "",
       "parallelGroup": "",
       "mergeTo": "",
-      "requires": [],
+      "needs": [],
       "design": {
         "learn": "",
         "know": "",
@@ -373,6 +446,8 @@
         "summary": ""
       },
       "laneExclude": [],
+      "laneUndecided": [],
+      "ready": false,
       "collapsed": false,
       "beats": []
     }
@@ -410,6 +485,5 @@
     }
   ],
   "mapVisits": {},
-  "parking": [],
-  "facts": []
+  "parking": []
 }
