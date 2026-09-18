@@ -326,7 +326,7 @@ function showTop(ctx) {
   const { doc } = ctx; const m = doc.meta;
   const L = [`## 顶层 · ${m.title || '未命名任务'}`, '',
     `- 这段讲什么：${V(m.summary)}`, `- 关二狗怎么变了：从 ${V(m.changeFrom)} 到 ${V(m.changeTo)}`,
-    `- 关二狗的目的：${V(m.goal)}`, `- 体验目标：${V(m.experience)}`, '',
+    `- 关二狗的目的：${V(m.goal)}`, `- 体验目标：${V(m.experience)}`, `- 红线：${V(m.redline)}`, '',
     `### 子阶段（${doc.stages.length}）`];
   doc.stages.forEach((s, si) => L.push(`${si + 1}. ${oneLine(s.title) || '（未命名）'} ${stageModeText(s)}${s.track === 'optional' ? '〔可选〕' : ''}— ${s.beats.length} 拍（${kindText(kindCounts(s.beats))}）；设计目的：${oneLine(s.design.summary) || '（空）'}`));
   L.push('', ...issuesBlock(doc, ctx.issues.filter(i => i.target.type === 'top'), '检查（顶层）'));
@@ -340,7 +340,7 @@ function showStage(ctx, id) {
   const park = doc.parking.filter(p => p.stageId === id);
   const L = [`## 子阶段 ${si + 1}「${oneLine(s.title) || '未命名'}」${stageModeText(s)}`, '',
     `- 落位：${C.TRACK_NAMES[s.track] || '主线'}`, `- 地点·时段·氛围：${V(s.setting)}`, `- 关二狗的目的：${V(s.goal)}`, `- 开始时局面：${V(s.start)}`, `- 结束时局面：${V(s.end)}`,
-    `- 登场角色与物件：${V(s.cast)}`, `- 伏线：${V(s.foreshadow)}`, `- 卡点：${V(s.stuck)}`, `- 拆完了（交接范围）：${s.ready ? '是' : '否'}`,
+    `- 登场角色与物件：${V(s.cast)}`, `- 伏线：${V(s.foreshadow)}`, `- 红线：${V(s.redline)}`, `- 卡点：${V(s.stuck)}`, `- 拆完了（交接范围）：${s.ready ? '是' : '否'}`,
     `- 判定不属于这一段的泳道：${excl.length ? excl.join('、') : '（无）'}`, '', '### 设计目的', ...designLines(s.design), '',
     `### 拍（${s.beats.length}）`, ...(s.beats.length ? s.beats.map((b, bi) => '- ' + beatLine({ b, s, si, bi })) : ['（还没拆拍）']), '', ...networkLines(doc, s), ''];
   if (park.length) L.push('### 挂在这一段的停车场', ...park.map(p => `- [${p.done ? 'x' : ' '}] ${oneLine(p.text)}`), '');

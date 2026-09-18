@@ -66,7 +66,7 @@
     { name: 'ink 写作手册（choice / gather / divert）', url: 'https://github.com/inkle/ink/blob/master/Documentation/WritingWithInk.md' }
   ];
   const FIELD_LABELS = {
-    title: '标题', summary: '这段讲什么', changeFrom: '关二狗从', changeTo: '关二狗到', goal: '关二狗的目的', experience: '体验目标',
+    title: '标题', summary: '这段讲什么', changeFrom: '关二狗从', changeTo: '关二狗到', goal: '关二狗的目的', experience: '体验目标', redline: '红线',
     setting: '地点·时段·氛围', start: '开始时局面', end: '结束时局面', cast: '登场角色与物件', foreshadow: '伏线', parallelGroup: '并行组', loopExit: '循环怎么出去',
     text: '发生了什么', reaction: '关二狗怎么反应', result: '结果', source: '原文摘句', map: '地图', who: '在场者',
     'formula.verb': '公式·动词', 'formula.object': '公式·对象', 'formula.resistance': '公式·阻力',
@@ -82,13 +82,13 @@
   function newDoc() {
     return {
       app: '拆拍台', version: 3,
-      meta: { title: '未命名任务', summary: '', changeFrom: '', changeTo: '', goal: '', experience: '' },
+      meta: { title: '未命名任务', summary: '', changeFrom: '', changeTo: '', goal: '', experience: '', redline: '' },
       synopsis: '',
       lanes: [{ id: 'emotion', name: '情绪', kind: 'curve' }, { id: uid(), name: '三把火', kind: 'trend' }, { id: uid(), name: '玩家知道什么', kind: 'text' }],
       stages: [], mechanics: [], mapVisits: {}, parking: []
     };
   }
-  const newStage = () => ({ id: uid(), title: '', track: 'main', setting: '', goal: '', start: '', end: '', cast: '', foreshadow: '', stuck: '', mode: 'normal', loopExit: '', parallelGroup: '', mergeTo: '', needs: [], design: newDesign(), laneExclude: [], laneUndecided: [], ready: false, collapsed: false, beats: [] });
+  const newStage = () => ({ id: uid(), title: '', track: 'main', setting: '', goal: '', start: '', end: '', cast: '', foreshadow: '', redline: '', stuck: '', mode: 'normal', loopExit: '', parallelGroup: '', mergeTo: '', needs: [], design: newDesign(), laneExclude: [], laneUndecided: [], ready: false, collapsed: false, beats: [] });
   const newBeat = () => ({ id: uid(), text: '', reaction: '', result: '', source: '', map: '', who: '', kind: '', formula: { verb: '', object: '', resistance: '' }, cells: { see: '', act: '', respond: '', wrong: '' }, dilemma: '', stuck: '', cuttable: false, anytime: false, lanes: {}, options: [], tryMode: '', needs: [] });
   /* 选项（「选」的拍）/ 做法（「做」的拍）。goto：next 继续下一拍 / stage 跳到某子阶段 / end 这条线结束 / undecided 没想好 */
   const newOption = () => ({ id: uid(), choice: '', works: '', reaction: '', result: '', effect: '', goto: { type: 'next', stageId: '' } });
@@ -521,7 +521,7 @@
     const open = openItems(d);
     L.push(`## 未定清单（${open.length}）`, '', '作者自己标了没想好的地方。照着做的人读到这些，要回来问，不要自己猜。', '', ...(open.length ? open.map(x => `- ${mdEsc(x.text)}`) : ['（没有）']), '');
     L.push('## 顶层', '');
-    L.push(`- **这段讲什么**：${mdEsc(m.summary)}`, `- **关二狗怎么变了**：从 ${mdEsc(m.changeFrom)} 到 ${mdEsc(m.changeTo)}`, `- **关二狗的目的**：${mdEsc(m.goal)}`, `- **体验目标**：${mdEsc(m.experience)}`, '');
+    L.push(`- **这段讲什么**：${mdEsc(m.summary)}`, `- **关二狗怎么变了**：从 ${mdEsc(m.changeFrom)} 到 ${mdEsc(m.changeTo)}`, `- **关二狗的目的**：${mdEsc(m.goal)}`, `- **体验目标**：${mdEsc(m.experience)}`, ...(filled(m.redline) ? [`- **红线（不许做什么）**：${mdEsc(m.redline)}`] : []), '');
     L.push('## 分段表', '');
     d.stages.forEach((s, si) => {
       const mode = s.mode === 'loop' ? `（循环，怎么出去：${mdEsc(s.loopExit) || '没写'}）` : s.mode === 'parallel' ? `（并行组：${mdEsc(s.parallelGroup)}）` : s.mode === 'branch' ? '（分支）' : '';
@@ -529,6 +529,7 @@
       L.push(`- **地点·时段·氛围**：${mdEsc(s.setting)}`, `- **关二狗的目的**：${mdEsc(s.goal)}`, `- **开始**：${mdEsc(s.start)}`, `- **结束**：${mdEsc(s.end)}`, ...D(s.design));
       if (filled(s.cast)) L.push(`- **登场角色与物件**：${mdEsc(s.cast)}`);
       if (filled(s.foreshadow)) L.push(`- **伏线**：${mdEsc(s.foreshadow)}`);
+      if (filled(s.redline)) L.push(`- **红线（不许做什么）**：${mdEsc(s.redline)}`);
       if (filled(s.stuck)) L.push(`- **卡点**：${mdEsc(s.stuck)}`);
       const excl = d.lanes.filter(l => (s.laneExclude || []).includes(l.id)).map(l => l.name);
       if (excl.length) L.push(`- **不属于这一段的泳道**：${excl.join('、')}`);
