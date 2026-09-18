@@ -256,7 +256,7 @@ const kindText = c => `看${c.看}／做${c.做}／选${c.选}／没想好${c.�
 function beatLine(x) {
   const b = x.b;
   return `${x.si + 1}.${x.bi + 1} [${b.kind === C.UNDECIDED ? '没想好' : b.kind || '?'}] ${oneLine(b.text) || '（未写）'} → ${oneLine(b.reaction) || '…'} → ${oneLine(b.result) || '…'}`
-    + (C.filled(b.map) ? `　@${b.map.trim()}` : '') + (b.cuttable ? '　〔可砍〕' : '');
+    + (C.filled(b.map) ? `　@${b.map.trim()}` : '') + (b.cuttable ? '　〔可砍〕' : '') + (b.anytime ? '　〔随时〕' : '');
 }
 function issueLine(doc, i) { const ref = refOf(doc, i.target); return `[${LVL[i.level]}] ${i.text}${ref ? `　→ show ${ref}` : ''}`; }
 function designLines(g) {
@@ -356,7 +356,7 @@ function showBeat(ctx, id, contextN) {
   const iss = ctx.issues.filter(i => i.target.type === 'beat' && i.target.id === id);
   const L = [`## 拍 ${si + 1}.${bi + 1}「${oneLine(b.text) || '未写'}」`, `（属于子阶段 ${si + 1}「${oneLine(s.title) || '未命名'}」）`, '',
     `- 类型：${b.kind === C.UNDECIDED ? '没想好' : b.kind || '（未标）'}`, `- 发生了什么：${V(b.text)}`, `- 关二狗怎么反应：${V(b.reaction)}`, `- 结果：${V(b.result)}`,
-    `- 地图：${V(b.map)}`, `- 在场者：${V(b.who)}`, `- 原文摘句：${V(b.source)}`, `- 可砍：${b.cuttable ? '是' : '否'}`,
+    `- 地图：${V(b.map)}`, `- 在场者：${V(b.who)}`, `- 原文摘句：${V(b.source)}`, `- 可砍：${b.cuttable ? '是' : '否'}`, `- 整段随时可发生：${b.anytime ? '是' : '否'}`,
     `- 所在子阶段的设计目的：${V(s.design.summary)}`];
   if (b.kind === '做') {
     L.push(`- 公式：${oneLine(b.formula.verb) || '＿'} ＋ ${oneLine(b.formula.object) || '＿'} ＋ ${oneLine(b.formula.resistance) || '＿'}`);

@@ -33,15 +33,15 @@
   const MODE_NAMES = { normal: '普通', loop: '循环', parallel: '并行', branch: '分支' };
   const TRACK_NAMES = { main: '主线', optional: '可选' };
   const WORKS_NAMES = { yes: '灵', no: '不灵', maybe: '看情况' };
-  const TRY_NAMES = { first: '试到灵的为止', all: '全部试过才往下', one: '试一个就往下', undecided: '没想好' };
+  const TRY_NAMES = { first: '试到灵的为止', all: '全部试过才往下', one: '试一个就往下', any: '想试几个试几个，随时能往下', undecided: '没想好' };
   const LANE_KIND_NAMES = { curve: '曲线（-3～+3）', trend: '升降', text: '文字' };
   const STEP_NAMES = { 1: '顶层', 2: '分段表', 3: '拆拍', 4: '横看', 5: '标看／做／选', 6: '细化', 7: '接线', 8: '玩法', 9: '交接' };
   const GUIDE_STEPS = [
     { n: 1, name: '顶层', text: '定这次拆的切片：这段讲什么、关二狗从什么变成什么、他要什么、要玩家整体体验什么。', src: '体验目标在立项时就定（Lemarchand）；故事级的价值翻转（McKee）' },
     { n: 2, name: '分段表', text: '按「局面变了」切子阶段，每段一行：地点·时段·氛围 / 开始和结束局面 / 关二狗要什么 / 设计目的 / 登场角色与物件 / 伏线。设计目的在这里就写，不等拆完拍。这一段没想好的，写进这一段的卡点。', src: '顽皮狗 macro 表每行并排填 Player Goal / Design Goal / Emotional Beat；箱書き每箱先写目的；任天堂先定「教什么」' },
-    { n: 3, name: '拆拍', text: '每段拆成拍：发生 → 反应 → 结果，一拍＝局面翻一次；标场所、在场者。这一步不想玩法。', src: 'McKee：拍＝一次动作/反应，场＝一次价值翻转；箱書き小箱' },
+    { n: 3, name: '拆拍', text: '每段拆成拍：发生 → 反应 → 结果，一拍＝局面翻一次；标场所、在场者。不按顺序、整段随时能发生的事（随时能闻、随时能退），也拆成一拍，勾「整段随时可发生」。这一步不想玩法。', src: 'McKee：拍＝一次动作/反应，场＝一次价值翻转；箱書き小箱' },
     { n: 4, name: '横看', text: '拍拆完横着看：情绪曲线找平段，系统泳道找空档和扎堆；对照每段的设计目的，跟目的无关的拍标可砍。第 4、5 两步可以逐拍一起做。', src: 'Rogers beat chart 找 gaps & clumping；Valve 强度曲线；Schell 兴趣曲线' },
-    { n: 5, name: '标看／做／选', text: '判据：这一拍的变化能不能由玩家的动作触发。不能＝看。能，且有一个目标、玩家想办法达成＝做（办法可以有好几种）。能，且没有对错、选哪边都要付代价＝选。真没想好就标「没想好」，不要硬选。', src: 'inkle「玩家做的即主角做的」；CDPR 对 fetch quest 宣战' },
+    { n: 5, name: '标看／做／选', text: '判据：这一拍的变化能不能由玩家的动作触发。不能＝看。能，且有一个目标、玩家想办法达成＝做（办法可以有好几种）。能，且是取舍——不同的边后果不同、两边都有理由想选（一边有代价、另一边有诱惑也算）＝选。阻力很弱的「做」照实写弱，别硬编。真没想好就标「没想好」，不要硬选。', src: 'inkle「玩家做的即主角做的」；CDPR 对 fetch quest 宣战' },
     { n: 6, name: '细化', text: '做：动词＋对象＋阻力，四格；一个目标有好几种办法就列做法表。选：两难＋选项表（选什么、当场结果、长远后果、去向）。只差后果→继续下一拍；改道→从选项新建分支子阶段。填不出就写卡点。', src: 'ink 的 gather（只差后果落回同一点）与 divert（真分叉）；Sasko：后果要预告、分支可不对等' },
     { n: 7, name: '接线', text: '只接三样，用人话说清就行，不写逻辑：分支从哪来、走完去哪；循环怎么出去（一句话）；哪件事要先发生过（指一下那件事，补一句话）。', src: '分支与合流（Ashwell 的 branch-and-bottleneck；ink 的 divert / gather）；内容单元＝{前置, 内容, 效果}（Emily Short）' },
     { n: 8, name: '玩法', text: '做/选拍归到玩法里（已经想好的玩法直接建；没头绪就看按动词的分组）。每个玩法走 起（安全处教）→ 承 → 转（反转）→ 合（用完即弃）；某一格在别的章节或没想好，在备注里写明。写判决句，拿成品切片给固定几个人试。', src: '任天堂起承転結关卡结构；Golden Idol 固定试玩人' },
@@ -89,7 +89,7 @@
     };
   }
   const newStage = () => ({ id: uid(), title: '', track: 'main', setting: '', goal: '', start: '', end: '', cast: '', foreshadow: '', stuck: '', mode: 'normal', loopExit: '', parallelGroup: '', mergeTo: '', needs: [], design: newDesign(), laneExclude: [], laneUndecided: [], ready: false, collapsed: false, beats: [] });
-  const newBeat = () => ({ id: uid(), text: '', reaction: '', result: '', source: '', map: '', who: '', kind: '', formula: { verb: '', object: '', resistance: '' }, cells: { see: '', act: '', respond: '', wrong: '' }, dilemma: '', stuck: '', cuttable: false, lanes: {}, options: [], tryMode: '', needs: [] });
+  const newBeat = () => ({ id: uid(), text: '', reaction: '', result: '', source: '', map: '', who: '', kind: '', formula: { verb: '', object: '', resistance: '' }, cells: { see: '', act: '', respond: '', wrong: '' }, dilemma: '', stuck: '', cuttable: false, anytime: false, lanes: {}, options: [], tryMode: '', needs: [] });
   /* 选项（「选」的拍）/ 做法（「做」的拍）。goto：next 继续下一拍 / stage 跳到某子阶段 / end 这条线结束 / undecided 没想好 */
   const newOption = () => ({ id: uid(), choice: '', works: '', reaction: '', result: '', effect: '', goto: { type: 'next', stageId: '' } });
   /* 依赖：「这件事要先发生过」。ref 指一下那件事（子阶段 / 拍 / 选项 / 别的章节），note 用人话补一句。不是条件表达式。 */
@@ -180,6 +180,7 @@
         if (left && !oneLineText(nb.result).includes(left)) nb.result = [nb.result, `（留下：${left}）`].filter(filled).join(' ');
         delete nb.sets;
         if (nb.kind === '略') { nb.kind = '看'; nb.cuttable = true; }
+        nb.anytime = !!nb.anytime;
         if (!KCLS.hasOwnProperty(nb.kind)) nb.kind = '';
         if (!TRY_NAMES[nb.tryMode]) nb.tryMode = '';
         return nb;
@@ -360,6 +361,7 @@
         if (!filled(b.map)) add('warn', 3, B, `${bn}：没标地图`);
         /* 4 横看 */
         if (b.cuttable) add('info', 4, B, `${bn}：标了可砍`);
+        if (b.anytime) add('info', 3, B, `${bn}：整段随时可发生（不占顺序位置）`);
         /* 5 标 */
         if (!b.kind) add('miss', 5, B, `${bn}：没标看／做／选`);
         if (b.kind === UNDECIDED) add('info', 5, B, `${bn}：看／做／选没想好（已进未定清单）`);
@@ -373,7 +375,7 @@
             if (!filled(b.formula.resistance)) add('warn', 6, B, `${bn}：写不出阻力——考虑改回「看」`);
             if (!opts.length && !Object.values(b.cells).every(filled)) add('miss', 6, B, `${bn}：四格没填满`);
           }
-          if (opts.length >= 2 && !b.tryMode) add('warn', 6, B, `${bn}：列了几种做法，没说怎么算过（试到灵的为止／全部试过才往下／试一个就往下）`);
+          if (opts.length >= 2 && !b.tryMode) add('warn', 6, B, `${bn}：列了几种做法，没说怎么算过（试到灵的为止／全部试过／试一个／想试几个试几个）`);
         }
         if (b.kind === '选') {
           if (!filled(b.dilemma)) add('miss', 6, B, `${bn}：没写两难（选每一边各失去什么）`);
@@ -538,14 +540,14 @@
       L.push('');
       if (s.beats.length) {
         L.push('| # | 发生 | 反应 | 结果 | 类型 | 地图 | 在场者 | 可砍 | 原文摘句 |', '|---|---|---|---|---|---|---|---|---|');
-        s.beats.forEach((b, bi) => L.push(`| ${si + 1}.${bi + 1} | ${mdEsc(b.text)} | ${mdEsc(b.reaction)} | ${mdEsc(b.result)} | ${b.kind === UNDECIDED ? '没想好' : b.kind} | ${mdEsc(b.map)} | ${mdEsc(b.who)} | ${b.cuttable ? '可砍' : ''} | ${mdEsc(b.source)} |`));
+        s.beats.forEach((b, bi) => L.push(`| ${si + 1}.${bi + 1}${b.anytime ? '〔随时〕' : ''} | ${mdEsc(b.text)} | ${mdEsc(b.reaction)} | ${mdEsc(b.result)} | ${b.kind === UNDECIDED ? '没想好' : b.kind} | ${mdEsc(b.map)} | ${mdEsc(b.who)} | ${b.cuttable ? '可砍' : ''} | ${mdEsc(b.source)} |`));
         L.push('');
         /* 依赖每一拍都印——不管它是看、做还是选 */
         const withNeeds = s.beats.map((b, bi) => ({ b, bi })).filter(x => x.b.needs.length);
         if (withNeeds.length) { L.push(...withNeeds.map(x => `- 拍 ${si + 1}.${x.bi + 1} 要先发生过：${x.b.needs.map(n => mdEsc(needText(d, n))).join('；')}`), ''); }
         s.beats.forEach((b, bi) => {
           if (!isAct(b) && !filled(b.stuck)) return;
-          L.push(`#### ${si + 1}.${bi + 1}（${b.kind === UNDECIDED ? '没想好' : b.kind || '未标'}）${mdEsc(b.text)}`, '');
+          L.push(`#### ${si + 1}.${bi + 1}（${b.kind === UNDECIDED ? '没想好' : b.kind || '未标'}${b.anytime ? '，整段随时可发生' : ''}）${mdEsc(b.text)}`, '');
           const opts = realOptions(b);
           if (b.kind === '做') {
             L.push(`- **公式**：${mdEsc(b.formula.verb) || '＿'} ＋ ${mdEsc(b.formula.object) || '＿'} ＋ ${mdEsc(b.formula.resistance) || '＿'}`);
