@@ -155,7 +155,124 @@
       "laneUndecided": [],
       "ready": false,
       "collapsed": false,
-      "beats": []
+      "beats": [
+        {
+          "id": "ig8y7qv0nj",
+          "text": "进门",
+          "reaction": "",
+          "result": "",
+          "source": "",
+          "map": "",
+          "who": "",
+          "kind": "",
+          "formula": {
+            "verb": "",
+            "object": "",
+            "resistance": ""
+          },
+          "cells": {
+            "see": "",
+            "act": "",
+            "respond": "",
+            "wrong": ""
+          },
+          "dilemma": "",
+          "stuck": "",
+          "cuttable": false,
+          "anytime": false,
+          "lanes": {},
+          "options": [],
+          "tryMode": "",
+          "needs": []
+        },
+        {
+          "id": "8grkccv91o",
+          "text": "下注赢钱",
+          "reaction": "",
+          "result": "",
+          "source": "",
+          "map": "",
+          "who": "",
+          "kind": "",
+          "formula": {
+            "verb": "",
+            "object": "",
+            "resistance": ""
+          },
+          "cells": {
+            "see": "",
+            "act": "",
+            "respond": "",
+            "wrong": ""
+          },
+          "dilemma": "",
+          "stuck": "",
+          "cuttable": false,
+          "anytime": false,
+          "lanes": {},
+          "options": [],
+          "tryMode": "",
+          "needs": []
+        },
+        {
+          "id": "131oixvi2d",
+          "text": "被出千",
+          "reaction": "",
+          "result": "",
+          "source": "莫名其妙的开始输钱，甚至能看到色子明显被什么操控。关二狗想说但是被人憋回去。实际是有两个鬼差头子在隔壁喝一个土匪头子赌钱，土匪头子输了钱不讲道理，摆上手枪说赌最后一把，结果还是输了，要开枪打死对面的。结果哪知道对面两个人是阴差。",
+          "map": "",
+          "who": "",
+          "kind": "",
+          "formula": {
+            "verb": "",
+            "object": "",
+            "resistance": ""
+          },
+          "cells": {
+            "see": "",
+            "act": "",
+            "respond": "",
+            "wrong": ""
+          },
+          "dilemma": "",
+          "stuck": "",
+          "cuttable": false,
+          "anytime": false,
+          "lanes": {},
+          "options": [],
+          "tryMode": "",
+          "needs": []
+        },
+        {
+          "id": "i8xjf6vp9o",
+          "text": "",
+          "reaction": "",
+          "result": "",
+          "source": "",
+          "map": "",
+          "who": "",
+          "kind": "",
+          "formula": {
+            "verb": "",
+            "object": "",
+            "resistance": ""
+          },
+          "cells": {
+            "see": "",
+            "act": "",
+            "respond": "",
+            "wrong": ""
+          },
+          "dilemma": "",
+          "stuck": "",
+          "cuttable": false,
+          "anytime": false,
+          "lanes": {},
+          "options": [],
+          "tryMode": "",
+          "needs": []
+        }
+      ]
     },
     {
       "id": "xir5tgtelt",
