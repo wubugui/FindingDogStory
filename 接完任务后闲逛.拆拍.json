@@ -238,7 +238,11 @@
           "stuck": "",
           "cuttable": false,
           "anytime": false,
-          "lanes": {},
+          "lanes": {
+            "emotion": -1,
+            "z4qk1krevu": "平",
+            "1vpjvprevu": "输钱可能和超自然有关，和那文私铸钱有关"
+          },
           "options": [],
           "tryMode": "",
           "needs": []
