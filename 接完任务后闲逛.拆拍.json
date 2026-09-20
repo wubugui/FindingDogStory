@@ -1,0 +1,35 @@
+{
+  "app": "拆拍台",
+  "version": 3,
+  "meta": {
+    "title": "接完任务后闲逛",
+    "summary": "",
+    "changeFrom": "",
+    "changeTo": "",
+    "goal": "",
+    "experience": "",
+    "redline": ""
+  },
+  "synopsis": "",
+  "lanes": [
+    {
+      "id": "emotion",
+      "name": "情绪",
+      "kind": "curve"
+    },
+    {
+      "id": "z4qk1krevu",
+      "name": "三把火",
+      "kind": "trend"
+    },
+    {
+      "id": "1vpjvprevu",
+      "name": "玩家知道什么",
+      "kind": "text"
+    }
+  ],
+  "stages": [],
+  "mechanics": [],
+  "mapVisits": {},
+  "parking": []
+}
