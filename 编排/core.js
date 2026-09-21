@@ -517,16 +517,25 @@
     };
     L.push(`# ${m.title || '未命名任务'}`, '');
     const ready = d.stages.map((s, si) => ({ s, si })).filter(x => x.s.ready);
-    L.push('## 交接范围', '', ready.length ? `拆到底、可以照着做的子阶段：${ready.map(x => `${x.si + 1}. ${x.s.title || '未命名'}`).join('；')}。其余子阶段只到分段或拆拍，还不能照着做。` : '（还没有子阶段勾「这一段拆完了」——整份都还在拆。）', '');
+    if (ready.length) L.push('## 交接范围', '', `拆到底、可以照着做的子阶段：${ready.map(x => `${x.si + 1}. ${x.s.title || '未命名'}`).join('；')}。其余子阶段只到分段或拆拍，还不能照着做。`, '');
     const open = openItems(d);
-    L.push(`## 未定清单（${open.length}）`, '', '作者自己标了没想好的地方。照着做的人读到这些，要回来问，不要自己猜。', '', ...(open.length ? open.map(x => `- ${mdEsc(x.text)}`) : ['（没有）']), '');
-    L.push('## 顶层', '');
-    L.push(`- **这段讲什么**：${mdEsc(m.summary)}`, `- **关二狗怎么变了**：从 ${mdEsc(m.changeFrom)} 到 ${mdEsc(m.changeTo)}`, `- **关二狗的目的**：${mdEsc(m.goal)}`, `- **体验目标**：${mdEsc(m.experience)}`, ...(filled(m.redline) ? [`- **红线（不许做什么）**：${mdEsc(m.redline)}`] : []), '');
+    if (open.length) L.push(`## 未定清单／记的笔（${open.length}）`, '', '作者自己标了没想好的地方。照着做的人读到这些，要回来问，不要自己猜。', '', ...open.map(x => `- ${mdEsc(x.text)}`), '');
+    const top = [];
+    if (filled(m.summary)) top.push(`- **这段讲什么**：${mdEsc(m.summary)}`);
+    if (filled(m.changeFrom) || filled(m.changeTo)) top.push(`- **关二狗怎么变了**：从 ${mdEsc(m.changeFrom)} 到 ${mdEsc(m.changeTo)}`);
+    if (filled(m.goal)) top.push(`- **关二狗的目的**：${mdEsc(m.goal)}`);
+    if (filled(m.experience)) top.push(`- **体验目标**：${mdEsc(m.experience)}`);
+    if (filled(m.redline)) top.push(`- **红线（不许做什么）**：${mdEsc(m.redline)}`);
+    if (top.length) L.push('## 顶层', '', ...top, '');
     L.push('## 分段表', '');
     d.stages.forEach((s, si) => {
       const mode = s.mode === 'loop' ? `（循环，怎么出去：${mdEsc(s.loopExit) || '没写'}）` : s.mode === 'parallel' ? `（并行组：${mdEsc(s.parallelGroup)}）` : s.mode === 'branch' ? '（分支）' : '';
       L.push(`### ${si + 1}. ${s.title || '未命名'}${mode}${s.track === 'optional' ? '〔可选〕' : ''}${s.ready ? '〔拆完了〕' : ''}`, '');
-      L.push(`- **地点·时段·氛围**：${mdEsc(s.setting)}`, `- **关二狗的目的**：${mdEsc(s.goal)}`, `- **开始**：${mdEsc(s.start)}`, `- **结束**：${mdEsc(s.end)}`, ...D(s.design));
+      if (filled(s.setting)) L.push(`- **地点·时段·氛围**：${mdEsc(s.setting)}`);
+      if (filled(s.goal)) L.push(`- **关二狗的目的**：${mdEsc(s.goal)}`);
+      if (filled(s.start)) L.push(`- **开始**：${mdEsc(s.start)}`);
+      if (filled(s.end)) L.push(`- **结束**：${mdEsc(s.end)}`);
+      L.push(...D(s.design));
       if (filled(s.cast)) L.push(`- **登场角色与物件**：${mdEsc(s.cast)}`);
       if (filled(s.foreshadow)) L.push(`- **伏线**：${mdEsc(s.foreshadow)}`);
       if (filled(s.redline)) L.push(`- **红线（不许做什么）**：${mdEsc(s.redline)}`);
@@ -538,8 +547,14 @@
       if (s.mode === 'branch') { const src = optionSources(d, s.id); L.push(`- **从哪来**：${src.length ? src.map(x => `拍 ${x.si + 1}.${x.bi + 1} 选「${mdEsc(x.o.choice)}」`).join('；') : '（没有选项通向它）'}`); }
       if (s.mergeTo || s.mode === 'branch') L.push(`- **走完去哪**：${mergeText(d, s)}`);
       if (s.needs.length) L.push(`- **要先发生过**：${s.needs.map(n => mdEsc(needText(d, n))).join('；')}`);
-      L.push('');
-      if (s.beats.length) {
+      if (L[L.length - 1] !== '') L.push('');
+      /* 骨架式的段（只写了发生了什么／玩家做什么／记一笔）：用三列的表，别印一排空格子 */
+      const bare = s.beats.length && s.beats.every(b => !b.kind && !filled(b.reaction) && !filled(b.result) && !filled(b.who) && !filled(b.source) && !b.cuttable && !b.options.length);
+      if (bare) {
+        L.push('| # | 发生了什么 | 玩家做什么 | 记一笔 |', '|---|---|---|---|');
+        s.beats.forEach((b, bi) => L.push(`| ${si + 1}.${bi + 1}${b.anytime ? '〔随时〕' : ''} | ${mdEsc(b.text)} | ${mdEsc(b.cells.act)} | ${mdEsc(b.stuck)} |`));
+        L.push('');
+      } else if (s.beats.length) {
         L.push('| # | 发生 | 反应 | 结果 | 类型 | 地图 | 在场者 | 可砍 | 原文摘句 |', '|---|---|---|---|---|---|---|---|---|');
         s.beats.forEach((b, bi) => L.push(`| ${si + 1}.${bi + 1}${b.anytime ? '〔随时〕' : ''} | ${mdEsc(b.text)} | ${mdEsc(b.reaction)} | ${mdEsc(b.result)} | ${b.kind === UNDECIDED ? '没想好' : b.kind} | ${mdEsc(b.map)} | ${mdEsc(b.who)} | ${b.cuttable ? '可砍' : ''} | ${mdEsc(b.source)} |`));
         L.push('');
@@ -547,7 +562,7 @@
         const withNeeds = s.beats.map((b, bi) => ({ b, bi })).filter(x => x.b.needs.length);
         if (withNeeds.length) { L.push(...withNeeds.map(x => `- 拍 ${si + 1}.${x.bi + 1} 要先发生过：${x.b.needs.map(n => mdEsc(needText(d, n))).join('；')}`), ''); }
         s.beats.forEach((b, bi) => {
-          if (!isAct(b) && !filled(b.stuck)) return;
+          if (!isAct(b) && !filled(b.stuck) && !filled(b.cells.act)) return;
           L.push(`#### ${si + 1}.${bi + 1}（${b.kind === UNDECIDED ? '没想好' : b.kind || '未标'}${b.anytime ? '，整段随时可发生' : ''}）${mdEsc(b.text)}`, '');
           const opts = realOptions(b);
           if (b.kind === '做') {
@@ -555,6 +570,7 @@
             if (!opts.length || Object.values(b.cells).some(filled)) L.push(`- 玩家看到什么：${mdEsc(b.cells.see)}`, `- 玩家做什么：${mdEsc(b.cells.act)}`, `- 游戏怎么回应：${mdEsc(b.cells.respond)}`, `- 做错了会怎样：${mdEsc(b.cells.wrong)}`);
             if (opts.length >= 2 || b.tryMode) L.push(`- **几种做法怎么算过**：${TRY_NAMES[b.tryMode] || '没写'}`);
           } else if (b.kind === '选') L.push(`- **两难**：${mdEsc(b.dilemma)}`);
+          else if (filled(b.cells.act)) L.push(`- **玩家做什么**：${mdEsc(b.cells.act)}`);   /* 没标类型也印，别丢 */
           if (filled(b.stuck)) L.push(`- **卡点**：${mdEsc(b.stuck)}`);
           const rows = b.kind === '选' ? b.options : opts;
           if (rows.length) {
@@ -584,7 +600,7 @@
       L.push('');
     }
     const seq = allBeats(d);
-    if (seq.length) {
+    if (seq.some(x => Object.keys(x.b.lanes).length)) {
       L.push('## 泳道', '', `| 拍 | ${d.lanes.map(l => mdEsc(l.name)).join(' | ')} |`, `|---|${d.lanes.map(() => '---').join('|')}|`);
       seq.forEach(x => L.push(`| ${x.si + 1}.${x.bi + 1} ${mdEsc(short(x.b.text, 14))} | ${d.lanes.map(l => { const val = x.b.lanes[l.id]; return val === undefined ? '' : (typeof val === 'number' && val > 0 ? '+' + val : mdEsc(String(val))); }).join(' | ')} |`));
       L.push('');
