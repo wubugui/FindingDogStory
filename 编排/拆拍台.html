@@ -583,6 +583,7 @@ const HELP = {
   "地图汇总": {"what":"交接用：每张图在哪几段出现、那时什么样。全部从你前面写的东西自动列出，给做场景（原画、夜景、灯、在场的人）的人看。"},
   '梗概原文': { what: '把这一段的梗概原文贴进来。', how: ['下面会按句拆开，逐句决定它变成子阶段、拍，还是并入某一拍的原文摘句。', '原文不是一段话（是表格、条目、设计稿）就不用这一页：直接在大纲里建子阶段和拍，「原文摘句」手抄要点。'] },
   "逐句拆": {"what":"梗概按句拆开，一句一行。","how":["第 2 步只用「从这句起新开一段」：把整段切成几个子阶段，起个名字，然后回详情把每一段填完。","第 3 步再回来用「→ 新拍」：接在选中的拍后面。","并入选中拍：把这句追加到当前选中那一拍的原文摘句。","你在详情里手贴过原文摘句的句子，这里也会灰掉。"]},
+  '记一笔': { what: '这一段／这一拍里没想好的、第二遍要核对的、想砍的，随手记在这。', how: ['记下来就放下，接着推下一拍。', '第二遍核对时，「停车场」页会把所有记的笔和停车场条目列在一起，从上往下过。'] },
   '停车场': { what: '拆的时候冒出来的下一层点子，先丢在这里。', how: ['一层拆完整段才往下拆一层，当下别往下钻。', '会记住你当时选中的是哪个子阶段。'] },
   '拍表': { what: '所有拍放在一张表里。', how: ['类型筛「做＋选」，就只剩要设计玩法的那几拍。'] },
   '完成标准': { what: '五条都打上勾，这一段就算拆完了。' },
@@ -657,6 +658,14 @@ const modeBadge = s => [s.mode === 'loop' ? h('span', { class: 'mb', title: '循
 
 function refreshDerived() {
   clearTimeout(derivedTimer);
+  if (LITE) {
+    issues = [];
+    document.querySelectorAll('[data-dot-for]').forEach(d => { d.classList.remove('on'); d.title = ''; });
+    document.querySelectorAll('[data-tab-count="checks"]').forEach(c => { c.textContent = ''; });
+    const nPark = doc.parking.filter(x => !x.done).length || '';
+    document.querySelectorAll('[data-tab-count="parking"]').forEach(p => { p.textContent = nPark; p.style.background = 'var(--accent2)'; });
+    return;
+  }
   issues = computeIssues();
   const byId = new Map();
   issues.forEach(i => { if (i.level === 'info') return; const id = i.target.type === 'top' ? 'top' : i.target.id; byId.set(id, (byId.get(id) || 0) + 1); });
@@ -716,7 +725,7 @@ function renderHeader() {
 function renderOutline() {
   const box = $('#outline'); const st = box.scrollTop; box.innerHTML = '';
   box.append(h('div', { class: 'outline-head' }, h('b', {}, '大纲 · 任务 → 子阶段 → 拍', helpBtn('大纲')),
-    h('span', { class: 'hint' }, 'Enter 在下面新建一行 · Alt+↑↓ 移动 · Alt+1~3 标 看/做/选 · 拖编号排序 · 升降级、删除在详情里')));
+    h('span', { class: 'hint' }, LITE ? '点一行直接改字 · Enter 在下面新建一行 · 拖编号排序 · 升降级、删除在详情里' : 'Enter 在下面新建一行 · Alt+↑↓ 移动 · Alt+1~3 标 看/做/选 · 拖编号排序 · 升降级、删除在详情里')));
   box.append(h('div', { class: 'row top' + (sel.type === 'top' ? ' selected' : ''), dataset: { id: 'top' }, onclick: () => rowTap({ type: 'top' }) },
     h('span', { class: 'num' }, '任务'), h('span', { class: 'label', style: 'flex:1' }, syncSpan('top:title', doc.meta.title, '未命名任务')), h('span', { class: 'dot', dataset: { dotFor: 'top' } }), goBtn({ type: 'top' })));
   doc.stages.forEach((s, si) => {
@@ -868,22 +877,34 @@ function moveNode(src, dst, after) {
 }
 
 /* ---------- 标签页 ---------- */
+/* 简单模式（缺省）：只留大纲、详情、梗概、停车场——先推主线、点子记下来就放下、第二遍再核对。
+ * 九步那套（泳道、四格、接线、玩法、检查……）藏起来，数据不动，随时切回完整模式。URL 带 ?full=1 强制完整模式（评审流程用）。 */
+let LITE = true;
+try { LITE = new URLSearchParams(location.search).get('full') ? false : localStorage.getItem('chaipai.lite') !== '0'; } catch (e) { }
+const LITE_TABS = ['detail', 'synopsis', 'parking'];
+const visibleTabs = () => LITE ? TABS.filter(([k]) => LITE_TABS.includes(k)) : TABS;
+function setLite(on) {
+  LITE = on; try { localStorage.setItem('chaipai.lite', on ? '1' : '0'); } catch (e) { }
+  if (LITE && !LITE_TABS.includes(tab)) tab = 'detail';
+  renderAll(); toast(on ? '简单模式：只有大纲、详情、梗概、停车场' : '完整模式：九步全开', 'info');
+}
 const TABS = [['detail', '详情'], ['table', '拍表'], ['lanes', '泳道'], ['flow', '流向'], ['mech', '玩法'], ['maps', '地图'], ['checks', '检查'], ['synopsis', '梗概'], ['parking', '停车场'], ['guide', '指南']];
 function renderTabs() {
   const n = $('#tabs'); n.innerHTML = '';
-  TABS.forEach(([k, t]) => n.append(h('button', { class: 'tab' + (tab === k ? ' on' : ''), onclick: () => switchTab(k) }, t, h('span', { class: 'tcount', dataset: { tabCount: k } }))));
+  visibleTabs().forEach(([k, t]) => n.append(h('button', { class: 'tab' + (tab === k ? ' on' : ''), onclick: () => switchTab(k) }, t, h('span', { class: 'tcount', dataset: { tabCount: k } }))));
   renderBottomBar();
 }
 function switchTab(k) { tab = k; renderTabs(); renderView(); refreshDerived(); scheduleLive(); const v = $('#view'); if (v) v.scrollTop = 0; }
 function renderView() {
   const v = $('#view');
+  if (LITE && !LITE_TABS.includes(tab)) tab = 'detail';
   const selKey = sel.type + ':' + (sel.id || '');
   const sameTab = v.dataset.tab === tab; const sameSel = v.dataset.sel === selKey;
   const st = v.scrollTop; const scrollers = {};
   v.querySelectorAll('[data-scroll]').forEach(el => { scrollers[el.dataset.scroll] = { l: el.scrollLeft, t: el.scrollTop }; });
   v.innerHTML = ''; v.dataset.tab = tab; v.dataset.sel = selKey;
   if (tab === 'checks' || tab === 'table' || tab === 'guide') issues = computeIssues();
-  ({ detail: renderDetail, table: renderTable, lanes: renderLanes, flow: renderFlow, mech: renderMech, maps: renderMaps, checks: renderChecks, synopsis: renderSynopsis, parking: renderParking, guide: renderGuide })[tab](v);
+  ({ detail: LITE ? renderDetailLite : renderDetail, table: renderTable, lanes: renderLanes, flow: renderFlow, mech: renderMech, maps: renderMaps, checks: renderChecks, synopsis: renderSynopsis, parking: renderParking, guide: renderGuide })[tab](v);
   v.querySelectorAll('textarea').forEach(autosize);
   if (sameTab && (tab !== 'detail' || sameSel)) {
     v.scrollTop = st;
@@ -1041,6 +1062,59 @@ function renderFlow(v) {
 }
 
 /* ---------- 详情 ---------- */
+/* ---------- 简单模式的详情：每层只剩两三个格子 ---------- */
+function renderDetailLite(v) {
+  if (sel.type === 'stage') { const f = findStage(sel.id); if (f) return liteStage(v, f.s, f.si); }
+  if (sel.type === 'beat') { const f = findBeat(sel.id); if (f) return liteBeat(v, f); }
+  sel = { type: 'top' }; liteTop(v);
+}
+function liteTop(v) {
+  const m = doc.meta;
+  v.append(sec('任务', '', frow('任务名', field(m, 'title', 'top')), frow('这段讲什么', field(m, 'summary', 'top', { multi: true }), '一句话，写不写都行')));
+  if (!doc.stages.length) v.append(sec('开始', '', h('p', {}, '左边大纲点「＋ 子阶段」，一段一行；段下面「＋ 拍」，一拍一件事。有现成梗概就去「梗概」页贴进来，逐句切。'),
+    h('div', { class: 'toolbar' }, btn('去梗概页', () => switchTab('synopsis')))));
+  else v.append(sec('各段', '', doc.stages.map((s, si) => h('div', { class: 'refline', onclick: () => select({ type: 'stage', id: s.id }) },
+    h('b', {}, `${si + 1}. ${s.title || '未命名'}`), h('span', { class: 'hint' }, ` · ${s.beats.length} 拍`), filled(s.stuck) ? h('span', { class: 'hint' }, ` · 记：${short(s.stuck, 20)}`) : null))));
+  v.append(h('p', { class: 'hint' }, '要泳道、四格、接线、玩法那一套，在「⋯」菜单里切到完整模式；数据是同一份。'));
+}
+function liteStage(v, s, si) {
+  const oid = s.id;
+  v.append(h('div', { class: 'crumb' }, h('a', { class: 'lnk', onclick: () => select({ type: 'top' }) }, doc.meta.title || '未命名任务'), ` › 子阶段 ${si + 1}`));
+  v.append(sec(`子阶段 ${si + 1}`, '',
+    h('div', { class: 'toolbar' },
+      btn('上一个', () => { const p = doc.stages[si - 1]; if (p) select({ type: 'stage', id: p.id }); }, 'sm'),
+      btn('下一个', () => { const p = doc.stages[si + 1]; if (p) select({ type: 'stage', id: p.id }); }, 'sm'),
+      btn('↑ 上移', () => moveNodeStep({ type: 'stage', id: s.id }, -1), 'sm'),
+      btn('↓ 下移', () => moveNodeStep({ type: 'stage', id: s.id }, 1), 'sm'),
+      si > 0 ? btn('降为拍', () => demoteStage(s.id), 'sm', '并到上一个子阶段末尾') : null,
+      h('span', { class: 'spacer' }),
+      btn('删除这个子阶段', async () => { if (!(await askConfirm(s.beats.length ? `下面还有 ${s.beats.length} 拍，一起删掉？（删错了可以在「⋯」里撤销）` : '删除这个子阶段？', '删除'))) return; mutate(() => { doc.stages.splice(si, 1); sel = { type: 'top' }; }); }, 'danger sm')),
+    frow('标题', field(s, 'title', oid)),
+    frow('记一笔', field(s, 'stuck', oid, { multi: true }), '没想好的、第二遍要核对的、想砍的，随手记；记下来就放下')));
+  v.append(sec(`这一段的拍（${s.beats.length}）`, '', h('p', { class: 'hint' }, '一拍＝一件事。点一行进去写。'),
+    h('div', { class: 'blist' }, s.beats.map((b, bi) => h('div', { class: 'brow', onclick: () => select({ type: 'beat', id: b.id }) },
+      h('span', { class: 'num' }, `${si + 1}.${bi + 1}`), h('span', { class: 'ell' }, short(b.text, 40) + (filled(b.cells.act) ? `　→ 玩家：${short(b.cells.act, 20)}` : '')), filled(b.stuck) ? h('span', { class: 'chip' }, '记') : null))),
+    h('div', { class: 'toolbar', style: 'margin-top:8px' }, btn('＋ 在末尾加一拍', () => { let id; mutate(() => { const nb = newBeat(); s.collapsed = false; s.beats.push(nb); id = nb.id; sel = { type: 'beat', id }; }); focusKey(`f:${id}:text`); }))));
+}
+function liteBeat(v, f) {
+  const { b, s, si, bi } = f; const oid = b.id;
+  const seq = allBeats(); const idx = seq.findIndex(x => x.b.id === b.id);
+  v.append(h('div', { class: 'crumb' }, h('a', { class: 'lnk', onclick: () => select({ type: 'top' }) }, doc.meta.title || '未命名任务'), ' › ',
+    h('a', { class: 'lnk', onclick: () => select({ type: 'stage', id: s.id }) }, `子阶段 ${si + 1}「${short(s.title, 14)}」`), ` › 拍 ${si + 1}.${bi + 1}`));
+  v.append(sec(`拍 ${si + 1}.${bi + 1}`, '',
+    h('div', { class: 'toolbar' },
+      btn('上一拍', () => { const p = seq[idx - 1]; if (p) select({ type: 'beat', id: p.b.id }); }, 'sm'),
+      btn('下一拍', () => { const p = seq[idx + 1]; if (p) select({ type: 'beat', id: p.b.id }); }, 'sm'),
+      btn('＋ 在后面插一拍', () => { let id; mutate(() => { const nb = newBeat(); s.beats.splice(bi + 1, 0, nb); id = nb.id; sel = { type: 'beat', id }; }); focusKey(`f:${id}:text`); }, 'sm'),
+      btn('↑ 上移', () => moveNodeStep({ type: 'beat', id: b.id }, -1), 'sm'),
+      btn('↓ 下移', () => moveNodeStep({ type: 'beat', id: b.id }, 1), 'sm'),
+      btn('升为子阶段', () => promoteBeat(b.id), 'sm', '它后面的拍跟过去'),
+      h('span', { class: 'spacer' }),
+      btn('删除这一拍', async () => { if (beatHasContent(b) && !(await askConfirm('删除这一拍？（删错了可以在「⋯」里撤销）', '删除'))) return; mutate(() => { s.beats.splice(bi, 1); sel = { type: 'stage', id: s.id }; }); }, 'danger sm')),
+    frow('发生了什么', field(b, 'text', oid, { multi: true })),
+    frow('玩家做什么', field(b, 'cells.act', oid, { multi: true }), '想到了就写，没想到空着，进引擎再定'),
+    frow('记一笔', field(b, 'stuck', oid, { multi: true }), '没想好的、第二遍要核对的、想砍的，随手记；记下来就放下')));
+}
 function renderDetail(v) {
   if (sel.type === 'stage') { const f = findStage(sel.id); if (f) return detailStage(v, f.s, f.si); }
   if (sel.type === 'beat') { const f = findBeat(sel.id); if (f) return detailBeat(v, f); }
@@ -1469,8 +1543,8 @@ function renderSynopsis(v) {
 function renderParking(v) {
   const inp = h('input', { class: 'inp', placeholder: '想到下一层的点子，写这里按 Enter', dataset: { focusKey: 'parkin' } });
   inp.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing && filled(inp.value)) { const t = inp.value.trim(); addParking(t); focusKey('parkin'); } });
-  v.append(sec('停车场', '规矩', h('p', { class: 'hint' }, '一层拆完整段才往下拆。拆的时候冒出来的下一层点子（具体操作、演出、玩法细节）先丢这里，别往下钻。会记住当时选中的子阶段。'), inp));
-  if (!doc.parking.length) { v.append(h('p', { class: 'hint' }, '还没有。')); return; }
+  v.append(sec('停车场', LITE ? '' : '规矩', h('p', { class: 'hint' }, LITE ? '想到什么先记这里，记下来就放下，接着推主线。第二遍核对时再一条条过。会记住当时选中的子阶段。' : '一层拆完整段才往下拆。拆的时候冒出来的下一层点子（具体操作、演出、玩法细节）先丢这里，别往下钻。会记住当时选中的子阶段。'), inp));
+  if (!doc.parking.length) v.append(h('p', { class: 'hint' }, '还没有。'));
   const box = h('div', { class: 'sec' });
   doc.parking.forEach((p, i) => {
     box.append(h('div', { class: 'park' + (p.done ? ' done' : '') },
@@ -1480,7 +1554,12 @@ function renderParking(v) {
         h('option', { value: '', selected: !p.stageId }, '（不挂子阶段）'), doc.stages.map((s, si) => h('option', { value: s.id, selected: p.stageId === s.id }, `${si + 1}. ${short(s.title, 12)}`))),
       btn('✕', () => mutate(() => doc.parking.splice(i, 1)), 'sm')));
   });
-  v.append(box);
+  if (doc.parking.length) v.append(box);
+  if (LITE) {
+    const notes = C.openItems(doc);
+    v.append(sec(`各处记的笔（${notes.length}）`, '第二遍', h('p', { class: 'hint' }, '子阶段、拍里「记一笔」写的东西，全在这里。第二遍核对时从上往下过，点一条跳过去。'),
+      notes.length ? notes.map(x => h('div', { class: 'refline', onclick: () => select(x.target, { tab: 'detail' }) }, x.text.replace('」 卡点：', '」：'))) : h('p', { class: 'hint' }, '（没有）')));
+  }
 }
 
 /* ---------- 指南 ---------- */
@@ -1549,17 +1628,18 @@ function renderBottomBar() {
   const bb = $('#bottombar'); if (!bb) return;
   bb.innerHTML = '';
   if (document.body.dataset.layout !== 'phone') return;
-  const main = ['detail', 'lanes', 'checks'];
-  BB.forEach(([k, icon, label]) => {
+  const main = LITE ? ['detail', 'parking'] : ['detail', 'lanes', 'checks'];
+  const bbList = LITE ? [['outline', '☰', '大纲'], ['detail', '✎', '详情'], ['parking', '🅿', '停车场'], ['more', '⋯', '更多']] : BB;
+  bbList.forEach(([k, icon, label]) => {
     const on = k === 'outline' ? mview === 'outline' : mview === 'work' && (k === 'more' ? !main.includes(tab) : tab === k);
     const moreLabel = k === 'more' && mview === 'work' && !main.includes(tab) ? (TABS.find(x => x[0] === tab) || [0, label])[1] : label;
     bb.append(h('button', { class: 'bb' + (on ? ' on' : ''), onclick: () => { if (k === 'outline') goOutline(); else if (k === 'more') openTabSheet(); else goWork(k); } },
-      h('span', { class: 'bbi' }, icon), h('span', {}, moreLabel), k === 'checks' ? h('span', { class: 'tcount', dataset: { tabCount: 'checks' } }) : null));
+      h('span', { class: 'bbi' }, icon), h('span', {}, moreLabel), k === 'checks' || k === 'parking' ? h('span', { class: 'tcount', dataset: { tabCount: k } }) : null));
   });
   if (typeof refreshDerived === 'function' && doc) { try { refreshDerived(); } catch (e) { } }
 }
 function openTabSheet() {
-  showModal('切换页面', h('div', { class: 'tabgrid' }, TABS.map(([k, t]) => h('button', { class: 'btn' + (tab === k && mview === 'work' ? ' on' : ''), onclick: () => { finishModal(); goWork(k); } }, t,
+  showModal('切换页面', h('div', { class: 'tabgrid' }, visibleTabs().map(([k, t]) => h('button', { class: 'btn' + (tab === k && mview === 'work' ? ' on' : ''), onclick: () => { finishModal(); goWork(k); } }, t,
     k === 'checks' || k === 'parking' ? h('span', { class: 'tcount', dataset: { tabCount: k } }) : null))));
   refreshDerived();
 }
@@ -1573,6 +1653,7 @@ function openMenu() {
     phone ? item('↶', '撤销', undo, !undoStack.length) : null,
     phone ? item('↷', '重做', redo, !redoStack.length) : null,
     item('⇩', '导出 Markdown', exportMd),
+    item(LITE ? '⊞' : '⊟', LITE ? '切到完整模式（九步全开）' : '切回简单模式（只留大纲、详情、梗概、停车场）', () => setLite(!LITE)),
     item('☁', 'GitHub 同步设置', () => openSettings(false)),
     FS_OK ? item('🗂', $('#bProj').textContent, onProjButton) : null,
     !phone ? item('↶', '撤销', undo, !undoStack.length) : null,
