@@ -63,7 +63,37 @@
       "laneUndecided": [],
       "ready": false,
       "collapsed": false,
-      "beats": []
+      "beats": [
+        {
+          "id": "nk6yv1jcip",
+          "text": "",
+          "reaction": "",
+          "result": "",
+          "source": "",
+          "map": "",
+          "who": "",
+          "kind": "",
+          "formula": {
+            "verb": "",
+            "object": "",
+            "resistance": ""
+          },
+          "cells": {
+            "see": "",
+            "act": "",
+            "respond": "",
+            "wrong": ""
+          },
+          "dilemma": "",
+          "stuck": "",
+          "cuttable": false,
+          "anytime": false,
+          "lanes": {},
+          "options": [],
+          "tryMode": "",
+          "needs": []
+        }
+      ]
     },
     {
       "id": "0icofdr87j",
