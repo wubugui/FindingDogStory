@@ -1,0 +1,538 @@
+{
+  "app": "拆拍台",
+  "version": 3,
+  "meta": {
+    "title": "主线崖墓背尸任务（2）",
+    "summary": "",
+    "changeFrom": "",
+    "changeTo": "",
+    "goal": "",
+    "experience": "",
+    "redline": ""
+  },
+  "synopsis": "",
+  "lanes": [
+    {
+      "id": "emotion",
+      "name": "情绪",
+      "kind": "curve"
+    },
+    {
+      "id": "2web49itnf",
+      "name": "三把火",
+      "kind": "trend"
+    },
+    {
+      "id": "puyhi4itnf",
+      "name": "玩家知道什么",
+      "kind": "text"
+    }
+  ],
+  "stages": [
+    {
+      "id": "03c797r70w",
+      "title": "接取任务",
+      "track": "main",
+      "setting": "后巷，白天，正常",
+      "goal": "被人拦下临时起意骗定金",
+      "start": "啥都不知道",
+      "end": "拿到钱，骗定金",
+      "cast": "官差，关二狗，阴币",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
+      "mode": "normal",
+      "loopExit": "",
+      "parallelGroup": "",
+      "mergeTo": "",
+      "needs": [],
+      "design": {
+        "learn": "",
+        "know": "",
+        "feel": "",
+        "gain": "",
+        "deleteTest": "",
+        "backward": "",
+        "summary": ""
+      },
+      "laneExclude": [
+        "emotion",
+        "2web49itnf",
+        "puyhi4itnf"
+      ],
+      "laneUndecided": [],
+      "ready": false,
+      "collapsed": false,
+      "beats": [
+        {
+          "id": "nk6yv1jcip",
+          "text": "",
+          "reaction": "",
+          "result": "",
+          "source": "",
+          "map": "",
+          "who": "",
+          "kind": "",
+          "formula": {
+            "verb": "",
+            "object": "",
+            "resistance": ""
+          },
+          "cells": {
+            "see": "",
+            "act": "",
+            "respond": "",
+            "wrong": ""
+          },
+          "dilemma": "",
+          "stuck": "",
+          "cuttable": false,
+          "anytime": false,
+          "lanes": {},
+          "options": [],
+          "tryMode": "",
+          "needs": []
+        }
+      ]
+    },
+    {
+      "id": "0icofdr87j",
+      "title": "自由活动",
+      "track": "main",
+      "setting": "",
+      "goal": "",
+      "start": "",
+      "end": "",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
+      "mode": "normal",
+      "loopExit": "",
+      "parallelGroup": "",
+      "mergeTo": "",
+      "needs": [],
+      "design": {
+        "learn": "",
+        "know": "",
+        "feel": "",
+        "gain": "",
+        "deleteTest": "",
+        "backward": "",
+        "summary": ""
+      },
+      "laneExclude": [],
+      "laneUndecided": [],
+      "ready": false,
+      "collapsed": false,
+      "beats": []
+    },
+    {
+      "id": "zw79ed57o8",
+      "title": "上梁准备",
+      "track": "main",
+      "setting": "",
+      "goal": "",
+      "start": "",
+      "end": "",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
+      "mode": "normal",
+      "loopExit": "",
+      "parallelGroup": "",
+      "mergeTo": "",
+      "needs": [],
+      "design": {
+        "learn": "",
+        "know": "",
+        "feel": "",
+        "gain": "",
+        "deleteTest": "",
+        "backward": "",
+        "summary": ""
+      },
+      "laneExclude": [],
+      "laneUndecided": [],
+      "ready": false,
+      "collapsed": true,
+      "beats": []
+    },
+    {
+      "id": "raanp54wje",
+      "title": "初上跑马梁",
+      "track": "main",
+      "setting": "跑马梁，一更，大风",
+      "goal": "找到去向任务地的路",
+      "start": "一片懵逼，不知道往那边走",
+      "end": "找到了路，继续前进",
+      "cast": "关二狗，火把，一个冤鬼",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
+      "mode": "normal",
+      "loopExit": "",
+      "parallelGroup": "",
+      "mergeTo": "",
+      "needs": [],
+      "design": {
+        "learn": "操作火把",
+        "know": "有鬼物在跑马梁可以开启新的经历",
+        "feel": "",
+        "gain": "",
+        "deleteTest": "",
+        "backward": "",
+        "summary": "学会操作火把，直到如何应用气味找线索，知道熄灭火把的后果，知道三把火的用途"
+      },
+      "laneExclude": [
+        "emotion"
+      ],
+      "laneUndecided": [],
+      "ready": false,
+      "collapsed": false,
+      "beats": [
+        {
+          "id": "v9w3suylbt",
+          "text": "上梁顶，风吹的呼呼的，关二狗骂骂咧咧，走来走去，找不到路，突然发现有一把钱纸被大风吹过来",
+          "reaction": "骂骂咧咧，走来走去",
+          "result": "找到了前进的大致方向",
+          "source": "",
+          "map": "跑马梁",
+          "who": "",
+          "kind": "看",
+          "formula": {
+            "verb": "",
+            "object": "",
+            "resistance": ""
+          },
+          "cells": {
+            "see": "",
+            "act": "",
+            "respond": "",
+            "wrong": ""
+          },
+          "dilemma": "",
+          "stuck": "",
+          "cuttable": false,
+          "anytime": false,
+          "lanes": {
+            "emotion": 0,
+            "puyhi4itnf": "要去的方向"
+          },
+          "options": [],
+          "tryMode": "",
+          "needs": []
+        },
+        {
+          "id": "eioubvq7d1",
+          "text": "一阵大风，把他的火把直接吹灭，但是他没带火种，继续摸黑前进，身后传来脚步声，看见旁边有人在喊他",
+          "reaction": "骂骂咧咧",
+          "result": "和人搭话或者不理",
+          "source": "",
+          "map": "跑马梁",
+          "who": "",
+          "kind": "做",
+          "formula": {
+            "verb": "点燃",
+            "object": "火把",
+            "resistance": "不知道怎么点"
+          },
+          "cells": {
+            "see": "火把熄灭了，风吹的呼呼的",
+            "act": "在教学下按下t",
+            "respond": "火把点燃，看清路",
+            "wrong": "继续教学"
+          },
+          "dilemma": "",
+          "stuck": "这是教学",
+          "cuttable": false,
+          "anytime": false,
+          "lanes": {
+            "emotion": 0,
+            "2web49itnf": "平",
+            "puyhi4itnf": "学会使用基础的火把"
+          },
+          "options": [
+            {
+              "id": "f5yhz0v4bn",
+              "choice": "不理，跟着教学走",
+              "works": "yes",
+              "reaction": "",
+              "result": "",
+              "effect": "",
+              "goto": {
+                "type": "next",
+                "stageId": ""
+              }
+            }
+          ],
+          "tryMode": "",
+          "needs": []
+        }
+      ]
+    },
+    {
+      "id": "hk1lyo56kh",
+      "title": "入口",
+      "track": "main",
+      "setting": "",
+      "goal": "",
+      "start": "",
+      "end": "",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
+      "mode": "normal",
+      "loopExit": "",
+      "parallelGroup": "",
+      "mergeTo": "",
+      "needs": [],
+      "design": {
+        "learn": "",
+        "know": "",
+        "feel": "",
+        "gain": "",
+        "deleteTest": "",
+        "backward": "",
+        "summary": ""
+      },
+      "laneExclude": [],
+      "laneUndecided": [],
+      "ready": false,
+      "collapsed": false,
+      "beats": []
+    },
+    {
+      "id": "h77q765h4r",
+      "title": "去的途中",
+      "track": "main",
+      "setting": "",
+      "goal": "",
+      "start": "",
+      "end": "",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
+      "mode": "normal",
+      "loopExit": "",
+      "parallelGroup": "",
+      "mergeTo": "",
+      "needs": [],
+      "design": {
+        "learn": "",
+        "know": "",
+        "feel": "",
+        "gain": "",
+        "deleteTest": "",
+        "backward": "",
+        "summary": ""
+      },
+      "laneExclude": [],
+      "laneUndecided": [],
+      "ready": false,
+      "collapsed": false,
+      "beats": []
+    },
+    {
+      "id": "ji909h5vhe",
+      "title": "目的地",
+      "track": "main",
+      "setting": "",
+      "goal": "",
+      "start": "",
+      "end": "",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
+      "mode": "normal",
+      "loopExit": "",
+      "parallelGroup": "",
+      "mergeTo": "",
+      "needs": [],
+      "design": {
+        "learn": "",
+        "know": "",
+        "feel": "",
+        "gain": "",
+        "deleteTest": "",
+        "backward": "",
+        "summary": ""
+      },
+      "laneExclude": [],
+      "laneUndecided": [],
+      "ready": false,
+      "collapsed": false,
+      "beats": []
+    },
+    {
+      "id": "fyt8hp66y4",
+      "title": "背尸下山",
+      "track": "main",
+      "setting": "",
+      "goal": "",
+      "start": "",
+      "end": "",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
+      "mode": "normal",
+      "loopExit": "",
+      "parallelGroup": "",
+      "mergeTo": "",
+      "needs": [],
+      "design": {
+        "learn": "",
+        "know": "",
+        "feel": "",
+        "gain": "",
+        "deleteTest": "",
+        "backward": "",
+        "summary": ""
+      },
+      "laneExclude": [],
+      "laneUndecided": [],
+      "ready": false,
+      "collapsed": false,
+      "beats": []
+    },
+    {
+      "id": "xviuqm6kmr",
+      "title": "坠入牛头凼",
+      "track": "main",
+      "setting": "",
+      "goal": "",
+      "start": "",
+      "end": "",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
+      "mode": "normal",
+      "loopExit": "",
+      "parallelGroup": "",
+      "mergeTo": "",
+      "needs": [],
+      "design": {
+        "learn": "",
+        "know": "",
+        "feel": "",
+        "gain": "",
+        "deleteTest": "",
+        "backward": "",
+        "summary": ""
+      },
+      "laneExclude": [],
+      "laneUndecided": [],
+      "ready": false,
+      "collapsed": false,
+      "beats": []
+    },
+    {
+      "id": "4us8nk7bnm",
+      "title": "尾声",
+      "track": "main",
+      "setting": "",
+      "goal": "",
+      "start": "",
+      "end": "",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
+      "mode": "normal",
+      "loopExit": "",
+      "parallelGroup": "",
+      "mergeTo": "",
+      "needs": [],
+      "design": {
+        "learn": "",
+        "know": "",
+        "feel": "",
+        "gain": "",
+        "deleteTest": "",
+        "backward": "",
+        "summary": ""
+      },
+      "laneExclude": [],
+      "laneUndecided": [],
+      "ready": false,
+      "collapsed": false,
+      "beats": []
+    },
+    {
+      "id": "tw1agk7eh4",
+      "title": "",
+      "track": "main",
+      "setting": "",
+      "goal": "",
+      "start": "",
+      "end": "",
+      "cast": "",
+      "foreshadow": "",
+      "redline": "",
+      "stuck": "",
+      "mode": "normal",
+      "loopExit": "",
+      "parallelGroup": "",
+      "mergeTo": "",
+      "needs": [],
+      "design": {
+        "learn": "",
+        "know": "",
+        "feel": "",
+        "gain": "",
+        "deleteTest": "",
+        "backward": "",
+        "summary": ""
+      },
+      "laneExclude": [],
+      "laneUndecided": [],
+      "ready": false,
+      "collapsed": false,
+      "beats": []
+    }
+  ],
+  "mechanics": [
+    {
+      "id": "ot4nmawkmr",
+      "name": "起",
+      "ok": "",
+      "wrong": "",
+      "note": "",
+      "arc": {
+        "qi": [
+          "eioubvq7d1"
+        ],
+        "cheng": [],
+        "zhuan": [],
+        "he": []
+      }
+    },
+    {
+      "id": "15gns6x5h1",
+      "name": "火把玩法",
+      "ok": "",
+      "wrong": "",
+      "note": "",
+      "arc": {
+        "qi": [
+          "eioubvq7d1"
+        ],
+        "cheng": [],
+        "zhuan": [],
+        "he": []
+      }
+    }
+  ],
+  "mapVisits": {
+    "跑马梁||raanp54wje": {
+      "light": ""
+    }
+  },
+  "parking": []
+}
