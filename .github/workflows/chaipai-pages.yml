@@ -1,4 +1,4 @@
-# 拆拍台发布到 GitHub Pages（手机访问用）。只发页面本身（拆拍台.html + core.js），不发任何数据；
+# 拆拍台与主线视觉审查页发布到 GitHub Pages。只发 HTML/JS，图像由公开仓库提供；不发拆拍台任务数据。
 # 任务数据在 chaipai-data 分支，由页面通过 GitHub 接口读写。
 name: 拆拍台 Pages
 
@@ -8,6 +8,7 @@ on:
     paths:
       - '编排/拆拍台.html'
       - '编排/core.js'
+      - '资料/主线视觉图集_2026-09-25/审查浏览.html'
       - '.github/workflows/chaipai-pages.yml'
   workflow_dispatch:
 
@@ -32,6 +33,7 @@ jobs:
           sed "s|<script src=\"core.js\"></script>|<script src=\"core.js?v=${GITHUB_SHA}\"></script>|" "编排/拆拍台.html" > _site/index.html
           grep -q "core.js?v=${GITHUB_SHA}" _site/index.html
           cp "编排/core.js" _site/core.js
+          cp "资料/主线视觉图集_2026-09-25/审查浏览.html" _site/visual-review.html
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -19,7 +19,7 @@
   <header>
     <h1>主线视觉图集 · 全图审查</h1>
     <p>汇集 2026-09-24 与 2026-09-25 两批图集的全部 PNG。包括生成的概念图、模拟实机图、返工候选与判退图，也保留原生实机、裁切和输入参考，便于并排查证。<strong>模拟实机图是生成图，不是真实运行画面；历史“入选”不代表当前正典或最终验收。</strong></p>
-    <p>点击缩略图放大；方向键切换，Esc 关闭。筛选只影响浏览，不改变文件与质检结论。具体结论见 <a href="图集索引.md">09-25 图集索引</a>、<a href="../主线视觉图集_2026-09-24/图集索引.md">09-24 图集索引</a>。</p>
+    <p>点击缩略图放大；方向键切换，Esc 关闭。筛选只影响浏览，不改变文件与质检结论。具体结论见 <a href="https://github.com/wubugui/FindingDogStory/blob/main/资料/主线视觉图集_2026-09-25/图集索引.md">09-25 图集索引</a>、<a href="https://github.com/wubugui/FindingDogStory/blob/main/资料/主线视觉图集_2026-09-24/图集索引.md">09-24 图集索引</a>。</p>
   </header>
   <div class="toolbar">
     <label for="batch">批次</label><select id="batch"><option value="all">全部</option><option value="2026-09-25">09-25</option><option value="2026-09-24">09-24</option></select>
@@ -34,6 +34,7 @@
   <script>
   "use strict";
   const all = JSON.parse(document.getElementById("image-data").textContent);
+  function imageURL(x){return location.protocol==="file:"?x.url:"https://raw.githubusercontent.com/wubugui/FindingDogStory/main/%E8%B5%84%E6%96%99/"+x.path.split("/").map(encodeURIComponent).join("/")}
   const ui = Object.fromEntries(["batch","state","kind","search","count","grid","empty","pageInfo","prevPage","nextPage","dialog","viewerTitle","viewerImage","viewerDetail","original","prevImage","nextImage","close"].map(id => [id,document.getElementById(id)]));
   let matches = all, page = 0, selected = -1;
   const perPage = 36;
@@ -49,19 +50,19 @@
     for(const x of slice){
       const card=document.createElement("article");card.className="card";
       const button=document.createElement("button");button.type="button";button.setAttribute("aria-label","放大 "+x.name);
-      const img=document.createElement("img");img.src=x.url;img.alt=x.name;img.loading=ui.grid.children.length<10?"eager":"lazy";img.decoding="async";button.append(img);button.onclick=()=>show(matches.indexOf(x));
+      const img=document.createElement("img");img.src=imageURL(x);img.alt=x.name;img.loading=ui.grid.children.length<10?"eager":"lazy";img.decoding="async";button.append(img);button.onclick=()=>show(matches.indexOf(x));
       const meta=document.createElement("div");meta.className="meta";
       const name=document.createElement("div");name.className="name";name.textContent=x.name;
       const tags=document.createElement("div");tags.className="tags";tags.append(tag(x.batch.slice(5)),tag(x.stateLabel,x.state==="legacy"),tag(x.kindLabel));
       const path=document.createElement("div");path.className="path";path.textContent=x.path;
-      const link=document.createElement("a");link.href=x.url;link.target="_blank";link.rel="noopener";link.textContent="打开原图";
+      const link=document.createElement("a");link.href=imageURL(x);link.target="_blank";link.rel="noopener";link.textContent="打开原图";
       meta.append(name,tags,path,link);card.append(button,meta);ui.grid.append(card);
     }
     ui.count.textContent="显示 "+matches.length+" / 共 "+all.length+" 张";
     ui.empty.hidden=matches.length!==0;ui.pageInfo.textContent=(page+1)+" / "+pages;
     ui.prevPage.disabled=page===0;ui.nextPage.disabled=page>=pages-1;
   }
-  function show(index){if(index<0||index>=matches.length)return;selected=index;const x=matches[index];ui.viewerTitle.textContent=x.name;ui.viewerImage.src=x.url;ui.viewerImage.alt=x.name;ui.viewerDetail.textContent=x.path+" · "+x.stateLabel+" · "+(x.bytes/1048576).toFixed(1)+" MB";ui.original.href=x.url;ui.prevImage.disabled=index===0;ui.nextImage.disabled=index===matches.length-1;if(!ui.dialog.open)ui.dialog.showModal()}
+  function show(index){if(index<0||index>=matches.length)return;selected=index;const x=matches[index];ui.viewerTitle.textContent=x.name;ui.viewerImage.src=imageURL(x);ui.viewerImage.alt=x.name;ui.viewerDetail.textContent=x.path+" · "+x.stateLabel+" · "+(x.bytes/1048576).toFixed(1)+" MB";ui.original.href=imageURL(x);ui.prevImage.disabled=index===0;ui.nextImage.disabled=index===matches.length-1;if(!ui.dialog.open)ui.dialog.showModal()}
   [ui.batch,ui.state,ui.kind,ui.search].forEach(el=>el.addEventListener("input",filter));
   ui.prevPage.onclick=()=>{page--;render();window.scrollTo(0,0)};ui.nextPage.onclick=()=>{page++;render();window.scrollTo(0,0)};
   ui.prevImage.onclick=()=>show(selected-1);ui.nextImage.onclick=()=>show(selected+1);ui.close.onclick=()=>ui.dialog.close();
