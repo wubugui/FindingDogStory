@@ -1,0 +1,581 @@
+{
+  "name": "FindingDogStory full mainline Qwen Image 2.1 remake",
+  "jobs": [
+    {
+      "backend": "qwen",
+      "name": "D01_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 CINEMATIC variant of reference image 1. Treat it as the exact approved layout and existing production location. Preserve the same setting landmarks, the same existing characters and costumes, their count, body scale and relative positions. Keep the movie camera at standing human eye height with an environmental composition. Make a subtle variation in atmosphere and texture, not a redesigned scene. Story: Wujin teahouse: storyteller recounts Li Tiangou, blind fortune teller questions him, Guan Ergou listens at the edge. Keep existing patrons only; no actual ghost appears. No new location, landmark, character, creature, building, game HUD, text or camera angle.",
+        "negative_prompt": "isometric gameplay camera, extra people, giant person, new scene, invented building, ghost not in reference, title, HUD",
+        "images": [
+          "6efc8ac5-f777-4cb0-af9b-363986c62587"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2000
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D01_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 variant of reference image 1 as the SAME existing 4:3 GAMEPLAY SCREENSHOT. It is the approved exact layout master. Preserve nearly pixel-for-pixel the fixed elevated isometric camera, exact existing environment and landmarks, relative sprite positions and small character HEIGHT, corner coin plaque and bottom-right action toolbar. Story: Wujin teahouse: storyteller recounts Li Tiangou, blind fortune teller questions him, Guan Ergou listens at the edge. Keep existing patrons only; no actual ghost appears. Keep the environment dominant. Do not make any person larger than the reference or add people, buildings, props, creatures or camera zoom. Subtle painterly texture changes only. Tiny UI wording irrelevant.",
+        "negative_prompt": "oversized person, giant character, extra people, new building, different game camera, close-up, cinematic poster",
+        "images": [
+          "d2278892-97aa-4ae3-a161-a2461727c358"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2001
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D02_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 CINEMATIC variant of reference image 1. Treat it as the exact approved layout and existing production location. Preserve the same setting landmarks, the same existing characters and costumes, their count, body scale and relative positions. Keep the movie camera at standing human eye height with an environmental composition. Make a subtle variation in atmosphere and texture, not a redesigned scene. Story: Wujin back alley by the existing market stalls in daytime or late afternoon: Guan accepts an advance for a dangerous nighttime corpse-carrying job from the existing stern employer. This is before the night journey. No new location, landmark, character, creature, building, game HUD, text or camera angle.",
+        "negative_prompt": "isometric gameplay camera, extra people, giant person, new scene, invented building, ghost not in reference, title, HUD",
+        "images": [
+          "3deece8f-d23e-4723-af36-2a9f30eabe65"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2002
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D02_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 variant of reference image 1 as the SAME existing 4:3 GAMEPLAY SCREENSHOT. It is the approved exact layout master. Preserve nearly pixel-for-pixel the fixed elevated isometric camera, exact existing environment and landmarks, relative sprite positions and small character HEIGHT, corner coin plaque and bottom-right action toolbar. Story: Wujin back alley by the existing market stalls in daytime or late afternoon: Guan accepts an advance for a dangerous nighttime corpse-carrying job from the existing stern employer. This is before the night journey. Keep the environment dominant. Do not make any person larger than the reference or add people, buildings, props, creatures or camera zoom. Subtle painterly texture changes only. Tiny UI wording irrelevant.",
+        "negative_prompt": "oversized person, giant character, extra people, new building, different game camera, close-up, cinematic poster",
+        "images": [
+          "a8b4d3de-915d-4a10-ac3e-562cbb82a20e"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2003
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D03_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 CINEMATIC variant of reference image 1. Treat it as the exact approved layout and existing production location. Preserve the same setting landmarks, the same existing characters and costumes, their count, body scale and relative positions. Keep the movie camera at standing human eye height with an environmental composition. Make a subtle variation in atmosphere and texture, not a redesigned scene. Story: Guan loses his advance payment at the gambling house and is thrown outside. There is no playable gambling-house interior: keep the existing illustrated cutscene for the simulated view and the existing sealed wooden door for the cinematic view. No new location, landmark, character, creature, building, game HUD, text or camera angle.",
+        "negative_prompt": "isometric gameplay camera, extra people, giant person, new scene, invented building, ghost not in reference, title, HUD",
+        "images": [
+          "e13db900-c818-49ef-a835-1d4b0679177c"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2004
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D03_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 variant of reference image 1 as the SAME existing illustrated game CUTSCENE. Preserve the 4:3 outer canvas, black top and bottom bars, central image proportions, camera, people, costumes, poses and exact environment. Do not add free-roam gameplay HUD or a new room. Story: Guan loses his advance payment at the gambling house and is thrown outside. There is no playable gambling-house interior: keep the existing illustrated cutscene for the simulated view and the existing sealed wooden door for the cinematic view. Keep the composition nearly pixel-for-pixel; subtle lighting and texture changes only. Small subtitle text is irrelevant.",
+        "negative_prompt": "isometric gameplay room, coin HUD, toolbar, giant figure, new character, new setting, camera zoom",
+        "images": [
+          "6735235d-bb8e-4901-b277-66f422870f22"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2005
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D04_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 CINEMATIC variant of reference image 1. Treat it as the exact approved layout and existing production location. Preserve the same setting landmarks, the same existing characters and costumes, their count, body scale and relative positions. Keep the movie camera at standing human eye height with an environmental composition. Make a subtle variation in atmosphere and texture, not a redesigned scene. Story: Night on the existing narrow Paomaliang cliff trail: Guan alone holds a weak torch amid scattered paper, dark rock and fog. No new location, landmark, character, creature, building, game HUD, text or camera angle.",
+        "negative_prompt": "isometric gameplay camera, extra people, giant person, new scene, invented building, ghost not in reference, title, HUD",
+        "images": [
+          "b6fdabf2-3b66-46ac-b6f0-f0d996672a71"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2006
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D04_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 variant of reference image 1 as the SAME existing 4:3 GAMEPLAY SCREENSHOT. It is the approved exact layout master. Preserve nearly pixel-for-pixel the fixed elevated isometric camera, exact existing environment and landmarks, relative sprite positions and small character HEIGHT, corner coin plaque and bottom-right action toolbar. Story: Night on the existing narrow Paomaliang cliff trail: Guan alone holds a weak torch amid scattered paper, dark rock and fog. Keep the environment dominant. Do not make any person larger than the reference or add people, buildings, props, creatures or camera zoom. Subtle painterly texture changes only. Tiny UI wording irrelevant.",
+        "negative_prompt": "oversized person, giant character, extra people, new building, different game camera, close-up, cinematic poster",
+        "images": [
+          "5c2d42d1-09e8-4dc1-aa83-5d87d8769346"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2007
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D05_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 CINEMATIC variant of reference image 1. Treat it as the exact approved layout and existing production location. Preserve the same setting landmarks, the same existing characters and costumes, their count, body scale and relative positions. Keep the movie camera at standing human eye height with an environmental composition. Make a subtle variation in atmosphere and texture, not a redesigned scene. Story: In the existing cliff-tomb stone chamber Guan carries a long anonymous wrapped corpse over his BACK, burdened by strange weight. This corpse is NOT Axiu. No new location, landmark, character, creature, building, game HUD, text or camera angle.",
+        "negative_prompt": "isometric gameplay camera, extra people, giant person, new scene, invented building, ghost not in reference, title, HUD",
+        "images": [
+          "b8d70fff-f1a7-439a-b4e2-a90ceddfd121"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2008
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D06_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 CINEMATIC variant of reference image 1. Treat it as the exact approved layout and existing production location. Preserve the same setting landmarks, the same existing characters and costumes, their count, body scale and relative positions. Keep the movie camera at standing human eye height with an environmental composition. Make a subtle variation in atmosphere and texture, not a redesigned scene. Story: At Niutoudang Guan falls into the deep pool beneath the existing bull-head rock. The simulated view is the existing dark underwater game location, with a tiny drowning Guan. No new location, landmark, character, creature, building, game HUD, text or camera angle.",
+        "negative_prompt": "isometric gameplay camera, extra people, giant person, new scene, invented building, ghost not in reference, title, HUD",
+        "images": [
+          "04e848ba-f4b7-4fa2-afb1-8bc9625a4827"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2010
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D06_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 variant of reference image 1 as the SAME existing 4:3 GAMEPLAY SCREENSHOT. It is the approved exact layout master. Preserve nearly pixel-for-pixel the fixed elevated isometric camera, exact existing environment and landmarks, relative sprite positions and small character HEIGHT, corner coin plaque and bottom-right action toolbar. Story: At Niutoudang Guan falls into the deep pool beneath the existing bull-head rock. The simulated view is the existing dark underwater game location, with a tiny drowning Guan. Keep the environment dominant. Do not make any person larger than the reference or add people, buildings, props, creatures or camera zoom. Subtle painterly texture changes only. Tiny UI wording irrelevant.",
+        "negative_prompt": "oversized person, giant character, extra people, new building, different game camera, close-up, cinematic poster",
+        "images": [
+          "b844015c-2c1c-4823-a390-5827d2dca4a8"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2011
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D07a_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 CINEMATIC variant of reference image 1. Treat it as the exact approved layout and existing production location. Preserve the same setting landmarks, the same existing characters and costumes, their count, body scale and relative positions. Keep the movie camera at standing human eye height with an environmental composition. Make a subtle variation in atmosphere and texture, not a redesigned scene. Story: Funeral dream farmhouse meal: Guan hesitates before a bowl of rice with exactly two upright chopsticks while the elderly couple watches quietly. No new location, landmark, character, creature, building, game HUD, text or camera angle.",
+        "negative_prompt": "isometric gameplay camera, extra people, giant person, new scene, invented building, ghost not in reference, title, HUD",
+        "images": [
+          "0520e231-9378-47e8-aacc-1f6254a29994"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2012
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D07a_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 variant of reference image 1 as the SAME existing 4:3 scripted in-game DIALOGUE frame. Preserve the exact scene/cut-in, fixed camera, bottom dark dialogue panel and portrait placement, environment and relative character scale. Story: Funeral dream farmhouse meal: Guan hesitates before a bowl of rice with exactly two upright chopsticks while the elderly couple watches quietly. Keep the original composition and cast; subtle texture variation only. Do not enlarge anyone. Small wording is irrelevant.",
+        "negative_prompt": "new UI layout, extra person, giant figure, new location, close-up beyond reference, poster",
+        "images": [
+          "d84152f7-6fca-4d2f-a0b2-74dd8fe1eecb"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2013
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D07b_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 CINEMATIC variant of reference image 1. Treat it as the exact approved layout and existing production location. Preserve the same setting landmarks, the same existing characters and costumes, their count, body scale and relative positions. Keep the movie camera at standing human eye height with an environmental composition. Make a subtle variation in atmosphere and texture, not a redesigned scene. Story: Funeral dream: in the existing inner room Guan lies on a wooden plank with a sheet of white paper over his face, faintly lifted by his breath. No new location, landmark, character, creature, building, game HUD, text or camera angle.",
+        "negative_prompt": "isometric gameplay camera, extra people, giant person, new scene, invented building, ghost not in reference, title, HUD",
+        "images": [
+          "3058e0d6-21a2-4972-a2c9-1df781e11d34"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2014
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D08_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 CINEMATIC variant of reference image 1. Treat it as the exact approved layout and existing production location. Preserve the same setting landmarks, the same existing characters and costumes, their count, body scale and relative positions. Keep the movie camera at standing human eye height with an environmental composition. Make a subtle variation in atmosphere and texture, not a redesigned scene. Story: Guan wakes weakly two days later on the existing dirt-road junction outside the gray brick gate, alone. No new location, landmark, character, creature, building, game HUD, text or camera angle.",
+        "negative_prompt": "isometric gameplay camera, extra people, giant person, new scene, invented building, ghost not in reference, title, HUD",
+        "images": [
+          "ad81dc45-7093-4e52-80d3-2dec7bade06e"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2016
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D08_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 variant of reference image 1 as the SAME existing 4:3 GAMEPLAY SCREENSHOT. It is the approved exact layout master. Preserve nearly pixel-for-pixel the fixed elevated isometric camera, exact existing environment and landmarks, relative sprite positions and small character HEIGHT, corner coin plaque and bottom-right action toolbar. Story: Guan wakes weakly two days later on the existing dirt-road junction outside the gray brick gate, alone. Keep the environment dominant. Do not make any person larger than the reference or add people, buildings, props, creatures or camera zoom. Subtle painterly texture changes only. Tiny UI wording irrelevant.",
+        "negative_prompt": "oversized person, giant character, extra people, new building, different game camera, close-up, cinematic poster",
+        "images": [
+          "f1d615d7-ab78-44c4-b6f5-62126fd4ee23"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2017
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D09_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 CINEMATIC variant of reference image 1. Treat it as the exact approved layout and existing production location. Preserve the same setting landmarks, the same existing characters and costumes, their count, body scale and relative positions. Keep the movie camera at standing human eye height with an environmental composition. Make a subtle variation in atmosphere and texture, not a redesigned scene. Story: At the existing old womans courtyard, Guan performs a fake ritual and asks for payment while the old woman observes. No visible ghost or real spell. No new location, landmark, character, creature, building, game HUD, text or camera angle.",
+        "negative_prompt": "isometric gameplay camera, extra people, giant person, new scene, invented building, ghost not in reference, title, HUD",
+        "images": [
+          "ddfa96d6-e1b3-40df-8c94-1ca3a6b773d4"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2018
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D09_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 variant of reference image 1 as the SAME existing 4:3 GAMEPLAY SCREENSHOT. It is the approved exact layout master. Preserve nearly pixel-for-pixel the fixed elevated isometric camera, exact existing environment and landmarks, relative sprite positions and small character HEIGHT, corner coin plaque and bottom-right action toolbar. Story: At the existing old womans courtyard, Guan performs a fake ritual and asks for payment while the old woman observes. No visible ghost or real spell. Keep the environment dominant. Do not make any person larger than the reference or add people, buildings, props, creatures or camera zoom. Subtle painterly texture changes only. Tiny UI wording irrelevant.",
+        "negative_prompt": "oversized person, giant character, extra people, new building, different game camera, close-up, cinematic poster",
+        "images": [
+          "0bdfc2bf-3407-4ab1-a371-ca799ec99e58"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2019
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D10_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 CINEMATIC variant of reference image 1. Treat it as the exact approved layout and existing production location. Preserve the same setting landmarks, the same existing characters and costumes, their count, body scale and relative positions. Keep the movie camera at standing human eye height with an environmental composition. Make a subtle variation in atmosphere and texture, not a redesigned scene. Story: On the existing Wujin river bank, Guan finds a paper slip and turns back to an empty path. No visible ghost. No new location, landmark, character, creature, building, game HUD, text or camera angle.",
+        "negative_prompt": "isometric gameplay camera, extra people, giant person, new scene, invented building, ghost not in reference, title, HUD",
+        "images": [
+          "a59a9864-77e5-4ec5-b75b-ce90746424b0"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2020
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D10_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 variant of reference image 1 as the SAME existing 4:3 GAMEPLAY SCREENSHOT. It is the approved exact layout master. Preserve nearly pixel-for-pixel the fixed elevated isometric camera, exact existing environment and landmarks, relative sprite positions and small character HEIGHT, corner coin plaque and bottom-right action toolbar. Story: On the existing Wujin river bank, Guan finds a paper slip and turns back to an empty path. No visible ghost. Keep the environment dominant. Do not make any person larger than the reference or add people, buildings, props, creatures or camera zoom. Subtle painterly texture changes only. Tiny UI wording irrelevant.",
+        "negative_prompt": "oversized person, giant character, extra people, new building, different game camera, close-up, cinematic poster",
+        "images": [
+          "24b6da4d-26f7-43ad-9d8f-959e3851594e"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2021
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D11_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 CINEMATIC variant of reference image 1. Treat it as the exact approved layout and existing production location. Preserve the same setting landmarks, the same existing characters and costumes, their count, body scale and relative positions. Keep the movie camera at standing human eye height with an environmental composition. Make a subtle variation in atmosphere and texture, not a redesigned scene. Story: At the existing daylight dock Guan retrieves a submerged box. The simulated frame uses the existing underwater box-search minigame, not an invented harbor. No new location, landmark, character, creature, building, game HUD, text or camera angle.",
+        "negative_prompt": "isometric gameplay camera, extra people, giant person, new scene, invented building, ghost not in reference, title, HUD",
+        "images": [
+          "2b3658a1-6c35-43b3-b5e7-a08abe8d4198"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2022
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D11_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 variant of reference image 1 as the SAME existing 4:3 in-game UNDERWATER BOX-SEARCH minigame screenshot. Preserve the dark submerged terrain, central interaction marker/box, border and corner UI at original locations and scale. Story: At the existing daylight dock Guan retrieves a submerged box. The simulated frame uses the existing underwater box-search minigame, not an invented harbor. Keep the framing almost pixel-for-pixel, no new character, ship, crane or buildings. Small UI wording irrelevant.",
+        "negative_prompt": "new dock, ship, crane, giant character, movie camera, new minigame UI",
+        "images": [
+          "e6cd44a8-4b09-4b1d-8cb0-833d231310c4"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2023
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D12_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 CINEMATIC variant of reference image 1. Treat it as the exact approved layout and existing production location. Preserve the same setting landmarks, the same existing characters and costumes, their count, body scale and relative positions. Keep the movie camera at standing human eye height with an environmental composition. Make a subtle variation in atmosphere and texture, not a redesigned scene. Story: On the existing Wujin town street Guan adjusts his ill-fitting patched fake Taoist robe and cloth hat. No new location, landmark, character, creature, building, game HUD, text or camera angle.",
+        "negative_prompt": "isometric gameplay camera, extra people, giant person, new scene, invented building, ghost not in reference, title, HUD",
+        "images": [
+          "010ab4ee-770b-4d58-bc68-3438f99ca7e6"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2024
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D12_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 variant of reference image 1 as the SAME existing 4:3 GAMEPLAY SCREENSHOT. It is the approved exact layout master. Preserve nearly pixel-for-pixel the fixed elevated isometric camera, exact existing environment and landmarks, relative sprite positions and small character HEIGHT, corner coin plaque and bottom-right action toolbar. Story: On the existing Wujin town street Guan adjusts his ill-fitting patched fake Taoist robe and cloth hat. Keep the environment dominant. Do not make any person larger than the reference or add people, buildings, props, creatures or camera zoom. Subtle painterly texture changes only. Tiny UI wording irrelevant.",
+        "negative_prompt": "oversized person, giant character, extra people, new building, different game camera, close-up, cinematic poster",
+        "images": [
+          "1f5e0e83-5311-4134-af32-5a4a377bf3e0"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2025
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D13_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 CINEMATIC variant of reference image 1. Treat it as the exact approved layout and existing production location. Preserve the same setting landmarks, the same existing characters and costumes, their count, body scale and relative positions. Keep the movie camera at standing human eye height with an environmental composition. Make a subtle variation in atmosphere and texture, not a redesigned scene. Story: On the existing Yanwang Ridge mountain pass Guan in fake Taoist clothes calls toward the black woods while exactly two existing porters pause behind him. No visible ghost. No new location, landmark, character, creature, building, game HUD, text or camera angle.",
+        "negative_prompt": "isometric gameplay camera, extra people, giant person, new scene, invented building, ghost not in reference, title, HUD",
+        "images": [
+          "a2dea033-a098-4c6c-bc57-a8c622e6c4e8"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2026
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D13_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 variant of reference image 1 as the SAME existing 4:3 GAMEPLAY SCREENSHOT. It is the approved exact layout master. Preserve nearly pixel-for-pixel the fixed elevated isometric camera, exact existing environment and landmarks, relative sprite positions and small character HEIGHT, corner coin plaque and bottom-right action toolbar. Story: On the existing Yanwang Ridge mountain pass Guan in fake Taoist clothes calls toward the black woods while exactly two existing porters pause behind him. No visible ghost. Keep the environment dominant. Do not make any person larger than the reference or add people, buildings, props, creatures or camera zoom. Subtle painterly texture changes only. Tiny UI wording irrelevant.",
+        "negative_prompt": "oversized person, giant character, extra people, new building, different game camera, close-up, cinematic poster",
+        "images": [
+          "0e763442-a034-4c11-b76e-acfca9eb5e99"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2027
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D14_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 CINEMATIC variant of reference image 1. Treat it as the exact approved layout and existing production location. Preserve the same setting landmarks, the same existing characters and costumes, their count, body scale and relative positions. Keep the movie camera at standing human eye height with an environmental composition. Make a subtle variation in atmosphere and texture, not a redesigned scene. Story: At night on the same Yanwang Ridge pass Guan walks back ALONE, resisting the unseen voice calling his name. The simulated frame keeps the existing hold-to-not-answer interaction panel. No new location, landmark, character, creature, building, game HUD, text or camera angle.",
+        "negative_prompt": "isometric gameplay camera, extra people, giant person, new scene, invented building, ghost not in reference, title, HUD",
+        "images": [
+          "66fe1427-a568-4e65-83d9-e12a0bc1c8cc"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2028
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D14_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 variant of reference image 1 as the SAME existing 4:3 fixed-isometric gameplay frame, including the bottom hold-to-not-answer progress panel. Preserve the mountain road, roadside lean-to, low lamp, bare trees, stone posts, darkness, camera and HUD. Story: At night on the same Yanwang Ridge pass Guan walks back ALONE, resisting the unseen voice calling his name. The simulated frame keeps the existing hold-to-not-answer interaction panel. Keep Guan the SAME tiny in-world sprite height and position; no visible caller or ghost, no other people, no zoom. Small UI text irrelevant.",
+        "negative_prompt": "visible ghost, extra person, giant character, new road, cinematic camera, new UI",
+        "images": [
+          "310ba376-890a-4eb3-84f6-8d88a912c6db"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2029
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D15_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 CINEMATIC variant of reference image 1. Treat it as the exact approved layout and existing production location. Preserve the same setting landmarks, the same existing characters and costumes, their count, body scale and relative positions. Keep the movie camera at standing human eye height with an environmental composition. Make a subtle variation in atmosphere and texture, not a redesigned scene. Story: At the Yanwang Ridge exit plain-robed Li Tiangou rescues shaken Guan in fake Taoist clothes beside the existing roadside lean-to. The simulated frame keeps the existing bottom dialogue-panel form. No new location, landmark, character, creature, building, game HUD, text or camera angle.",
+        "negative_prompt": "isometric gameplay camera, extra people, giant person, new scene, invented building, ghost not in reference, title, HUD",
+        "images": [
+          "c20cb081-4695-4ed7-929b-913c81b1207a"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2030
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D15_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 variant of reference image 1 as the SAME existing 4:3 scripted in-game DIALOGUE frame. Preserve the exact scene/cut-in, fixed camera, bottom dark dialogue panel and portrait placement, environment and relative character scale. Story: At the Yanwang Ridge exit plain-robed Li Tiangou rescues shaken Guan in fake Taoist clothes beside the existing roadside lean-to. The simulated frame keeps the existing bottom dialogue-panel form. Keep the original composition and cast; subtle texture variation only. Do not enlarge anyone. Small wording is irrelevant.",
+        "negative_prompt": "new UI layout, extra person, giant figure, new location, close-up beyond reference, poster",
+        "images": [
+          "3febea3a-430d-4b3a-818d-2e01e24dee11"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2031
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D16_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 CINEMATIC variant of reference image 1. Treat it as the exact approved layout and existing production location. Preserve the same setting landmarks, the same existing characters and costumes, their count, body scale and relative positions. Keep the movie camera at standing human eye height with an environmental composition. Make a subtle variation in atmosphere and texture, not a redesigned scene. Story: On the existing Wujin street Clara opens her small notebook to recruit Guan, who wears his patched fake Taoist robe. Exactly Clara and Guan in the foreground. No new location, landmark, character, creature, building, game HUD, text or camera angle.",
+        "negative_prompt": "isometric gameplay camera, extra people, giant person, new scene, invented building, ghost not in reference, title, HUD",
+        "images": [
+          "8476187a-93b4-41ac-96d3-9a491463f435"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2032
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D17_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 variant of reference image 1 as the SAME existing 4:3 GAMEPLAY SCREENSHOT. It is the approved exact layout master. Preserve nearly pixel-for-pixel the fixed elevated isometric camera, exact existing environment and landmarks, relative sprite positions and small character HEIGHT, corner coin plaque and bottom-right action toolbar. Story: Predawn at the existing Wujin stone city gate: Guan in fake Taoist clothes, Clara in travel coat and hat, Edgar in dark Western coat and bowler hat gather before the road into fog. Exactly three travelers. Keep the environment dominant. Do not make any person larger than the reference or add people, buildings, props, creatures or camera zoom. Subtle painterly texture changes only. Tiny UI wording irrelevant.",
+        "negative_prompt": "oversized person, giant character, extra people, new building, different game camera, close-up, cinematic poster",
+        "images": [
+          "ccf25577-b325-44df-a722-78efdd3117aa"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2035
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "G1_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 CINEMATIC variant of reference image 1. Treat it as the exact approved layout and existing production location. Preserve the same setting landmarks, the same existing characters and costumes, their count, body scale and relative positions. Keep the movie camera at standing human eye height with an environmental composition. Make a subtle variation in atmosphere and texture, not a redesigned scene. Story: Adult Guan Ergou making a precarious living on the existing Wujin street. This is NOT his childhood. No new location, landmark, character, creature, building, game HUD, text or camera angle.",
+        "negative_prompt": "isometric gameplay camera, extra people, giant person, new scene, invented building, ghost not in reference, title, HUD",
+        "images": [
+          "7cfa4c9a-3b46-4b12-a68e-1afe31f02b35"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2036
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "G1_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 variant of reference image 1 as the SAME existing 4:3 GAMEPLAY SCREENSHOT. It is the approved exact layout master. Preserve nearly pixel-for-pixel the fixed elevated isometric camera, exact existing environment and landmarks, relative sprite positions and small character HEIGHT, corner coin plaque and bottom-right action toolbar. Story: Adult Guan Ergou making a precarious living on the existing Wujin street. This is NOT his childhood. Keep the environment dominant. Do not make any person larger than the reference or add people, buildings, props, creatures or camera zoom. Subtle painterly texture changes only. Tiny UI wording irrelevant.",
+        "negative_prompt": "oversized person, giant character, extra people, new building, different game camera, close-up, cinematic poster",
+        "images": [
+          "f941d049-ace3-4dd3-b1d6-cd313b6c4e03"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2037
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "L3_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 CINEMATIC variant of reference image 1. Treat it as the exact approved layout and existing production location. Preserve the same setting landmarks, the same existing characters and costumes, their count, body scale and relative positions. Keep the movie camera at standing human eye height with an environmental composition. Make a subtle variation in atmosphere and texture, not a redesigned scene. Story: Li Tiangou ALONE in the existing Wujin mortuary records details of an anonymous female corpses clothing. Do not depict Axiu or invent her appearance. No new location, landmark, character, creature, building, game HUD, text or camera angle.",
+        "negative_prompt": "isometric gameplay camera, extra people, giant person, new scene, invented building, ghost not in reference, title, HUD",
+        "images": [
+          "e22b99d3-7779-4b96-a04a-b33f3ed5517e"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2038
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "L3_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 variant of reference image 1 as the SAME existing 4:3 GAMEPLAY SCREENSHOT. It is the approved exact layout master. Preserve nearly pixel-for-pixel the fixed elevated isometric camera, exact existing environment and landmarks, relative sprite positions and small character HEIGHT, corner coin plaque and bottom-right action toolbar. Story: Li Tiangou ALONE in the existing Wujin mortuary records details of an anonymous female corpses clothing. Do not depict Axiu or invent her appearance. Keep the environment dominant. Do not make any person larger than the reference or add people, buildings, props, creatures or camera zoom. Subtle painterly texture changes only. Tiny UI wording irrelevant.",
+        "negative_prompt": "oversized person, giant character, extra people, new building, different game camera, close-up, cinematic poster",
+        "images": [
+          "d22a421e-4b4b-4631-9b62-1482005b1e54"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 2039
+      }
+    }
+  ]
+}

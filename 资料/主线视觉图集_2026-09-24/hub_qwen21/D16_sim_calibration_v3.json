@@ -1,0 +1,12 @@
+{
+  "hub_url": "http://denghong01:8765",
+  "task_id": "86d4dc97-d45d-40b1-bdd1-9b8f4b224915",
+  "batch_id": "09a945e9-c95c-4ea2-9c57-cb6970fb8668",
+  "idempotency_key": "a778adb0-e822-4745-b7cd-2616bf45d95e",
+  "images": ["8f7c08ad-6027-4684-beb0-2bb115af81ef"],
+  "qwen_canvas": "first_reference",
+  "reference_resolution": 0,
+  "steps": 25,
+  "seed": 1603,
+  "state": "submitted"
+}

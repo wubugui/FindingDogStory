@@ -1,0 +1,18 @@
+{
+  "idempotency_key": "2da13718-089c-4e1a-8f04-d3215612832e",
+  "body": {
+    "backend": "qwen",
+    "name": "AX03_dream_tune_sim_try3_layout",
+    "params": {
+      "prompt": "This reference is a deterministic layout of CURRENT GameDraft raw runtime image layers at their authored overlay size: 1024x768 screen, face-paper scene panel exactly 82 percent screen width, centered x=50% and y=48% over the DARK dream inner room. Make a fresh simulated gameplay/cutscene screenshot at the next instant. Keep the framing, inset panel size, room dark margins, Guan Ergou side profile, grey shroud, thin rectangular paper, and single oil lamp exactly in scale. Only the tiny loose corner of the paper gives one brief twitch. The far-off tune is audio only; do not draw particles, ghosts, warm halos or extra people. Small muted top-left game HUD. The screen background MUST remain dark brown-black, never purple, neon or bright.",
+      "negative_prompt": "purple border, magenta background, huge closeup face, paper enlarged, additional people, women, ghost, glowing dust, magic symbol, warm aura, new location",
+      "images": [
+        "86cb200a-d6d4-4432-b40e-7ec83ea01d1e"
+      ],
+      "qwen_canvas": "first_reference",
+      "reference_resolution": 0,
+      "steps": 28,
+      "seed": 918304
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "F01 text-only original scene cinema trials",
+  "jobs": [
+    {
+      "params": {
+        "steps": 30,
+        "width": 1536,
+        "height": 864,
+        "seed": 250925116,
+        "prompt": "An original cinematic film still for the existing GameDraft game scene Wujin WEST CITY GATE. WIDE 16:9 frame from a standing human camera 1.6 meters over a rough cobblestone road, completely ground level, looking horizontally out into pale gray morning fog. Dominating the LEFT HALF is the exact GameDraft scene inventory: ONE dark weathered gray brick Chinese city gate with crenellated walls, a dark timber guardhouse atop the arch, TWO OPEN thick dark wood gate leaves, a broken wooden cart near gate, leafless roadside shrubs. The ONE road heads out right into mist. No other buildings or landmarks. The whole foreground is EMPTY cobblestone, no human nearby. ONLY at the far right road bend, 30 METERS AWAY, are EXACTLY THREE TINY full-body expedition silhouettes, each 75–95 pixels high in a 1536x864 frame, all equal size on the same depth plane: Guan Ergou in patched charcoal fake-Taoist robe and tall floppy paper hat, Clara a Western woman in brown explorer coat and field hat, Edgar a moustached Western man in brown explorer coat and field hat. Their height is one-quarter of the gate opening and they are not standing by the door. They walk away together. Ground-eye-level cinematic perspective, 35mm wide lens, horizon, vertical stone wall, gray-blue desaturated painterly realism. NO overhead, isometric or elevated view. No extra people, animal, porter, temple, village, second tower, fantasy structure, captions or UI."
+      },
+      "name": "F01 ground T2I batch 12 variant 1",
+      "priority": 50,
+      "backend": "qwen"
+    },
+    {
+      "params": {
+        "steps": 30,
+        "width": 1536,
+        "height": 864,
+        "seed": 250925117,
+        "prompt": "Wide 16:9 cinematic visual development frame, camera sitting among foreground cobbles at 1.5 meter human eye height, looking along the actual Wujin west gate road. Frame an old gray stone city gate and its wooden upper guardhouse at left, battlement wall, two open heavy wooden doors, broken handcart and sparse dry brush. A single rocky track curves from gate to the fog horizon on the right, no invented location. In far middle distance on that track walk EXACTLY THREE very small characters from established GameDraft character sheets, with the entire full bodies no more than one-quarter the door opening height, 80-100 pixels high on 864-pixel canvas: Guan Ergou thin Chinese man in frayed dark fake Daoist robe and tall floppy cloth-paper cap; Clara sole woman in brown late-Qing expedition jacket and field hat; Edgar sole moustached man in matching brown expedition coat and hat. Same camera distance and approximately same stature. Their backs turned; silhouettes readable but do not fill the frame. A lot of empty road between camera and travelers. Strong horizontal 35mm ground-level perspective and atmospheric dawn mist. Visual style dark painterly realistic, no UI text. Absolutely no bird eye or isometric camera. No fourth figure, guards, city crowd, animals, porters, extra buildings, temples, peaks or invented structures."
+      },
+      "name": "F01 ground T2I batch 12 variant 2",
+      "priority": 50,
+      "backend": "qwen"
+    }
+  ]
+}

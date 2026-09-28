@@ -1,0 +1,13 @@
+{
+  "backend": "qwen",
+  "name": "F01 cinematic retry 4 original three-person gameplay screenshot only",
+  "priority": 50,
+  "params": {
+    "prompt": "The ONLY reference is an ACTUAL screenshot from the GameDraft game, NOT a previous AI image. Make a new CINEMATIC STORY CONCEPT of this exact west city gate, with a distinct movie framing and atmospheric dawn mist. Retain the recognizable dark stone wall, wooden gatehouse, two open timber doors, cobbled forecourt, broken cart, roadside bushes, and road climbing to upper right. The three human characters already in the screenshot are the entire expedition: Guan Ergou, Clara and Edgar. Keep EXACTLY THREE PEOPLE TOTAL and preserve their appearances, roles and small believable scale. Rearrange those same three into a walking group toward the road. Do not create a fourth person, guard, duplicate male explorer, other shadow, horse or porter. The gate and road dominate the wide composition; each person is a tiny full-body figure at most 15 percent of picture height. Image should feel like a cinematic key art frame rather than UI gameplay: remove all HUD, text and icons; use strong atmospheric depth, subtle dawn edge light, very restrained blue-gray realism. No new architecture, landmarks, villages, mountain peaks or creatures. Redraw as a new shot, not pixel copying.",
+    "images": ["3c2a3aac-f031-4d3e-8bf4-68c18834de6b"],
+    "width": 1536,
+    "height": 1024,
+    "steps": 30,
+    "seed": 250925106
+  }
+}

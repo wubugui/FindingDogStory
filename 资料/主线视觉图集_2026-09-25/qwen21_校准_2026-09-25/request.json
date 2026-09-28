@@ -1,0 +1,40 @@
+{
+  "name": "Qwen21 dock scale and compositing calibration",
+  "jobs": [
+    {
+      "params": {
+        "prompt": "在原始码头实机画面右侧木平台空出的木板上，新增一只小型开盖木箱，约占画面宽度六十分之一、高度二十分之一，落在木板上并有接触阴影。保持原图的固定俯斜机位、所有人物大小和位置、建筑、河水与界面不变。整张图仍是一幅连续的码头实机画面。",
+        "guidance_scale": 1.0,
+        "steps": 40,
+        "images": [
+          "72601202-2920-4c5c-940f-a1a94c80854a"
+        ],
+        "reference_resolution": 1024,
+        "qwen_canvas": "first_reference",
+        "seed": 925801,
+        "width": 1024,
+        "height": 768
+      },
+      "backend": "qwen",
+      "name": "F02 calibration single original screenshot"
+    },
+    {
+      "params": {
+        "prompt": "以<image1>为唯一画布，只在右侧码头木平台空出的木板位置新增一只小型开盖木箱。箱子的外形、深棕木纹、皮革束带和包角取自<image2>，画面中高度约40像素，小于旁边现有货箱，箱底落在木板上并有接触阴影。保持<image1>其余人物、人物尺度与位置、建筑、木平台、河水、固定俯斜机位及界面不变。整幅画面保持单一连续的游戏实景。",
+        "guidance_scale": 1.0,
+        "steps": 40,
+        "images": [
+          "72601202-2920-4c5c-940f-a1a94c80854a",
+          "f9d80960-5697-4a38-8975-08902cc23f0e"
+        ],
+        "reference_resolution": 1024,
+        "qwen_canvas": "first_reference",
+        "seed": 925802,
+        "width": 1024,
+        "height": 768
+      },
+      "backend": "qwen",
+      "name": "F02 calibration tagged screenshot and original chest"
+    }
+  ]
+}

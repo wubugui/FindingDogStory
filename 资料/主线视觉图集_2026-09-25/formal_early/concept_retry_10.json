@@ -1,0 +1,13 @@
+{
+  "backend": "qwen",
+  "name": "F01 ground-level cinematic retry 10 equal character scale",
+  "priority": 50,
+  "params": {
+    "prompt": "Original 16:9 CINEMATIC FILM STILL from a HUMAN EYE LEVEL camera 1.6 meters above cobbled ground, looking horizontally at the EXISTING Wujin west gate and road in GameDraft. Reference image 1 is the ORIGINAL EMPTY project gate environment, ONLY for exact set architecture and painterly muted colors; do not imitate its top-down camera. Reference image 2 is Guan Ergou's ORIGINAL dark ragged fake-Taoist robe and tall floppy dark paper hat. Keep gate on far left: weathered gray stone wall, timber guard house, open dark wooden double doors, cobbles, broken cart, bare brush, one rough road into gray dawn fog. Deep perspective, vanishing point on right. EXACTLY THREE STORY CHARACTERS walk SIDE BY SIDE TOGETHER on the mid-distance road to the right of the gate, all at the SAME DEPTH and SAME SIZE, on one ground line: Guan Ergou (Chinese male, patched dark robe, tall paper cap), Clara (Western female, brown explorer outfit and field hat), Edgar (Western male with moustache, brown explorer outfit and field hat). All three people at x about 1100 to 1250 in frame, feet around y 590, with head to feet height 100-115 pixels EACH on the 864-pixel image. Guan must NOT be larger or closer than companions. The stone gate opening should be 300 pixels high, about THREE TIMES their height. Human silhouettes are a minor part of a monumental gate and empty misty road composition. No other people, no duplicates, no foreground person, no crowd. Camera must be GROUND LEVEL, not isometric or elevated. No new structures, second tower, village, shrine, horse, porter, monster, signage, UI or text.",
+    "images": ["98e90853-a122-46cf-b247-2ce52446e236", "9bbca5da-b065-4810-9ef1-302063f1699f"],
+    "width": 1536,
+    "height": 864,
+    "steps": 30,
+    "seed": 250925112
+  }
+}

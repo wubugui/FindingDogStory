@@ -1,0 +1,13 @@
+{
+  "backend": "qwen",
+  "name": "F01 cinematic retry 5 original empty environment three distant silhouettes",
+  "priority": 50,
+  "params": {
+    "prompt": "Produce a NEW widescreen CINEMATIC ESTABLISHING SHOT, 16:9, of the EXISTING Wujin west city gate shown in the attached ORIGINAL EMPTY GameDraft background. Use its exact set inventory: a weathered gray brick Chinese city gate with timber guardhouse on its wall and two open dark wooden doors, a cobbled forecourt, an abandoned broken wooden cart, sparse leafless trees and brush, and one rough road disappearing into mist. Do not invent any other building, tower, shrine or road. The camera is LOWER and farther outside the gate than the high isometric reference, viewing the group obliquely from behind as they enter the road; show the gate at left foreground and misty road stretching to the right background. This shot must feel like a film still, distinct from the fixed game camera. Exactly THREE SMALL distant human figures, all walking away from camera: Guan Ergou, a slim local Chinese man in a ragged charcoal fake-Taoist robe and floppy paper hat; Clara, the only woman, in brown expedition clothing and a brown field hat; Edgar, a moustached Western man in brown expedition coat and field hat. These descriptions come from GameDraft's existing character designs. Keep all three at natural tiny scale, each under 13 percent of image height and much shorter than the wooden gate opening. No extra person or duplicated man, no bystanders, silhouettes, porters or horse. Early dawn gray-blue mist, restrained grim painterly realism, quiet danger. No UI or letters. Independently recompose from original empty environment reference.",
+    "images": ["98e90853-a122-46cf-b247-2ce52446e236"],
+    "width": 1536,
+    "height": 864,
+    "steps": 30,
+    "seed": 250925107
+  }
+}

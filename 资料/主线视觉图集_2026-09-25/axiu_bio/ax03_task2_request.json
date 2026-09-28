@@ -1,0 +1,18 @@
+{
+  "idempotency_key": "4da92443-2cbc-4192-a72b-7ad9bfaa83bd",
+  "body": {
+    "backend": "qwen",
+    "name": "AX03_dream_tune_sim_try2",
+    "params": {
+      "prompt": "Use this opaque RGB frame reconstructed directly from the CURRENT GameDraft runtime face-paper layers as the single visual source. Generate a fresh 1024x768 4:3 simulated in-game screenshot of the same dream ritual. Keep the side-view Guan Ergou lying under dark grey shroud, the SAME yellowed face paper over upper face, same oil lamp behind right shoulder, the same grim room and no extra humans. The paper has just twitched a tiny amount. This breathing-overlay image should occupy about 82% of the 1024-pixel frame width (roughly 840px), centered; all surrounding frame area must be DARK charcoal game background, NO color border. At most a tiny muted game HUD in top-left. The far off-key tune is AUDIO ONLY, so NO glowing dust, NO woman, NO visual cue, no magic. Character and lamp proportions identical to source.",
+      "negative_prompt": "purple border, magenta background, neon, bright color frame, giant portrait, extra people, woman, female ghost, gold dust, spell symbol, warm aura, text",
+      "images": [
+        "d170b44b-2106-471c-9113-47a70947bd31"
+      ],
+      "width": 1024,
+      "height": 768,
+      "steps": 30,
+      "seed": 918303
+    }
+  }
+}

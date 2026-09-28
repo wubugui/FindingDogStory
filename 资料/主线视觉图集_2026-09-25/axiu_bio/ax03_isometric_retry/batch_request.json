@@ -1,0 +1,40 @@
+{
+  "jobs": [
+    {
+      "params": {
+        "width": 1024,
+        "height": 768,
+        "reference_resolution": 0,
+        "images": [
+          "c4e07a99-ef2a-4d56-8cde-1bee75f6d2a9"
+        ],
+        "steps": 40,
+        "qwen_canvas": "explicit",
+        "prompt": "以<image1>梦里屋原始游戏场景为唯一画面。保持同一个俯斜固定游戏机位、同一间屋子的窗、左侧门、木柜、中央卸下的门板、右侧竹篓和门板脚边的一盏小油灯。关二狗这一个年轻男性身穿游戏原有深灰布衣，平躺在门板上，脚朝左侧门口，头靠门板右上端；身体从头到脚不超过门板长度的七成，不能大过房间家具。面部盖一张很小的普通黄纸，其宽度只与他的脸相当。其余房间纹理与物件保持原样。输出1024×768四比三游戏模拟实机截图，单一连续画面，无插图面板、无画中画、无黑色矩形、无近景大人头、无第二人、无阿秀形体、无魔法粒子。",
+        "seed": 925931,
+        "guidance_scale": 1.0
+      },
+      "name": "AX03 isometric single scene A",
+      "backend": "qwen"
+    },
+    {
+      "params": {
+        "width": 1024,
+        "height": 768,
+        "reference_resolution": 0,
+        "images": [
+          "c4e07a99-ef2a-4d56-8cde-1bee75f6d2a9",
+          "f39860db-5e1e-4994-887e-033ecc0e9441"
+        ],
+        "steps": 40,
+        "qwen_canvas": "explicit",
+        "prompt": "以<image1>作为完整的梦里屋场景和唯一画面，保留原有俯斜固定游戏机位、窗、门、木柜、中央门板、右侧竹篓和油灯。<image2>只用来确认关二狗灰布衣、男性脸部和薄脸纸的设计，不得把<image2>作为照片、面板或近景贴入画面。画面中关二狗已平躺在<image1>中央门板上，脚朝左侧门口，头在门板右上端；全身长度只占门板约三分之二，纸仅覆盖他的脸，灯仍在原位置。整个房间只有这一个人，画面是一张连续的1024×768四比三俯斜实机模拟截图；不改变房间建筑，不加第二人、画中画、黑框或信号特效。",
+        "seed": 925932,
+        "guidance_scale": 1.0
+      },
+      "name": "AX03 isometric dual original refs B",
+      "backend": "qwen"
+    }
+  ],
+  "name": "AX03 fixed camera room simulation retry"
+}

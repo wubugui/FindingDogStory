@@ -1,0 +1,26 @@
+{
+  "scene": "阎王岭山口",
+  "url": "http://127.0.0.1:5173/?mode=dev&ndbg=0&visualCapture=1&devScene=%E9%98%8E%E7%8E%8B%E5%B2%AD%E5%B1%B1%E5%8F%A3",
+  "ready": {
+    "scene": "阎王岭山口",
+    "state": "Exploring",
+    "cue": true,
+    "boot": "y5zpkyrp"
+  },
+  "baseline": {
+    "path": "E:\\GameDev\\FindingDogStory\\资料\\主线视觉图集_2026-09-25\\axiu_forest\\AX05_山口_原生基线_1024x768.png",
+    "sha256": "a9471c52d46b88ccf1131b49171fa0a6a902dd3a5bfc108b19760763adde8d61",
+    "bytes": 1140758
+  },
+  "trigger": "called",
+  "cue": {
+    "path": "E:\\GameDev\\FindingDogStory\\资料\\主线视觉图集_2026-09-25\\axiu_forest\\AX05_山口_axiu_hint_运行时原生浮层_1024x768.png",
+    "sha256": "584a589f637bc7917fa4b02cf656bdcd8c23402259e0401f9a4e69aec65ebbf2",
+    "bytes": 1146583
+  },
+  "after": {
+    "path": "E:\\GameDev\\FindingDogStory\\资料\\主线视觉图集_2026-09-25\\axiu_forest\\AX05_山口_axiu_hint_运行时复原_1024x768.png",
+    "sha256": "d29e29aa78ada4ed6388558b9df0be135ca5e7174570aad2e71e87ddcba82845",
+    "bytes": 1140241
+  }
+}

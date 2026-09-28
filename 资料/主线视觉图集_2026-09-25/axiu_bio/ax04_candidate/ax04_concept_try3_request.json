@@ -1,0 +1,21 @@
+{
+  "idempotency_key": "3c560385-aa4a-4404-bf2b-fbf2f9430da4",
+  "body": {
+    "backend": "qwen",
+    "name": "AX04_dock_underwater_yank_concept_dynamic",
+    "params": {
+      "prompt": "Generate a NEW independent 16:9 cinematic film frame of the EXACT Wujin dock underwater incident, using ONLY GameDraft original sources: reference 1 the dock_crate_tutorial riverbed texture, reference 2 the original sunken crate sprite, reference 3 Guan Ergou's original sprite sheet for his identity and clothing, reference 4 the original Wujin daytime dock scene for the stone quay and pier above. Show the INSTANT AFTER Guan touches the sunken crate: an unseen force suddenly YANKS his ankle sharply DOWN toward the silty riverbed. Guan is no longer calmly reaching. His adult body bends into a strong diagonal C shape, torso twists, his free arm flails UP toward faint daylight, the hand nearest the crate has just lost its grip, his head recoils and lips part as his last air escapes in only three or four bubbles. A tight localized burst of bottom mud and silt marks the trailing ankle; one boot is slipping down into dark water but its gripper is completely OFFSCREEN and invisible. The broken wooden crate remains fixed on the bottom at normal small chest scale. His short tousled black hair, grey-brown torn work tunic, waist wrap, trousers and boots match the GameDraft character. Adult body about 1.7 m relative to a small half-meter crate, never giant. Murky olive-green water, rubble and submerged wood exactly like the dock riverbed; stone quay/pier are dim silhouettes high above. One faint patch of minuscule ochre dust-like particles at center, no glow, no magic. Tense silent near-drowning, not a rescue. Low oblique underwater movie camera, no top-down game UI, no text.",
+      "negative_prompt": "calm leisurely reaching pose, smiling, floating at surface, standing, giant person, oversized crate, above-water dock, HUD, icon bar, black inspection panel, visible grabbing hand, monster, water monkey, woman, Axiu figure, rescuer, golden beam, magical aura, new harbor, ocean, text",
+      "images": [
+        "c780fba4-e357-4301-9ef9-9a25d4927f91",
+        "f85da0be-e994-444a-ad10-a75cb4aa82a3",
+        "9d9d7112-e78e-4cfe-8ffb-4a8495586a54",
+        "572e01f8-034a-453a-a5df-8df4ccb8df8b"
+      ],
+      "width": 1536,
+      "height": 864,
+      "steps": 32,
+      "seed": 918403
+    }
+  }
+}

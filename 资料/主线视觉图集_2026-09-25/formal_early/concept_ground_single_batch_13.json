@@ -1,0 +1,37 @@
+{
+  "name": "F01 lone Guan cinema scene",
+  "jobs": [
+    {
+      "priority": 50,
+      "backend": "qwen",
+      "name": "F01 ground lone Guan 13 variant 1",
+      "params": {
+        "width": 1536,
+        "images": [
+          "98e90853-a122-46cf-b247-2ce52446e236",
+          "9bbca5da-b065-4810-9ef1-302063f1699f"
+        ],
+        "prompt": "A wide 16:9 CINEMATIC FILM ESTABLISHING SHOT at HUMAN EYE HEIGHT, looking horizontally across the EXISTING GameDraft Wujin west city gate. Reference 1 is the original EMPTY GameDraft scene art; keep its exact dark gray stone wall and crenellations, square RECTANGULAR gate opening with two outward open dark wooden leaves (NOT an arch), dark timber guard house above, broken cart, cobbled ground, scrub and bare trees, ONE rough road heading into gray fog to the upper right. Do NOT inherit the overhead angle of reference. Reference 2 is original Guan Ergou costume: a shabby dark patched fake Taoist robe and tall floppy dark paper cap. Show ONLY GUAN ERGOU, ONE tiny full-body figure about 95-110 pixels high on 864-pixel frame, already 25 meters beyond the gate on the road, back turned toward camera, moving into fog. Clara and Edgar exist but remain OUTSIDE THE FRAME. Gate opening is at least three times his height. No person close to camera or doorway. Most of image is empty cobbles, massive gate to left and broad misty road to right. Ground-level horizon behind road, lens 35 mm, distinct movie perspective, natural human architectural scale. No extra figure or silhouette, no horse, porter, crowd, invented building, cliff edge, arched gate, text or UI. Painterly muted GameDraft palette.",
+        "height": 864,
+        "steps": 30,
+        "seed": 250925118
+      }
+    },
+    {
+      "priority": 50,
+      "backend": "qwen",
+      "name": "F01 ground lone Guan 13 variant 2",
+      "params": {
+        "width": 1536,
+        "images": [
+          "98e90853-a122-46cf-b247-2ce52446e236",
+          "9bbca5da-b065-4810-9ef1-302063f1699f"
+        ],
+        "prompt": "Shot on a 35mm cinema lens mounted 1.55m above the cobblestone road, not from above. Show the existing Wujin WEST GATE from GameDraft original EMPTY environment reference 1, transformed into a ground-level view. In left foreground, keep the recognizable square gray-brick gateway, crenellated short wall, wooden guardhouse above, two open thick dark timber doors, broken cart and bare brush. Avoid any arched opening. One foggy road goes right. Reference 2 is Guan Ergou original patched dark Taoist robe and pointed cloth-paper hat. A SINGLE VERY SMALL GUAN ERGOU walks away far along the road on far right, his whole body 80-100 pixels high on 864px image, less than one-third the height of open gate, well beyond broken cart. No Clara or Edgar visible because they are offscreen. No other human of any kind. Horizon and low road perspective with large foreground stones, atmospheric dawn light. The image must be a cinematic human-eye-view, not overhead, aerial, isometric or game screenshot. No invented landmarks, second tower, steep cliff, village, shrine, horse, monster, UI, letters.",
+        "height": 864,
+        "steps": 30,
+        "seed": 250925119
+      }
+    }
+  ]
+}

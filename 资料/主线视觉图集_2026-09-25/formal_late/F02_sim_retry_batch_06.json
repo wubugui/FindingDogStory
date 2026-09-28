@@ -1,0 +1,43 @@
+{
+  "name": "FindingDogStory F02 gameplay original dock and inspection UI only",
+  "jobs": [
+    {
+      "backend": "qwen",
+      "name": "F02_sim_offscreen_chest_D",
+      "priority": 50,
+      "params": {
+        "prompt": "Generate an ORIGINAL 1024x768 4:3 simulated gameplay screenshot using ONLY the two original GameDraft source images. Reference 1 is the actual game screenshot of the Wujin dock, with exact fixed high three-quarter camera, old gray-tile warehouses on left, stone quay, timber pier, dark water, tiny 65-95 pixel human figures, coin counter top left and eight-slot toolbar bottom right. Reference 2 is the exact ORIGINAL in-game inspection overlay art: geomantic compass, four torn mountain map fragments, silver coins, stitched book. It is the moment AFTER the expedition chest has been opened, but the physical chest is OFF CAMERA, outside the frame. Therefore NO CHEST APPEARS IN THE GAMEPLAY BACKGROUND. The inspection UI is a dark translucent rectangular panel near the center, containing only the exact compass, map fragments, coins and book from reference 2 at about half frame width. Preserve existing dock scene and tiny game character scale. Do not add new character, building, landmark or stone. No cinematic camera, no product poster. Small UI text can be approximate. The panel floats over the dock wharf, slightly right of center, occupying 50-55 percent frame width. The old town and dock remain clearly recognizable around it. Physical cargo chest is out of frame, fully invisible.",
+        "negative_prompt": "visible chest, crate added to foreground, open chest, closed chest, giant object, giant character, enlarged people, cinematic art, portrait, new building, mountain scene, magic stone",
+        "images": [
+          "72601202-2920-4c5c-940f-a1a94c80854a",
+          "b02b0fab-5d17-4ae4-85b0-9df196b67b8f"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "width": 1024,
+        "height": 768,
+        "steps": 30,
+        "seed": 250925532
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "F02_sim_offscreen_chest_E",
+      "priority": 50,
+      "params": {
+        "prompt": "Generate an ORIGINAL 1024x768 4:3 simulated gameplay screenshot using ONLY the two original GameDraft source images. Reference 1 is the actual game screenshot of the Wujin dock, with exact fixed high three-quarter camera, old gray-tile warehouses on left, stone quay, timber pier, dark water, tiny 65-95 pixel human figures, coin counter top left and eight-slot toolbar bottom right. Reference 2 is the exact ORIGINAL in-game inspection overlay art: geomantic compass, four torn mountain map fragments, silver coins, stitched book. It is the moment AFTER the expedition chest has been opened, but the physical chest is OFF CAMERA, outside the frame. Therefore NO CHEST APPEARS IN THE GAMEPLAY BACKGROUND. The inspection UI is a dark translucent rectangular panel near the center, containing only the exact compass, map fragments, coins and book from reference 2 at about half frame width. Preserve existing dock scene and tiny game character scale. Do not add new character, building, landmark or stone. No cinematic camera, no product poster. Small UI text can be approximate. Place the inspection panel center-left so the timber wharf remains visible at right. The panel covers about 45-50 percent frame width. Keep tiny people in the background, no suitcase or cargo chest visible anywhere.",
+        "negative_prompt": "visible chest, crate added to foreground, open chest, closed chest, giant object, giant character, enlarged people, cinematic art, portrait, new building, mountain scene, magic stone",
+        "images": [
+          "72601202-2920-4c5c-940f-a1a94c80854a",
+          "b02b0fab-5d17-4ae4-85b0-9df196b67b8f"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "width": 1024,
+        "height": 768,
+        "steps": 30,
+        "seed": 250925533
+      }
+    }
+  ]
+}

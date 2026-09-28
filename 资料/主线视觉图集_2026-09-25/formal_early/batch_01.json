@@ -1,0 +1,33 @@
+{
+  "name": "FindingDogStory formal opening at original Wujin west gate",
+  "jobs": [
+    {
+      "backend": "qwen",
+      "name": "F01 cinematic - original city gate departure",
+      "priority": 50,
+      "params": {
+        "prompt": "Create an ORIGINAL cinematic game concept frame for the confirmed opening of the full game. Reference image 1 is the ORIGINAL GameDraft screenshot of the Wujin west city gate and must define the location: the same dark gray stone gate, wooden guard house on top, open wooden gates, cobbled forecourt, rough road rising toward the upper right, ruined cart and roadside brush. References 2, 3, 4 are the ORIGINAL project character designs: Guan Ergou in an ill fitting patched charcoal Taoist robe and paper hat, Clara in brown explorer clothing and hat, Edgar in brown explorer clothing with moustache. Exactly these three people. Dawn mist on the road outside the gate; they have just left the city to begin the expedition. A cinematic elevated three quarter wide shot with gate on left and road receding upper right, painterly realistic texture matching the project, quiet and ominous. All people must be modest sized, each no more than 18 percent of image height; preserve believable human-to-gate scale. No new landmarks, temples, signboards, village, mountain peak, monsters, porters, horses, other people or modern gear. No text, no labels, no UI. New composition and lighting, not a copy of the screenshot.",
+        "images": ["3c2a3aac-f031-4d3e-8bf4-68c18834de6b", "9bbca5da-b065-4810-9ef1-302063f1699f", "11f47ca3-e45b-4672-867f-043324c862fd", "6fd08324-93a8-4ba2-a66b-7d1513160bac"],
+        "width": 1536,
+        "height": 1024,
+        "steps": 28,
+        "seed": 250925101
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "F01 gameplay mock - original city gate departure",
+      "priority": 50,
+      "params": {
+        "prompt": "Create an ORIGINAL 4:3 simulated gameplay frame for the confirmed full-game departure at the Wujin west city gate. Reference 1 is an ACTUAL GameDraft gameplay screenshot and defines the exact existing architecture, fixed elevated isometric camera, dark blue gray hand painted texture, and character scale. References 2, 3, 4 are ORIGINAL project character designs: Guan Ergou in patched dark Taoist robe and paper hat, Clara in brown explorer clothes and hat, Edgar in brown explorer clothes with moustache. Show exactly one of each, as small full body figures walking on the upper-right road after passing the open gate. Guan Ergou leads while Clara and Edgar follow. Their height in this 1024x768 frame must be 75-105 pixels, matching the three small people in actual screenshot, and consistent with stone battlements, wood gate and cobbles; feet planted on road, no giant figures. Keep the gate on the left, hill road upper right, ruined cart, brush, wall, lighting style, inventory bar at bottom right, minimal UI. The only change from the actual screenshot is a NEW moment, positions and gait of the three known characters, as they start out together. Do not invent any other building or landmark, no extra people, no horse, no porters, no monsters, no text captions. Simulated game screenshot, not movie art, not character poster.",
+        "images": ["3c2a3aac-f031-4d3e-8bf4-68c18834de6b", "9bbca5da-b065-4810-9ef1-302063f1699f", "11f47ca3-e45b-4672-867f-043324c862fd", "6fd08324-93a8-4ba2-a66b-7d1513160bac"],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "width": 1024,
+        "height": 768,
+        "steps": 28,
+        "seed": 250925102
+      }
+    }
+  ]
+}

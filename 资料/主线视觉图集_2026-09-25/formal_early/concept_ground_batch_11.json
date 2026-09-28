@@ -1,0 +1,53 @@
+{
+  "name": "F01 ground eye-level cinematic samples",
+  "jobs": [
+    {
+      "priority": 50,
+      "params": {
+        "height": 864,
+        "steps": 30,
+        "width": 1536,
+        "images": [
+          "98e90853-a122-46cf-b247-2ce52446e236",
+          "9bbca5da-b065-4810-9ef1-302063f1699f"
+        ],
+        "seed": 250925113,
+        "prompt": "ORIGINAL 16:9 CINEMATIC FRAME, horizontal human-eye camera at road height, looking at EXISTING Wujin west gate in first original EMPTY GameDraft environment reference. Gray stone battlements, wood guardhouse on top, two open dark wood doors, cobbles, broken cart, bare shrubs, one rough road into gray fog. Second reference is Guan Ergou original patched dark robe and tall dark cloth paper cap. The ONLY THREE figures are Guan, Western woman Clara in brown explorer outfit, moustached Western man Edgar in brown explorer outfit. ALL THREE TINY and EQUAL SIZE, 85-110 pixels tall on 864px image, walking together 25 metres beyond gate on the road at far right. Gate opening is 300px high and towers over them. Ground-level camera, horizon visible behind road, vertical gate walls upright, cobbles in close foreground, not top-down or isometric. Cinematic dawn light. No extra architecture, people, porter, horse, creature, text or UI."
+      },
+      "backend": "qwen",
+      "name": "F01 ground film batch 11 variant 1"
+    },
+    {
+      "priority": 50,
+      "params": {
+        "height": 864,
+        "steps": 30,
+        "width": 1536,
+        "images": [
+          "98e90853-a122-46cf-b247-2ce52446e236",
+          "9bbca5da-b065-4810-9ef1-302063f1699f"
+        ],
+        "seed": 250925114,
+        "prompt": "Film director camera at a human standing height, 1.6 m above cobblestones, 35mm wide lens, ground-level side view of the original GameDraft Wujin west gate, NOT game perspective. Copy ONLY actual architecture and texture from reference image 1: old gray brick city wall, raised dark timber gatehouse, two open timber gate doors, broken cart, rough road and brush. Reference image 2 is Guan Ergou costume: torn dark Taoist robe and tall paper cloth hat. One group of EXACTLY THREE people on road 20m beyond doorway, near mist at right, all same distance, each one-third doorway height: Guan, one brown-clad female explorer Clara, one brown-clad moustached male Edgar. Gate fills left foreground, road recedes right. Show vertical people and gate, eye-level horizon, large road stones in foreground. No overhead aerial isometric view. No more people or new structures; no UI or text."
+      },
+      "backend": "qwen",
+      "name": "F01 ground film batch 11 variant 2"
+    },
+    {
+      "priority": 50,
+      "params": {
+        "height": 864,
+        "steps": 30,
+        "width": 1536,
+        "images": [
+          "98e90853-a122-46cf-b247-2ce52446e236",
+          "9bbca5da-b065-4810-9ef1-302063f1699f"
+        ],
+        "seed": 250925115,
+        "prompt": "Photoreal painterly period game CINEMATIC, 16:9, looking back from the road toward GameDraft ORIGINAL Wujin west city gate at human eye level. Original scene reference 1 proves only these buildings: one gray stone city gate and old wood guardhouse above, battlements, two open timber doors, broken cart, cobbles, bare trees and road. Use no invented architecture. Character ref 2 Guan Ergou ragged dark Taoist robe and floppy tall paper hat. The three familiar expedition members, Guan plus Clara Western woman in brown explorer coat and Edgar moustached Western man in brown explorer coat, walk away on one ground line at right middle distance. Exactly three people; all same natural height about 100px in 864px frame. Tall doorway about 300px high, triple person height. Door left, travelers right, road and pale dawn mist center. Camera 1.6 meters over cobbles, horizon through fog, vertical converging gate masonry. This MUST be a low grounded film view, NOT overhead, isometric, game screenshot or poster. No crowd, fourth person, pony, porter, shrine, village, monster, UI or words."
+      },
+      "backend": "qwen",
+      "name": "F01 ground film batch 11 variant 3"
+    }
+  ]
+}

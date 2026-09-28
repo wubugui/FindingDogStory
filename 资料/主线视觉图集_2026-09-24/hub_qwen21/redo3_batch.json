@@ -1,0 +1,21 @@
+{
+  "name": "FindingDogStory Qwen 2.1 D06 water QA redo 3",
+  "jobs": [
+    {
+      "backend": "qwen",
+      "name": "D06_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Cinematic variation of reference image 1 with same existing bull-head carved stone pool and the same single falling Guan figure above the water. Keep rock walls, camera and scale. The entire lower part of frame is a NATURAL RIPPLING DEEP BLUE WATER SURFACE with rain rings, subtle highlights and waves. The water surface is visibly textured, not black or flat. No submerged figure, body, reflection of a person or ghost. Exactly one person in the whole scene.",
+        "negative_prompt": "flat black water, blank black polygon, underwater person, second human, submerged silhouette, human reflection, ghost, new setting, text, HUD",
+        "images": [
+          "04e848ba-f4b7-4fa2-afb1-8bc9625a4827"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 4002
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "jobs": [
+    {
+      "priority": 50,
+      "name": "Demo V22 tight red circle take 7",
+      "backend": "qwen",
+      "params": {
+        "height": 768,
+        "qwen_canvas": "explicit",
+        "reference_resolution": 0,
+        "images": [
+          "c28c487d-eddd-41d2-962f-7b73c1e3ddfb",
+          "01c681a3-ffe5-4cd1-a89c-0808a17393a4"
+        ],
+        "seed": 250925150,
+        "prompt": "Reference 1 ORIGINAL GameDraft 1024x768 west gate screenshot is the exact canvas. Reference 2 is the exact same screenshot with a TIGHT TEMPORARY RED CIRCLE around the small foreground-center Guan Ergou at x485..542,y510..629; erase the red circle completely. Only edit within that tiny circle. Retain original Guan SIDE PROFILE facing right, same x515 and original feet at y625, original 100px height. Add a soft tall dark fake-Taoist cloth-paper cap in just the 10px gap above his original head, and turn his existing dark clothing into long patched charcoal fake-Taoist robe without widening or lengthening the silhouette. The entire new sprite from cap to feet fits inside 105px height, y518..625. No figure outside circle can change. Other two people at upper-right, gate geometry, cart, cobbles, UI and lighting must be pixel-close to reference 1. Red mark must disappear. Exactly three people, no zoom or camera move, no added elements.",
+        "width": 1024,
+        "steps": 25
+      }
+    },
+    {
+      "priority": 50,
+      "name": "Demo V22 tight red circle take 8",
+      "backend": "qwen",
+      "params": {
+        "height": 768,
+        "qwen_canvas": "explicit",
+        "reference_resolution": 0,
+        "images": [
+          "c28c487d-eddd-41d2-962f-7b73c1e3ddfb",
+          "01c681a3-ffe5-4cd1-a89c-0808a17393a4"
+        ],
+        "seed": 250925151,
+        "prompt": "Make a minimal wardrobe-only in-place GameDraft screenshot edit. Original reference 1 is the main 1024x768 west city gate image. Reference 2 shows a small red oval that specifies the ONLY pixels to change; remove its red line in result. In oval, replace the original foreground central player at x515,y570 with the same Guan Ergou in a slightly frayed dark Taoist robe and a small tall soft dark paper hat like existing player_taoist_anim_v1. Preserve Guan side-on pose, feet x515,y625, total rendered sprite height about 100px including cap. Never grow him larger than the oval y510..629, keep the other two people and whole gate unchanged. No character poster or new scene. Same camera, UI, props, lighting, 4:3 frame.",
+        "width": 1024,
+        "steps": 25
+      }
+    }
+  ],
+  "name": "Demo V22 tighter original sprite edit"
+}

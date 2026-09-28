@@ -1,0 +1,35 @@
+{
+  "name": "Demo V22 original 100px sprite wardrobe edit",
+  "jobs": [
+    {
+      "name": "Demo V22 100px gate take 9",
+      "backend": "qwen",
+      "priority": 50,
+      "params": {
+        "width": 1024,
+        "height": 768,
+        "qwen_canvas": "explicit",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 250925152,
+        "images": ["c28c487d-eddd-41d2-962f-7b73c1e3ddfb", "727c3840-015f-41c9-bb09-c5c4a0b51c9d"],
+        "prompt": "Reference 1 is the ORIGINAL GameDraft 1024x768 gameplay screenshot at the west city gate and is the exact output canvas. Reference 2 is identical with a TEMPORARY RED OVAL outlining only the existing small Guan Ergou at x515,y570. Remove red oval. Modify only that existing player inside x489..540, y518..627, including his hat. Preserve his right-facing side profile and feet exactly at x515,y625. His entire new sprite must measure about 105 screen pixels from hat top y520 to feet y625. Dress him in his existing patched charcoal-gray fake Taoist long robe and soft folded dark paper Taoist hat. Keep the body slender, not wider than 35 pixels; cap no taller than 15 pixels. The two companions on upper right, gate, doors, cart, cobbles, fence, night lighting and HUD remain essentially identical to original. Exactly three people, no added characters, no zoom, no camera change."
+      }
+    },
+    {
+      "name": "Demo V22 100px gate take 10",
+      "backend": "qwen",
+      "priority": 50,
+      "params": {
+        "width": 1024,
+        "height": 768,
+        "qwen_canvas": "explicit",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 250925153,
+        "images": ["c28c487d-eddd-41d2-962f-7b73c1e3ddfb", "727c3840-015f-41c9-bb09-c5c4a0b51c9d"],
+        "prompt": "Minimal local costume edit of the ORIGINAL GameDraft west-gate screenshot (first reference), keep exact 1024x768 pixels, top-down isometric gameplay camera and HUD. Second reference marks the only permitted edit with a red oval; erase that oval in the result. In this 50x109 pixel oval, change the original foreground player Guan Ergou into his established fake Taoist disguise: little rumpled dark-gray cloth Taoist cap and frayed patched charcoal robe. Keep his right-facing profile, same head-and-body footprint, same feet x515,y625, same total scale approximately 100 pixels tall. Do not turn him toward camera. Preserve the other two existing companions at x675,y360 and x767,y400. Keep gatehouse, double gate, trees, wagon, path, fence and UI aligned to the first reference. No enlarging any person, no new person, no new scene."
+      }
+    }
+  ]
+}

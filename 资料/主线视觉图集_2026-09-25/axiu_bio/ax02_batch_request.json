@@ -1,0 +1,47 @@
+{
+  "idempotency_key": "d831756b-b977-4ab7-ba6e-f96b36910178",
+  "body": {
+    "name": "Axiu cold signal Yizhuang two corpses - original project assets",
+    "jobs": [
+      {
+        "backend": "qwen",
+        "name": "AX02_two_corpses_cold_concept",
+        "params": {
+          "prompt": "Only the GameDraft original Yizhuang mortuary room shown in the references: two low wooden corpse slabs, rear memorial altar with candles and yellow talismans, cabinets, dark timber, same historical Chinese folk-horror art style. Source image of two corpses shows exactly the game assets: one older male corpse in ornate dark burial robe, one middle-aged outsider male corpse in torn plain dark clothes, separated and lying stiffly on the FLOOR next to the right corpse slab, with a tiny ring of rice and scissors between them. They are inert, not standing or grappling now. No woman, no Axiu body, no new characters, no visible cloth pouch outside inventory. No warm protective magic aura; only very faint cold neutral stillness after near-death. Do not invent another room. Make an independently composed cinematic concept painting, horizontal 16:9. Camera lowered to floor level near the two corpses; their stiff open hands and sudden separation dominate foreground, the EXACT mortuary slabs and altar recede behind them. Guan Ergou is only a small dark figure near the rear doorway, or no living character if that cannot be kept in scale. The room remains the star; no UI, no words, no gore, no fantasy effects.",
+          "negative_prompt": "giant human, oversized corpse, huge face, close-up portrait in gameplay, third living person, female ghost, women, girl, new architecture, new room, warm angelic glow, magical force field, corpses on slabs, extra corpse",
+          "images": [
+            "a52344fa-1e1b-4fa3-bff1-09cf271da2b4",
+            "27dfb5df-f7ae-4c8d-80c3-43ed359c4869",
+            "9ac4e616-67e5-433d-8de9-22fb0db87654"
+          ],
+          "width": 1536,
+          "height": 864,
+          "steps": 30,
+          "seed": 918201
+        }
+      },
+      {
+        "backend": "qwen",
+        "name": "AX02_two_corpses_cold_sim",
+        "params": {
+          "prompt": "Only the GameDraft original Yizhuang mortuary room shown in the references: two low wooden corpse slabs, rear memorial altar with candles and yellow talismans, cabinets, dark timber, same historical Chinese folk-horror art style. Source image of two corpses shows exactly the game assets: one older male corpse in ornate dark burial robe, one middle-aged outsider male corpse in torn plain dark clothes, separated and lying stiffly on the FLOOR next to the right corpse slab, with a tiny ring of rice and scissors between them. They are inert, not standing or grappling now. No woman, no Axiu body, no new characters, no visible cloth pouch outside inventory. No warm protective magic aura; only very faint cold neutral stillness after near-death. Do not invent another room. Make a NEW 1024x768 simulated GameDraft gameplay frame using the actual original Yizhuang screenshot as the camera and zoom guide, fixed high 3/4 perspective. Preserve same Guan Ergou and mortuary manager from the screenshot near the slabs, both 140-155 pixels tall (18-20 percent picture height); do not turn them into old priests or enlarge them. Add exactly the two male cadavers from source asset on the FLOOR to the right of the right slab, combined footprint about 260 pixels wide by 140 pixels tall, not on tables. Preserve existing altar and slab widths and perspective. A moment after they have let go, compact HUD in original corners, no dialogue text needed. No visible pouch on floor or furniture.",
+          "negative_prompt": "giant human, oversized corpse, huge face, close-up portrait in gameplay, third living person, female ghost, women, girl, new architecture, new room, warm angelic glow, magical force field, corpses on slabs, extra corpse",
+          "images": [
+            "9ac4e616-67e5-433d-8de9-22fb0db87654",
+            "27dfb5df-f7ae-4c8d-80c3-43ed359c4869",
+            "a52344fa-1e1b-4fa3-bff1-09cf271da2b4"
+          ],
+          "qwen_canvas": "first_reference",
+          "reference_resolution": 0,
+          "steps": 30,
+          "seed": 918202
+        }
+      }
+    ]
+  },
+  "sources": {
+    "gameplay_yizhuang": "9ac4e616-67e5-433d-8de9-22fb0db87654",
+    "background_yizhuang": "a52344fa-1e1b-4fa3-bff1-09cf271da2b4",
+    "original_two_corpses_flat": "27dfb5df-f7ae-4c8d-80c3-43ed359c4869"
+  }
+}

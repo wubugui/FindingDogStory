@@ -1,0 +1,58 @@
+{
+  "D02_sim": {
+    "state": "succeeded",
+    "task_id": "d40cb73f-b1d8-479e-8c50-1bb6aea2bc1a",
+    "file_id": "54ff7757-4472-59ad-9576-e1d0a817b674",
+    "sha256": "f4741bf9547e70a842cb69bb56bab9f4eb88ad5fb44650b95cfbebda30e77560",
+    "size": 3390702,
+    "path": "E:\\GameDev\\FindingDogStory\\资料\\主线视觉图集_2026-09-24\\hub_qwen21\\qa\\redo1\\D02_sim.png"
+  },
+  "D06_concept": {
+    "state": "succeeded",
+    "task_id": "4f0c34ea-18ba-450d-bba3-97e5c2f13779",
+    "file_id": "37224419-f77d-5d90-9f2c-57d0851fb7e7",
+    "sha256": "e95869adb44ae6e7c4203bc748eb268545d6c24467046b820312ebc4d62baa3b",
+    "size": 3274256,
+    "path": "E:\\GameDev\\FindingDogStory\\资料\\主线视觉图集_2026-09-24\\hub_qwen21\\qa\\redo1\\D06_concept.png"
+  },
+  "D07a_sim": {
+    "state": "succeeded",
+    "task_id": "664c2296-e352-445b-a674-afa0c5668b79",
+    "file_id": "d924f84f-366c-59d5-b8fb-50d59721ea64",
+    "sha256": "8530208dfd9aaec3b56adf2f453b3500df3456b680a3c88d2a3f41def6c09037",
+    "size": 2154420,
+    "path": "E:\\GameDev\\FindingDogStory\\资料\\主线视觉图集_2026-09-24\\hub_qwen21\\qa\\redo1\\D07a_sim.png"
+  },
+  "D13_sim": {
+    "state": "succeeded",
+    "task_id": "46d77112-a797-4d8c-9e8d-28465b418b3b",
+    "file_id": "68a19d23-3b4b-51fb-a439-38c38da728a2",
+    "sha256": "a17209fb4c0c027514b35ed040120d7f3d4c411a8509a7ef95d66fa6da6c965d",
+    "size": 2827613,
+    "path": "E:\\GameDev\\FindingDogStory\\资料\\主线视觉图集_2026-09-24\\hub_qwen21\\qa\\redo1\\D13_sim.png"
+  },
+  "D14_concept": {
+    "state": "succeeded",
+    "task_id": "65a5624a-8e71-4eec-a265-d50a28fcca63",
+    "file_id": "dc53c07c-24bb-545f-b5fe-07d9e25658f4",
+    "sha256": "3e1e411baaf647e515a522e09fe0e36c097bcdab916fcc3c63d7db5d19c93a26",
+    "size": 2794101,
+    "path": "E:\\GameDev\\FindingDogStory\\资料\\主线视觉图集_2026-09-24\\hub_qwen21\\qa\\redo1\\D14_concept.png"
+  },
+  "D15_concept": {
+    "state": "succeeded",
+    "task_id": "e6f8e602-5065-4bfe-b89a-7d24d01d77ba",
+    "file_id": "c6209dca-e099-5f5c-a2e6-862191a3d426",
+    "sha256": "5c73e30df389c9a9a8ad685c7dc353bcc747983a379588e94b63be444b881120",
+    "size": 2976596,
+    "path": "E:\\GameDev\\FindingDogStory\\资料\\主线视觉图集_2026-09-24\\hub_qwen21\\qa\\redo1\\D15_concept.png"
+  },
+  "D15_sim": {
+    "state": "succeeded",
+    "task_id": "6cc54bd1-9dea-45b9-a3c7-faf16ec76f99",
+    "file_id": "6d73fb64-17ec-53de-b975-de460c3d4476",
+    "sha256": "7362d7510c2c0c3a9ce6bdbee4a6a34813051af454a840138fc94f26d7f8c555",
+    "size": 2627685,
+    "path": "E:\\GameDev\\FindingDogStory\\资料\\主线视觉图集_2026-09-24\\hub_qwen21\\qa\\redo1\\D15_sim.png"
+  }
+}

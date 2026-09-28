@@ -1,0 +1,18 @@
+{
+  "idempotency_key": "903c1ff6-135c-497b-99e8-ab452c1ad0b8",
+  "body": {
+    "backend": "qwen",
+    "name": "AX01_sim_try4_move",
+    "params": {
+      "prompt": "Produce an independent simulated in-game screenshot of the existing GameDraft night Chenghuang Temple from the actual game screenshot reference, same 1024x768 camera angle and room zoom. The same Guan Ergou has walked a few steps to the RIGHT of the tall freestanding oil lamp and turns his head toward its small steady flame. He has the same black short hair, young adult face, worn dark brown work jacket and trousers as in reference, about 160-170px high. Preserve the temple architecture EXACTLY, rear altar about 480px wide, corpse table about 450px wide, lamp about 220px high; one corpse remains motionless on table. Do not change proportions or turn the man into a Daoist, old man or giant. Small dark UI corners like original game. This is a new moment, not a static redraw of his old position.",
+      "negative_prompt": "giant man, portrait, old man, Daoist hat, robe, second person, woman, female ghost, fantasy architecture, new furniture, glowing magic, camera zoom out, camera zoom in",
+      "images": [
+        "69ae51f6-13c7-4dfe-aaca-05fe7791afb9"
+      ],
+      "qwen_canvas": "first_reference",
+      "reference_resolution": 0,
+      "steps": 30,
+      "seed": 985223
+    }
+  }
+}

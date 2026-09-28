@@ -1,0 +1,43 @@
+{
+  "name": "FindingDogStory F02 cinematic insert from original dock assets",
+  "jobs": [
+    {
+      "backend": "qwen",
+      "name": "F02_concept_retry_D",
+      "priority": 50,
+      "params": {
+        "prompt": "An ORIGINAL cinematic concept image at the EXACT existing GameDraft Wujin dock, first discovery of torn mountain maps and geomantic compass in the salvaged cargo chest. Use ONLY original GameDraft project references. The man is Guan Ergou ONLY, wearing the worn patched gray-brown work jacket of reference 2; no Taoist robe. Chest design from reference 3; small weathered rectangular timber/leather luggage with metal corners. Object designs from reference 1; four torn mountain map pieces, round brown compass, old stitched book. Existing environment from reference 4: timber wharf beside dark river, gray stone quay and tile-roofed warehouses. No new place, no yin stone, no magic effect. Natural human-to-prop scale: chest knee-height beside Guan, maps smaller than his forearm, compass smaller than his open palm. Muted dark folk horror painterly art. No UI and no legible text. Cinematic INSERT SHOT from eye level just beside Guan, close oblique side view along wet dock planks. His forearm and one hand lift ONE torn map piece from the small open chest; his face is largely outside frame. The compass and book remain in the chest. Dark river and exact dock warehouse silhouettes defocused behind. Shallow depth of field, intimate human-scale photography, definitely not an overhead map display or game camera.",
+        "negative_prompt": "top-down, isometric, aerial, bird-eye, overhead, giant chest, giant compass, person larger than buildings, repeated person, extra characters, fantasy architecture, product poster, floating map, indoor room",
+        "images": [
+          "b02b0fab-5d17-4ae4-85b0-9df196b67b8f",
+          "34a02fac-1dc7-4c7e-b433-04dc06ecd18b",
+          "f9d80960-5697-4a38-8975-08902cc23f0e",
+          "f6c3539e-aca6-482b-8c96-7b9d896b25d1"
+        ],
+        "width": 1536,
+        "height": 864,
+        "steps": 32,
+        "seed": 250925526
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "F02_concept_retry_E",
+      "priority": 50,
+      "params": {
+        "prompt": "An ORIGINAL cinematic concept image at the EXACT existing GameDraft Wujin dock, first discovery of torn mountain maps and geomantic compass in the salvaged cargo chest. Use ONLY original GameDraft project references. The man is Guan Ergou ONLY, wearing the worn patched gray-brown work jacket of reference 2; no Taoist robe. Chest design from reference 3; small weathered rectangular timber/leather luggage with metal corners. Object designs from reference 1; four torn mountain map pieces, round brown compass, old stitched book. Existing environment from reference 4: timber wharf beside dark river, gray stone quay and tile-roofed warehouses. No new place, no yin stone, no magic effect. Natural human-to-prop scale: chest knee-height beside Guan, maps smaller than his forearm, compass smaller than his open palm. Muted dark folk horror painterly art. No UI and no legible text. Cinematic MEDIUM shot from standing person eye height. Guan crouches beside the small open chest on the timber wharf, looking down at the small compass and map fragments. His whole body is visible and physically plausible relative to chest, dock bollards and the existing warehouses beyond. Upright vertical building facades, lateral view along river, visible sky/horizon. Entirely new movie camera, NOT the game screenshot viewpoint.",
+        "negative_prompt": "top-down, isometric, aerial, bird-eye, overhead, giant chest, giant compass, person larger than buildings, repeated person, extra characters, fantasy architecture, product poster, floating map, indoor room",
+        "images": [
+          "b02b0fab-5d17-4ae4-85b0-9df196b67b8f",
+          "34a02fac-1dc7-4c7e-b433-04dc06ecd18b",
+          "f9d80960-5697-4a38-8975-08902cc23f0e",
+          "f6c3539e-aca6-482b-8c96-7b9d896b25d1"
+        ],
+        "width": 1536,
+        "height": 864,
+        "steps": 32,
+        "seed": 250925527
+      }
+    }
+  ]
+}

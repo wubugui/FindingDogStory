@@ -1,0 +1,43 @@
+{
+  "name": "FindingDogStory F02 opened chest cinematic from original assets",
+  "jobs": [
+    {
+      "backend": "qwen",
+      "name": "F02_concept_open_chest_F",
+      "priority": 50,
+      "params": {
+        "prompt": "Create an ORIGINAL ground-level cinematic concept shot from ONLY original GameDraft project references. Scene: existing Wujin riverside dock, existing stone quay and timber planks, dark river, old tile-roofed warehouses and moored boat from the GameDraft dock background. Exactly ONE character: Guan Ergou in his worn patched gray-brown clothes from the character reference. Exactly ONE wood/leather cargo chest of the supplied design, natural knee height relative to crouching Guan. Its lid is WIDE OPEN, hinged at rear, so its interior is plainly visible. Guan has just discovered the supplied round geomantic compass, four torn mountain-map fragments and stitched old book; these small objects are inside the open chest or immediately beside it. Eye-height movie camera looking laterally down the existing quay toward the river, upright buildings and pier posts. Character, chest and architecture physically scaled; chest no wider than Guan torso. Painterly realistic muted folk-horror art, 16:9, no UI, no text. No supernatural artifact, no Yin stone, no invented place or additional person. Guan crouches at left of the OPEN chest; his right hand lifts one torn map fragment out while the compass remains INSIDE the chest. The wide-open raised lid is visible behind the objects. Chest placed on timber wharf several steps from water.",
+        "negative_prompt": "closed chest, shut lid, two chests, multiple trunks, chest larger than a person, giant maps, giant compass, extra person, top-down, aerial, isometric, invented temple or mountain, magical stone",
+        "images": [
+          "34a02fac-1dc7-4c7e-b433-04dc06ecd18b",
+          "f9d80960-5697-4a38-8975-08902cc23f0e",
+          "b02b0fab-5d17-4ae4-85b0-9df196b67b8f",
+          "f6c3539e-aca6-482b-8c96-7b9d896b25d1"
+        ],
+        "width": 1536,
+        "height": 864,
+        "steps": 32,
+        "seed": 250925528
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "F02_concept_open_chest_G",
+      "priority": 50,
+      "params": {
+        "prompt": "Create an ORIGINAL ground-level cinematic concept shot from ONLY original GameDraft project references. Scene: existing Wujin riverside dock, existing stone quay and timber planks, dark river, old tile-roofed warehouses and moored boat from the GameDraft dock background. Exactly ONE character: Guan Ergou in his worn patched gray-brown clothes from the character reference. Exactly ONE wood/leather cargo chest of the supplied design, natural knee height relative to crouching Guan. Its lid is WIDE OPEN, hinged at rear, so its interior is plainly visible. Guan has just discovered the supplied round geomantic compass, four torn mountain-map fragments and stitched old book; these small objects are inside the open chest or immediately beside it. Eye-height movie camera looking laterally down the existing quay toward the river, upright buildings and pier posts. Character, chest and architecture physically scaled; chest no wider than Guan torso. Painterly realistic muted folk-horror art, 16:9, no UI, no text. No supernatural artifact, no Yin stone, no invented place or additional person. Camera is low beside the OPEN chest in a medium-wide view. Guan stands back half a step, leaning to inspect the map fragments and compass INSIDE. The raised lid silhouettes against the existing warehouse row. Keep one chest only, one person only.",
+        "negative_prompt": "closed chest, shut lid, two chests, multiple trunks, chest larger than a person, giant maps, giant compass, extra person, top-down, aerial, isometric, invented temple or mountain, magical stone",
+        "images": [
+          "34a02fac-1dc7-4c7e-b433-04dc06ecd18b",
+          "f9d80960-5697-4a38-8975-08902cc23f0e",
+          "b02b0fab-5d17-4ae4-85b0-9df196b67b8f",
+          "f6c3539e-aca6-482b-8c96-7b9d896b25d1"
+        ],
+        "width": 1536,
+        "height": 864,
+        "steps": 32,
+        "seed": 250925529
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "backend": "qwen",
+  "name": "F01 cinematic retry 3 Guan alone at original Wujin gate",
+  "priority": 50,
+  "params": {
+    "prompt": "Reference image 1 is the ORIGINAL EMPTY GameDraft background of Wujin's west city gate. It shows the stone gate with wooden guardhouse, open doors, cobbled ground, broken cart, brush and one winding road into mist. Keep only this exact existing location, no newly invented structure. Reference image 2 is the ORIGINAL project character design of Guan Ergou wearing his patched dark fake-Taoist robe and paper hat. Create an independent CINEMATIC story concept of the opening of the full-game expedition: Guan Ergou pauses just beyond the open gate and looks toward the misty road, nervous behind a boastful posture. Guan is the ONLY HUMAN FIGURE VISIBLE. No second person, no duplicates, no silhouette, no crowd, no unseen group's shadows. The traveling companions are outside the camera view. Keep Guan a small full-body figure, no more than 15 percent of frame height, proportional to the stone gate. Wide three-quarter camera, atmospheric early morning light, grim blue-gray muted GameDraft painterly realism. Respect original gate, road direction and props, but redraw as a new cinematic composition. No additional buildings, temple, village, mountain landmark, monsters, horse, text or UI.",
+    "images": ["98e90853-a122-46cf-b247-2ce52446e236", "9bbca5da-b065-4810-9ef1-302063f1699f"],
+    "width": 1536,
+    "height": 1024,
+    "steps": 30,
+    "seed": 250925105
+  }
+}

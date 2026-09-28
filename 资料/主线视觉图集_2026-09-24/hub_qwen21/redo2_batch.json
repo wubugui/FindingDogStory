@@ -1,0 +1,21 @@
+{
+  "name": "FindingDogStory Qwen 2.1 D06 water QA redo 2",
+  "jobs": [
+    {
+      "backend": "qwen",
+      "name": "D06_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Conservative image-to-image cinematic variation of reference image 1. Preserve the original composition almost pixel-for-pixel: one Guan Ergou falling from the LEFT cliff into the bull-head carved stone pit. Exactly ONE human figure in the entire picture, ABOVE water. The water at the bottom is an OPAQUE DARK SURFACE without underwater transparency, reflections, silhouettes, limbs or faces. Preserve the original camera, bull head, stone walls, rain and scale. No interface, text or extra figures.",
+        "negative_prompt": "underwater person, second man, duplicate man, human-shaped reflection, submerged silhouette, visible underwater body, transparent water, ghost, new location",
+        "images": [
+          "04e848ba-f4b7-4fa2-afb1-8bc9625a4827"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 30,
+        "seed": 4001
+      }
+    }
+  ]
+}

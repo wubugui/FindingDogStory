@@ -1,0 +1,13 @@
+{
+  "backend": "qwen",
+  "name": "F01 cinematic retry 6 source gameplay and Guan reference",
+  "priority": 50,
+  "params": {
+    "prompt": "Use reference 1, an ACTUAL GameDraft gameplay screenshot, as proof of the exact existing Wujin west gate architecture, gray stone gate, timber guardhouse, open wooden doors, cobbles, broken cart, road and three-person character scale. Reference 2 is the ORIGINAL GameDraft character art for GUAN ERGOU in his patched charcoal fake-Taoist robe and distinct soft TALL PATCHED PAPER TAOIST HAT; this hat must remain, never a wide straw hat. Generate a NEW 16:9 CINEMATIC CONCEPT SHOT of exactly these THREE expedition members departing: Guan Ergou, Clara (one woman in dark brown field hat and explorer coat), Edgar (one moustached man in brown field hat and explorer coat). NO FOURTH PERSON, no duplicates. Compose them from behind in a small staggered walking line on the existing road immediately past the gate. Their height should be about 100-125 pixels in the 864-pixel tall output, each less than 14 percent of frame. All three must be visibly shorter than the gate opening. Camera is cinematic: framed from a farther position across the dark foreground cobbles, more of the winding misty road and distant rough hills in upper right, subtle dawn backlight and deep atmospheric layering, unlike the reference gameplay shot. Keep the same gatehouse on the left; no new architecture, no temple, village, horse, porter, monster or captions. No game UI. Restrained GameDraft blue-gray painterly realism.",
+    "images": ["3c2a3aac-f031-4d3e-8bf4-68c18834de6b", "9bbca5da-b065-4810-9ef1-302063f1699f"],
+    "width": 1536,
+    "height": 864,
+    "steps": 30,
+    "seed": 250925108
+  }
+}

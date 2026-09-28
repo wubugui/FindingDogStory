@@ -1,0 +1,18 @@
+{
+  "params": {
+    "prompt": "以<image1>为唯一画布，在右侧木码头空出的木板上增加一只刚捞上岸的小箱子，放在近处木桩旁。箱子的木纹、皮带和金属包角取自<image2>，但它在<image1>中的高度只相当于前景站立人物小腿长度，箱底与木板贴合。箱盖向后打开，箱内保持阴暗。<image1>原有的所有人物、人物大小和位置、建筑、河水、其他货箱、固定俯斜镜头和游戏界面保持不变。",
+    "width": 1024,
+    "images": [
+      "72601202-2920-4c5c-940f-a1a94c80854a",
+      "f9d80960-5697-4a38-8975-08902cc23f0e"
+    ],
+    "qwen_canvas": "explicit",
+    "guidance_scale": 1.0,
+    "height": 768,
+    "seed": 925806,
+    "steps": 40,
+    "reference_resolution": 0
+  },
+  "name": "F02 exact canvas two-role chest calibration",
+  "backend": "qwen"
+}

@@ -1,0 +1,45 @@
+{
+  "name": "FindingDogStory F02 gameplay open chest refinements",
+  "jobs": [
+    {
+      "backend": "qwen",
+      "name": "F02_sim_open_chest_B",
+      "priority": 50,
+      "params": {
+        "prompt": "Generate an ORIGINAL simulated gameplay screenshot, 1024x768 4:3, of the confirmed opening of one salvaged expedition chest at the EXISTING GameDraft Wujin dock. Reference 1 is an actual GameDraft gameplay screenshot: preserve exact fixed high three-quarter camera, gray tiled shopfronts, stone quay, timber wharf, water on right and dark painterly texture. All humans remain 65-95 pixels high just like reference 1. Reference 2 is the exact original in-game inspection overlay art: round compass, four torn mountain-map pieces, silver coins and stitched book. Reference 3 is the original small timber-and-leather cargo chest sprite. The moment is AFTER opening: show one small cargo chest at Guan Ergou feet with its lid RAISED and interior exposed. At center place a dark translucent inspection overlay about half the screen width containing the exact reference 2 objects. Behind overlay keep enough original dock visible to read scene and scale. Top-left coin HUD and bottom-right item toolbar, small unreadable text fine. Absolutely game camera, not film camera. No Yin stone, no made-up structure, no giant person, no extra person. Put open chest on the stone quay near the dark-clothed player, left of center. Its raised lid should be unmistakable even behind the overlay. Do not show any closed chest or second chest.",
+        "negative_prompt": "closed chest, flat shut lid, two chests, enormous chest, giant human, oversized character, cinematic camera, closeup portrait, added building, new shore, full-screen poster, fantasy stone",
+        "images": [
+          "72601202-2920-4c5c-940f-a1a94c80854a",
+          "b02b0fab-5d17-4ae4-85b0-9df196b67b8f",
+          "f9d80960-5697-4a38-8975-08902cc23f0e"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "width": 1024,
+        "height": 768,
+        "steps": 32,
+        "seed": 250925530
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "F02_sim_open_chest_C",
+      "priority": 50,
+      "params": {
+        "prompt": "Generate an ORIGINAL simulated gameplay screenshot, 1024x768 4:3, of the confirmed opening of one salvaged expedition chest at the EXISTING GameDraft Wujin dock. Reference 1 is an actual GameDraft gameplay screenshot: preserve exact fixed high three-quarter camera, gray tiled shopfronts, stone quay, timber wharf, water on right and dark painterly texture. All humans remain 65-95 pixels high just like reference 1. Reference 2 is the exact original in-game inspection overlay art: round compass, four torn mountain-map pieces, silver coins and stitched book. Reference 3 is the original small timber-and-leather cargo chest sprite. The moment is AFTER opening: show one small cargo chest at Guan Ergou feet with its lid RAISED and interior exposed. At center place a dark translucent inspection overlay about half the screen width containing the exact reference 2 objects. Behind overlay keep enough original dock visible to read scene and scale. Top-left coin HUD and bottom-right item toolbar, small unreadable text fine. Absolutely game camera, not film camera. No Yin stone, no made-up structure, no giant person, no extra person. Put the open chest on the timber wharf close to the player, slightly behind the dark central item-inspection overlay. Clear visible raised lid; compass and map visible in overlay. Only one chest in entire scene.",
+        "negative_prompt": "closed chest, flat shut lid, two chests, enormous chest, giant human, oversized character, cinematic camera, closeup portrait, added building, new shore, full-screen poster, fantasy stone",
+        "images": [
+          "72601202-2920-4c5c-940f-a1a94c80854a",
+          "b02b0fab-5d17-4ae4-85b0-9df196b67b8f",
+          "f9d80960-5697-4a38-8975-08902cc23f0e"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "width": 1024,
+        "height": 768,
+        "steps": 32,
+        "seed": 250925531
+      }
+    }
+  ]
+}

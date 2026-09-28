@@ -1,0 +1,41 @@
+{
+  "name": "V21 Clara recruitment street scene",
+  "jobs": [
+    {
+      "name": "V21 Clara street raw source A",
+      "params": {
+        "reference_resolution": 0,
+        "images": [
+          "801a9386-2099-4626-aa1e-7c61913698e7",
+          "fdc89af4-7926-424a-8a06-22d52fe543ef"
+        ],
+        "guidance_scale": 1.0,
+        "seed": 925921,
+        "qwen_canvas": "explicit",
+        "height": 768,
+        "steps": 40,
+        "prompt": "以<image1>作为唯一完整的GameDraft雾津街头实机画布。将画面右侧靠红灯笼的那一个深色站立NPC（约x625，头顶y340、鞋底y481）原位替换成<image2>里的克拉拉：女性，宽檐帽、深橄榄色长外套、肩包，低头翻一本很小的手持笔记本。新人物仍占原NPC约140像素高，鞋底保持原位置，不能超过旁边关二狗身高。左侧两个人物、灯笼、屋顶、石板路、固定俯斜镜头和游戏菜单/方向键保持原样。只额外移除顶部最右边的“调试”按钮。单一连续游戏画面，绝不把<image2>作为整张照片贴上，不要边框、画中画、放大的女人、额外人物或新建筑。",
+        "width": 1024
+      },
+      "backend": "qwen"
+    },
+    {
+      "name": "V21 Clara street circle guided B",
+      "params": {
+        "reference_resolution": 0,
+        "images": [
+          "f9fb309e-0308-4275-8ebc-a13a197ee0cb",
+          "fdc89af4-7926-424a-8a06-22d52fe543ef"
+        ],
+        "guidance_scale": 1.0,
+        "seed": 925922,
+        "qwen_canvas": "explicit",
+        "height": 768,
+        "steps": 40,
+        "prompt": "以<image1>作为唯一完整实机画布。<image1>上的红圈仅标出要修改的原NPC，最终擦除红圈；圈内原位换成<image2>克拉拉的宽檐帽、深橄榄长外套和肩包，并让她翻看手中一本很小的笔记本。她头顶和鞋底仍在原圈范围，身高约140像素，不能大过两旁现有人物。圈外雾津街头建筑、红灯笼、左侧两个人物、游戏HUD、固定俯斜镜头保持不变；顶部最右“调试”按钮清除。四比三1024×768单一连续游戏画面，不要把第二参考贴进画面，不要黑色面板、画中画、额外人物、新街道。",
+        "width": 1024
+      },
+      "backend": "qwen"
+    }
+  ]
+}

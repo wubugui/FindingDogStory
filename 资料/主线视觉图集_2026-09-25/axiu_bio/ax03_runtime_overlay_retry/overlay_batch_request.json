@@ -1,0 +1,39 @@
+{
+  "jobs": [
+    {
+      "name": "AX03 overlay breathing slight exhale A",
+      "params": {
+        "reference_resolution": 0,
+        "steps": 40,
+        "guidance_scale": 1.0,
+        "qwen_canvas": "explicit",
+        "seed": 925933,
+        "images": [
+          "d1ba676c-18e5-4b8f-8cd8-fea882c7a671"
+        ],
+        "width": 1024,
+        "height": 768,
+        "prompt": "把<image1>作为当前 GameDraft 盖脸纸原生过场的完整画布。只把覆盖鼻梁和嘴部的白纸改成一次非常轻微的呼气末形态：纸的中央起伏稍稍回落，纸边自然贴合原脸部。保持原人物头身比例、侧卧姿态、油灯、中央过场影像的大小与位置、黑色外框、左上铜钱 HUD 和下方旁白框原样。整幅画面继续是同一张游戏过场截图，纸仍由老妇人按剧情盖在关二狗脸上，背景保持当前过场的黑底。"
+      },
+      "backend": "qwen"
+    },
+    {
+      "name": "AX03 overlay paper pause B",
+      "params": {
+        "reference_resolution": 0,
+        "steps": 40,
+        "guidance_scale": 1.0,
+        "qwen_canvas": "explicit",
+        "seed": 925934,
+        "images": [
+          "d1ba676c-18e5-4b8f-8cd8-fea882c7a671"
+        ],
+        "width": 1024,
+        "height": 768,
+        "prompt": "以<image1>所示真实游戏过场为基础，表现脸纸呼吸停下后的静止一瞬：白纸自然覆盖同一张脸，只有纸面细小褶皱略有变化。中央过场影像继续保持原有约八成画宽的矩形位置，四周是游戏本来就有的黑色画面，下方旁白框和左上角铜钱 HUD 保持原样。保持人物的头脚尺度、衣服、油灯和暗房背景连续，呈现一个可信的相邻动画帧。"
+      },
+      "backend": "qwen"
+    }
+  ],
+  "name": "AX03 native runtime overlay accurate Hub Qwen sim"
+}

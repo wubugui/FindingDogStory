@@ -1,0 +1,62 @@
+{
+  "name": "FindingDogStory F02 location-bounded cinematic insert original refs",
+  "jobs": [
+    {
+      "backend": "qwen",
+      "name": "F02_cinematic_insert_K",
+      "priority": 50,
+      "params": {
+        "prompt": "Create an ORIGINAL historical folk-horror cinematic INSERT FRAME, NOT A GAME CAMERA, from ONLY original GameDraft source images. The visible setting is strictly the stone-paved quay IN FRONT OF THE EXISTING WUJIN FREIGHT HOUSE in reference 4: its brown timber facade, tiled eaves, latticed window and dark doorway. The film crop stays tight on this original facade; all river, boats, wharf extensions, mountains and any other buildings remain OUT OF FRAME. Reference 1 is the only person, Guan Ergou in his patched gray-brown work clothes. Reference 2 supplies the exact props: palm-sized Chinese geomantic compass, hand-sized torn mountain-map fragments, stitched book. Reference 3 supplies one small wood/leather cargo chest, knee height, open lid. The story action is Guan lifting one map fragment while inspecting the compass and book inside the chest. Human hands establish accurate physical scale. TRUE HUMAN-EYE OR CHEST-HEIGHT LEVEL MOVIE CAMERA, horizontally looking across the box, not overhead, not elevated, not isometric. Shallow depth of field with freight-house door blurred behind. One man, one chest. Muted hand-painted cinematic frame, 16:9, no UI, no text. Extreme insert: Guan face outside frame, only one patched sleeve, two hands, chest rim, lifted map fragment and the small compass visible. Camera at the exact height of the open chest rim, looking HORIZONTALLY into its interior. Existing stone paving below; out-of-focus dark freight-house doorway behind. Tight film composition means no unsupported part of the dock can appear.",
+        "negative_prompt": "aerial, high angle, overhead, top-down, isometric, gameplay screenshot, whole dock, river, boat, ship, mast, sail, new pier, added house, temple, giant chest, giant map, multiple chests, additional person, character poster",
+        "images": [
+          "34a02fac-1dc7-4c7e-b433-04dc06ecd18b",
+          "b02b0fab-5d17-4ae4-85b0-9df196b67b8f",
+          "f9d80960-5697-4a38-8975-08902cc23f0e",
+          "73521ab3-f1b0-4f9d-a00e-c74bf96770bb"
+        ],
+        "width": 1536,
+        "height": 864,
+        "steps": 34,
+        "seed": 250925537
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "F02_cinematic_insert_L",
+      "priority": 50,
+      "params": {
+        "prompt": "Create an ORIGINAL historical folk-horror cinematic INSERT FRAME, NOT A GAME CAMERA, from ONLY original GameDraft source images. The visible setting is strictly the stone-paved quay IN FRONT OF THE EXISTING WUJIN FREIGHT HOUSE in reference 4: its brown timber facade, tiled eaves, latticed window and dark doorway. The film crop stays tight on this original facade; all river, boats, wharf extensions, mountains and any other buildings remain OUT OF FRAME. Reference 1 is the only person, Guan Ergou in his patched gray-brown work clothes. Reference 2 supplies the exact props: palm-sized Chinese geomantic compass, hand-sized torn mountain-map fragments, stitched book. Reference 3 supplies one small wood/leather cargo chest, knee height, open lid. The story action is Guan lifting one map fragment while inspecting the compass and book inside the chest. Human hands establish accurate physical scale. TRUE HUMAN-EYE OR CHEST-HEIGHT LEVEL MOVIE CAMERA, horizontally looking across the box, not overhead, not elevated, not isometric. Shallow depth of field with freight-house door blurred behind. One man, one chest. Muted hand-painted cinematic frame, 16:9, no UI, no text. Medium-close eye-level SIDE angle: Guan crouching on the original stone quay before the freight-house doorway, face partly visible. Open chest at his knee. His hand lifts a map piece; compass is smaller than his palm. The freight house wood facade fills the entire background. Camera parallel to cobblestones, roofline mostly out of frame.",
+        "negative_prompt": "aerial, high angle, overhead, top-down, isometric, gameplay screenshot, whole dock, river, boat, ship, mast, sail, new pier, added house, temple, giant chest, giant map, multiple chests, additional person, character poster",
+        "images": [
+          "34a02fac-1dc7-4c7e-b433-04dc06ecd18b",
+          "b02b0fab-5d17-4ae4-85b0-9df196b67b8f",
+          "f9d80960-5697-4a38-8975-08902cc23f0e",
+          "73521ab3-f1b0-4f9d-a00e-c74bf96770bb"
+        ],
+        "width": 1536,
+        "height": 864,
+        "steps": 34,
+        "seed": 250925538
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "F02_cinematic_insert_M",
+      "priority": 50,
+      "params": {
+        "prompt": "Create an ORIGINAL historical folk-horror cinematic INSERT FRAME, NOT A GAME CAMERA, from ONLY original GameDraft source images. The visible setting is strictly the stone-paved quay IN FRONT OF THE EXISTING WUJIN FREIGHT HOUSE in reference 4: its brown timber facade, tiled eaves, latticed window and dark doorway. The film crop stays tight on this original facade; all river, boats, wharf extensions, mountains and any other buildings remain OUT OF FRAME. Reference 1 is the only person, Guan Ergou in his patched gray-brown work clothes. Reference 2 supplies the exact props: palm-sized Chinese geomantic compass, hand-sized torn mountain-map fragments, stitched book. Reference 3 supplies one small wood/leather cargo chest, knee height, open lid. The story action is Guan lifting one map fragment while inspecting the compass and book inside the chest. Human hands establish accurate physical scale. TRUE HUMAN-EYE OR CHEST-HEIGHT LEVEL MOVIE CAMERA, horizontally looking across the box, not overhead, not elevated, not isometric. Shallow depth of field with freight-house door blurred behind. One man, one chest. Muted hand-painted cinematic frame, 16:9, no UI, no text. Macro movie frame over Guan shoulder from a low side position, not from above: open box and his hand with the torn mountain map sharply focused. The original freight-house lattice window and stone wall are a soft horizontal backdrop. Person and prop physically proportional. No river visible.",
+        "negative_prompt": "aerial, high angle, overhead, top-down, isometric, gameplay screenshot, whole dock, river, boat, ship, mast, sail, new pier, added house, temple, giant chest, giant map, multiple chests, additional person, character poster",
+        "images": [
+          "34a02fac-1dc7-4c7e-b433-04dc06ecd18b",
+          "b02b0fab-5d17-4ae4-85b0-9df196b67b8f",
+          "f9d80960-5697-4a38-8975-08902cc23f0e",
+          "73521ab3-f1b0-4f9d-a00e-c74bf96770bb"
+        ],
+        "width": 1536,
+        "height": 864,
+        "steps": 34,
+        "seed": 250925539
+      }
+    }
+  ]
+}

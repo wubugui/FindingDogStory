@@ -1,0 +1,15 @@
+{
+  "backend": "qwen",
+  "name": "F01 simulated gameplay retry 2 original screenshot only tiny characters",
+  "priority": 50,
+  "params": {
+    "prompt": "Reference image 1 is an ACTUAL 1024x768 GameDraft gameplay screenshot of the Wujin west city gate. Generate a NEW frame of this same game, exactly same existing gate, same fixed elevated camera, same dark painterly rendering, same UI positions and same scale. There are exactly THREE existing characters, Guan Ergou the ragged local fake Taoist, Clara the explorer woman and Edgar the moustached explorer man. Move all three to the upper-right road beyond the open gate, walking together into morning mist. Do not add, enlarge, duplicate, or redesign them. CRITICAL SCALE: each person only 80 to 95 pixels tall on this 768-pixel-high image, the same small in-game sprite height as the actual reference. Their full bodies should occupy under 12.5 percent of frame height. Stone gate and road dominate the view. Keep the three figures separate and fully visible with their feet on the same ground plane. Empty foreground cobblestone; gate left, ruined cart center left, road upper right, bare trees and brush. Retain minimal game UI but text detail is unimportant. This is an isometric gameplay screenshot, not cinematic concept art, not a character poster. No new scenery, people, horse, porters, monsters, extra props or buildings.",
+    "images": ["3c2a3aac-f031-4d3e-8bf4-68c18834de6b"],
+    "qwen_canvas": "first_reference",
+    "reference_resolution": 0,
+    "width": 1024,
+    "height": 768,
+    "steps": 30,
+    "seed": 250925104
+  }
+}

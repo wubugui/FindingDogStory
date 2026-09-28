@@ -1,0 +1,48 @@
+{
+  "idempotency_key": "ax04-identity-ref-20260925-01",
+  "source_identity_ref_sha256": "e7b67c746a45fd50a013a65698a4e0b1a8a9d4455e281fa6546af6a5ab16395d",
+  "body": {
+    "name": "AX04 canonical Guan identity cinematic retake",
+    "jobs": [
+      {
+        "backend": "qwen",
+        "name": "AX04_Guan_identity_cinematic_A",
+        "params": {
+          "images": [
+            "f70500fa-22ba-48f9-9165-bc4883ce294e",
+            "c780fba4-e357-4301-9ef9-9a25d4927f91",
+            "f85da0be-e994-444a-ad10-a75cb4aa82a3",
+            "572e01f8-034a-453a-a5df-8df4ccb8df8b"
+          ],
+          "prompt": "Create a completely NEW cinematic film frame of the existing Wujin dock underwater near-drowning incident. <image1> is the canonical high-resolution Guan Ergou character reference: keep the SAME adult man's face, short black tousled hair, proportions and distinctive layered work clothes. His dark gray-blue patched outer jacket must remain visibly open over its beige inner shirt; keep the tan stitched upper-sleeve patch, pale frayed sleeve cuff, cloth waist tie, brown trousers with a light knee patch, wrapped ankles and dark cloth shoes. Water may pull the fabric, but must not replace these layers with a plain dark robe. <image2> provides the murky olive riverbed and silt. <image3> provides the existing small sunken wooden crate with dark straps. <image4> establishes only the Wujin stone quay and timber pier above, not the gameplay camera or HUD. Show one Guan at the instant an unseen force jerks his ankle down after he touches the crate: his body twists diagonally, one arm reaches upward, the other has just slipped off the crate; only a few air bubbles leave his mouth. The gripper stays entirely outside the frame. Place the crate fixed on the bottom, about half a meter wide against the man's adult height of about 1.7 meters. Use a low oblique underwater camera and physically believable perspective. The whole scene is one continuous shot, with no game interface, picture inset, panels or captions. Make the identity and patched clothing from <image1> unmistakable before adding atmosphere.",
+          "negative_prompt": "different face, teenager, young pretty hero, plain black tunic, unpatched robe, giant person, giant crate, visible monster, visible grabbing hand, woman, Axiu figure, rescuer, above-water street, HUD, inset screenshot, picture frame, text",
+          "qwen_canvas": "explicit",
+          "reference_resolution": 0,
+          "width": 1536,
+          "height": 864,
+          "steps": 40,
+          "seed": 925901
+        }
+      },
+      {
+        "backend": "qwen",
+        "name": "AX04_Guan_identity_cinematic_B",
+        "params": {
+          "images": [
+            "f70500fa-22ba-48f9-9165-bc4883ce294e",
+            "c780fba4-e357-4301-9ef9-9a25d4927f91",
+            "f85da0be-e994-444a-ad10-a75cb4aa82a3"
+          ],
+          "prompt": "Make a NEW cinematic underwater shot, using <image1> as the exact identity and costume source for Guan Ergou, <image2> as the existing Wujin dock riverbed, and <image3> as the existing sunken small crate. Keep the adult face, short untidy black hair, dark patched outer jacket over a clearly visible beige inner shirt, tan upper-sleeve patch, ragged pale sleeve cuffs, tied waist, brown trousers with light knee patch, wrapped lower legs and cloth shoes from <image1>. He is being suddenly pulled downward by an unseen force just after touching the crate. His torso twists, free arm reaches up toward dim light, his other hand loses the crate, silt rises near his ankle and a few bubbles escape. Show only him and the small strapped crate on the riverbed; the pulling force has no visible body or hand. Oblique medium-wide film camera, one continuous physically coherent underwater scene, adult man about 3.4 times the crate width, no game interface, no inset, no words.",
+          "negative_prompt": "different face, teenager, plain black robe, giant character, oversized crate, visible grabber, woman, new harbor, top-down game UI, screenshot pasted in frame, text",
+          "qwen_canvas": "explicit",
+          "reference_resolution": 0,
+          "width": 1536,
+          "height": 864,
+          "steps": 40,
+          "seed": 925902
+        }
+      }
+    ]
+  }
+}

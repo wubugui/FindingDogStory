@@ -1,0 +1,17 @@
+{
+  "hub_url": "http://denghong01:8765",
+  "task_id": "be54ad38-07f5-47dd-9f12-e0e10fe32181",
+  "batch_id": "e18e4e98-106a-4673-897c-051522007c0b",
+  "idempotency_key": "6db94c0b-655a-43f4-b727-3c60f94eea5d",
+  "images": [
+    "8f7c08ad-6027-4684-beb0-2bb115af81ef",
+    "d93f485a-c927-4364-bbcf-aad7a0ff874a",
+    "b6f8fbac-39c7-4a26-af72-64bbb327fdbb",
+    "d4567f3c-9260-4872-b7ad-cc3661a39e04"
+  ],
+  "qwen_canvas": "first_reference",
+  "reference_resolution": 0,
+  "steps": 25,
+  "seed": 1602,
+  "state": "submitted"
+}

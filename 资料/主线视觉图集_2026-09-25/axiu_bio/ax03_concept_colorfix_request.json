@@ -1,0 +1,38 @@
+{
+  "idempotency_key": "c6b69c5a-7915-41fa-afb4-57bdb46f26d9",
+  "body": {
+    "name": "AX03 concept paper color correction from current GameDraft source layers",
+    "jobs": [
+      {
+        "backend": "qwen",
+        "name": "AX03_concept_colorfix_A",
+        "params": {
+          "prompt": "Use ONLY these GameDraft original-source references: reference 1 is the current runtime face-paper character layers composited without alteration; reference 2 is the current dream inner-room background. Create a NEW cinematic 16:9 folk-horror concept frame in this exact room, a low oblique view along the wooden bier, showing Guan Ergou, the same young short-dark-haired Chinese man, lying supine under the same coarse charcoal-grey burial shroud. The face paper has the ORIGINAL pale white-grey unbleached paper color with subtle warm highlights ONLY where the practical oil lamp catches it; it is NOT yellow, ochre, brown, parchment or gold. Keep one plain unmarked thin sheet the original size, draped ONLY across his face from forehead over eyes and nose with his ear still visible, not a mask over his whole head and not on the body. A paper corner rises only a finger-width. Reframe independently with the existing wood door panel and lattice window visible, original single floor oil lamp to the right, restrained practical warm lamp glow, otherwise very dark. Maintain credible human scale against the bier and room. The distant tune is AUDIO ONLY. No words or UI.",
+          "negative_prompt": "yellow paper, ochre paper, tan paper, gold paper, parchment, warm magical aura, glowing dust, female figure, extra person, old man, child, paper covering entire head, paper on chest, paper on body, large ritual sheet, coffin, new room, temple, text",
+          "images": ["d170b44b-2106-471c-9113-47a70947bd31", "bafd2f88-f00a-4306-aa76-599906680142"],
+          "width": 1536,
+          "height": 864,
+          "steps": 30,
+          "seed": 918305
+        }
+      },
+      {
+        "backend": "qwen",
+        "name": "AX03_concept_colorfix_B",
+        "params": {
+          "prompt": "Draw an INDEPENDENT cinematic side-angle concept image using only the current GameDraft dream inner-room background and the original composited face-paper runtime layers provided as references. Guan Ergou is the same young Chinese man, lying motionless on the wooden bier under a dark rough grey shroud. One small, plain, thin WHITE-GREY face paper covers only his upper face and eyes/nose like the runtime asset, leaving ear and lower side profile visible; its paper tone is cool neutral white grey, with only a slight amber reflection from the REAL oil lamp at right. Do not change the paper to yellowed parchment. Show a tiny loose corner lifting a finger width. Keep the room's lattice window, plank door, rough plaster and one floor oil lamp recognizable. Use a slightly wider cinematic low camera to preserve the relationship between body, bier, lamp and room; same person scale. No Axiu person appears because her tune is purely sound. 16:9 grounded dark Chinese folk-horror painting, no writing or HUD.",
+          "negative_prompt": "yellow paper, ochre paper, tan paper, gold paper, parchment, magic, particles, ghost, woman, second man, child, old face, full-head hood, paper on body, grand coffin, different room, fantasy temple, text",
+          "images": ["d170b44b-2106-471c-9113-47a70947bd31", "bafd2f88-f00a-4306-aa76-599906680142"],
+          "width": 1536,
+          "height": 864,
+          "steps": 30,
+          "seed": 918306
+        }
+      }
+    ]
+  },
+  "sources": {
+    "original_face_paper_runtime_layers_composite": "d170b44b-2106-471c-9113-47a70947bd31",
+    "original_dream_inner_room": "bafd2f88-f00a-4306-aa76-599906680142"
+  }
+}

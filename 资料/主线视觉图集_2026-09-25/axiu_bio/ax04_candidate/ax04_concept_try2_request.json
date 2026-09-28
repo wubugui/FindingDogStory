@@ -1,0 +1,21 @@
+{
+  "idempotency_key": "e482b90a-3fb6-44d4-8a97-6aa58a62af8f",
+  "body": {
+    "backend": "qwen",
+    "name": "AX04_dock_underwater_concept_source_assets_only",
+    "params": {
+      "prompt": "Reference 1 is GameDraft's original dock UNDERWATER RIVERBED texture; reference 2 is the original SUNKEN CRATE corner sprite; reference 3 is Guan Ergou's original player sprite sheet; reference 4 is the original daytime DOCK background only to define which pier and stone quay are ABOVE this water. Paint a NEW 16:9 CINEMATIC FILM FRAME, NOT GAMEPLAY, from a low underwater oblique camera at this exact Wujin dock: murky green-black water, original rough stones and submerged timber debris, the same small broken sunken wooden crate corner resting on the riverbed. Guan Ergou, one young short-dark-haired Chinese man with the same torn grey-brown simple work clothes and boots, is submerged and reaches toward that crate corner; his lower leg is suddenly drawn into darkness by something unseen while he tries to rise toward faint daylight above. No visible hand, monkey or monster; the disturbance is only a tense body pose and a few displaced bubbles. Human physical size normal: an adult about 1.7 meters, the small crate corner about half a meter; do not make him a giant. The dock pier and stone quay may be sensed as silhouettes through the green water above, but no invented waterfront or ship. The Axiu faint cue is only a barely perceptible few brown-gold suspended motes, never a beam, halo, spirit, or rescue. Distinct cinematic side composition with Guan at left third and crate at right third, not a copy of the top-down gameplay image. No UI, no HUD, no text, no panels, no other person.",
+      "negative_prompt": "gameplay screenshot, top-down HUD, coin counter, icon bar, black inspect board, shore surface, floating crate, standing above water, giant protagonist, visible grabbing hand, monster, monkey, woman, girl, Axiu figure, magical glow, gold beam, temple, new harbor, bright blue sea, text",
+      "images": [
+        "c780fba4-e357-4301-9ef9-9a25d4927f91",
+        "f85da0be-e994-444a-ad10-a75cb4aa82a3",
+        "9d9d7112-e78e-4cfe-8ffb-4a8495586a54",
+        "572e01f8-034a-453a-a5df-8df4ccb8df8b"
+      ],
+      "width": 1536,
+      "height": 864,
+      "steps": 30,
+      "seed": 918402
+    }
+  }
+}

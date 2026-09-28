@@ -1,0 +1,13 @@
+{
+  "backend": "qwen",
+  "name": "F01 cinematic retry 7 distant three on far road",
+  "priority": 50,
+  "params": {
+    "prompt": "Reference 1 is an ACTUAL GameDraft screenshot of the existing Wujin west gate; reference 2 is the ORIGINAL patched fake-Taoist costume of Guan Ergou. Produce a NEW 16:9 cinematic wide establishing shot of this exact location and its same stone gate, upper timber guardhouse, open wooden doors, cobbles, broken cart, brush and winding rough road. The shot's subject is the threatening empty road and low mist, NOT the characters. Frame the gate large in the left third with expansive open road leading off into fog at upper right. Put EXACTLY THREE TINY full-body travelers FAR UP THE ROAD, no one in the gate forecourt: Guan Ergou in patched dark robe and tall floppy paper Taoist hat, Clara the only woman in brown field explorer hat and coat, Edgar moustached man in brown field explorer hat and coat. The three walk away as one group on the upper-right road, near the distant tree and road bend. Each figure must be just 65-95 PIXELS TALL on the 864-pixel-high final image, less than one third of the gate opening height. Keep them visually small like the actual GameDraft gameplay screenshot. No fourth person, duplicate, guard, porter or horse. Low filmic dawn light, deep gray-blue fog, cinematic negative space. Distinct composition from source screenshot, no UI, no text, no invented architecture, village, temple or mountain landmark.",
+    "images": ["3c2a3aac-f031-4d3e-8bf4-68c18834de6b", "9bbca5da-b065-4810-9ef1-302063f1699f"],
+    "width": 1536,
+    "height": 864,
+    "steps": 30,
+    "seed": 250925109
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "hub_url": "http://denghong01:8765",
+  "model": "Qwen-Image-2.1",
+  "task_id": "5045f139-6c11-48dc-a840-4f4c93a9c799",
+  "batch_id": "477ed0a2-1514-44df-8dc2-9e405f7fdb0d",
+  "idempotency_key": "3bed9143-ee9e-4929-b49d-3896702a72d8",
+  "input_file_id": "8f7c08ad-6027-4684-beb0-2bb115af81ef",
+  "reference_file_ids": [
+    "d93f485a-c927-4364-bbcf-aad7a0ff874a",
+    "8f7c08ad-6027-4684-beb0-2bb115af81ef",
+    "b6f8fbac-39c7-4a26-af72-64bbb327fdbb",
+    "d4567f3c-9260-4872-b7ad-cc3661a39e04"
+  ],
+  "qwen_canvas": "first_reference",
+  "reference_resolution": 0,
+  "steps": 30,
+  "seed": 1601,
+  "state": "submitted"
+}

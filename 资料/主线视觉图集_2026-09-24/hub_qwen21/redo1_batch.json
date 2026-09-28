@@ -1,0 +1,117 @@
+{
+  "name": "FindingDogStory Qwen 2.1 visual QA redo 1",
+  "jobs": [
+    {
+      "backend": "qwen",
+      "name": "D02_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Edit reference image 1 very conservatively. Same exact 4:3 isometric game screenshot, same town intersection, same roofs, HUD and dialogue box. EXACTLY TWO in-world people: Guan stands at center of street facing RIGHT, and the blue-robed employer sits immediately across from him at the RIGHT foreground market stall. The entire LEFT market stall is EMPTY of people. Keep both people tiny, no camera zoom. Preserve composition and geometry almost pixel-for-pixel. Change only subtle painterly textures. This is a close-range conversation across the right stall.",
+        "negative_prompt": "person at left stall, employer far away, misplaced employer, extra people, large person, camera zoom, new building",
+        "images": [
+          "a8b4d3de-915d-4a10-ac3e-562cbb82a20e"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 30,
+        "seed": 3200
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D06_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Make a subtle cinematic variation of reference image 1. Guan is the ONLY human in the image: one falling man fully ABOVE the surface of the deep pool. The UNDERWATER region contains water only, no person, no body, no reflection shaped like a person. Preserve existing bull-head rock carving, square stone pit, scale, pose and camera. No game HUD, no text.",
+        "negative_prompt": "second person, underwater human, underwater corpse, duplicate man, ghost, invented scene, new architecture",
+        "images": [
+          "04e848ba-f4b7-4fa2-afb1-8bc9625a4827"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 30,
+        "seed": 3201
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D07a_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Conservative image-to-image edit of reference image 1, the original 4:3 game dialogue cut-in. In the central framed scene show ONLY the steaming rice bowl with exactly two upright chopsticks, table dishes and one oil lamp. ABSOLUTELY NO HUMAN FIGURES in the central framed scene. Keep Guan's single portrait cutout at bottom RIGHT and the black dialogue panel with nameplate at bottom LEFT, same size and positions. Same table and room, nearly pixel-for-pixel.",
+        "negative_prompt": "people seated behind bowl, elders visible, extra portraits, changed UI, different scene, camera zoom",
+        "images": [
+          "d84152f7-6fca-4d2f-a0b2-74dd8fe1eecb"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 30,
+        "seed": 3202
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D13_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Edit reference image 1 minimally. Keep the exact 4:3 isometric mountain pass screenshot, original roadside shelter, stone posts, single lamp, road curve, UI and character scale. EXACTLY THREE human figures in the world: Guan in the LEFT foreground calling into woods, porter with shoulder pole and buckets at CENTER, second porter standing on the RIGHT. No fourth person, no shadow person, no ghost near trees. All human sprite heights stay as in reference.",
+        "negative_prompt": "fourth person, ghost figure, duplicate porter, new character, giant sprites, camera zoom",
+        "images": [
+          "0e763442-a034-4c11-b76e-acfca9eb5e99"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 30,
+        "seed": 3203
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D14_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Edit reference image 1 as a clean cinematic film still. Preserve only the existing dark Yanwang Ridge road, lit roadside lean-to, stone posts, fog and single Guan figure in fake Taoist clothes. EXACTLY ONE HUMAN. Preserve the original human scale and standing-eye camera. The frame must be full-bleed scenery, absolutely NO user interface, sidebar, icons, text, lettering, progress bar, border or title.",
+        "negative_prompt": "HUD, UI, text, sidebar, progress bar, title, lettering, duplicate person",
+        "images": [
+          "66fe1427-a568-4e65-83d9-e12a0bc1c8cc"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 30,
+        "seed": 3204
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D15_concept",
+      "priority": 50,
+      "params": {
+        "prompt": "Conservative cinematic image-to-image edit of reference image 1. Exactly two men: Li Tiangou supports Guan on the misty Yanwang Ridge road beside the existing lantern-lit roadside lean-to. Keep their original position, size, costumes and the road, mountain, posts and camera composition. FULL-BLEED MOVIE STILL, no decorative frame, no writing, no subtitles, no logos, no interface.",
+        "negative_prompt": "title, decorative border, text, writing, subtitle, third person, poster design",
+        "images": [
+          "c20cb081-4695-4ed7-929b-913c81b1207a"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 30,
+        "seed": 3205
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D15_sim",
+      "priority": 50,
+      "params": {
+        "prompt": "Minimal image-to-image edit of reference image 1, preserving exact 4:3 in-game scripted dialogue frame. In the world portion there are EXACTLY TWO tiny men at the left roadside shelter: Guan in fake Taoist robe and Li Tiangou with walking staff. The shelter bench is EMPTY; no person inside or behind the shelter. Keep original mountain road, trees, stone posts, scale, fixed isometric camera, bottom black dialogue panel and Li Tiangou portrait cutout at RIGHT. No third person.",
+        "negative_prompt": "third person, figure inside shelter, duplicate Guan, duplicate Li, extra people, camera zoom",
+        "images": [
+          "3febea3a-430d-4b3a-818d-2e01e24dee11"
+        ],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 30,
+        "seed": 3206
+      }
+    }
+  ]
+}

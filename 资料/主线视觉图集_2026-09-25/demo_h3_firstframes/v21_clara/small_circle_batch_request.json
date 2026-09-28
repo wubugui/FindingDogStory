@@ -1,0 +1,39 @@
+{
+  "name": "V21 Clara local prop scale retry",
+  "jobs": [
+    {
+      "name": "V21 small circle A",
+      "params": {
+        "qwen_canvas": "explicit",
+        "width": 1024,
+        "height": 768,
+        "reference_resolution": 0,
+        "guidance_scale": 1.0,
+        "images": [
+          "de2dd51b-95b5-4f7f-a599-69916bca296d"
+        ],
+        "prompt": "以<image1>真实GameDraft雾津街头实机画面为完整画布。红圈只标出画面右侧克拉拉双手前的编辑区，最终彻底擦除红圈。只在她双手间增添一本非常小的翻开旧笔记本：展开宽度约18像素，高约13像素，严格留在红圈范围内；封面与纸页要像游戏内像素风道具，自然接触手部，不能是单独贴在上面的照片或面板。其余所有像素布局尽量保持：画面左侧关二狗、右侧克拉拉的头脚位置与身高均完全不变，屋顶、石板路、固定俯斜镜头、游戏UI、气泡均保留。输出1024x768连续游戏画面，不放大人、不添加人物、不添加场景。",
+        "seed": 925927,
+        "steps": 40
+      },
+      "backend": "qwen"
+    },
+    {
+      "name": "V21 small circle B",
+      "params": {
+        "qwen_canvas": "explicit",
+        "width": 1024,
+        "height": 768,
+        "reference_resolution": 0,
+        "guidance_scale": 1.0,
+        "images": [
+          "de2dd51b-95b5-4f7f-a599-69916bca296d"
+        ],
+        "prompt": "编辑<image1>这张已有游戏截图，只允许改变红圈内约27×34像素的小区域。红圈内是右侧克拉拉的手：把红圈改成克拉拉握着一册小小的旧笔记本并翻页，翻开的书宽不超过20像素、高不超过15像素，擦除全部红圈痕迹。画面中每个人的身高、脸、帽子、服装、站位、地面透视及所有其他画面元素保持原截图一样。道具是角色双手拿着的游戏内小物件，不是覆盖图层、照片、巨大书页、对话面板。1024x768单一连续的GameDraft实机风格画面。",
+        "seed": 925928,
+        "steps": 40
+      },
+      "backend": "qwen"
+    }
+  ]
+}

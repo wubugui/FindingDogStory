@@ -1,0 +1,40 @@
+{
+  "idempotency_key": "d8d6785c-b129-4246-9185-b2fefaac2a0e",
+  "body": {
+    "name": "Axiu lamp cue scale-correct reroll",
+    "jobs": [
+      {
+        "backend": "qwen",
+        "name": "AX01_concept_try2",
+        "params": {
+          "prompt": "Source 1 is an ungenerated crop of the real GameDraft Chenghuang Temple art; source 2 is Guan Ergou character sprite. Make a newly illustrated 16:9 cinematic shot of this EXACT existing temple interior, tightly framed on the lone tall oil lamp in foreground, the same altar behind it and only Guan in midground beside it. Camera more level and lower than the game camera, but keep the exact timber altar, statue, floor and decorations, no new architecture. His visible body about as tall as 75 percent of the standing lamp, one person, no ghost woman. Small flame suddenly becomes steady, uneasy cold calm, no warm magic halo. Professional cinematic concept painting, no UI, no text. Do not simply enlarge the whole room or keep the high isometric view.",
+          "negative_prompt": "oversized person, giant person, portrait, woman, ghost woman, crowd, fantasy temple, glowing magic circle, blue flame, new furniture, different room, photoreal live action",
+          "images": [
+            "4c1e1650-c800-4264-9ecd-3fe9faa8c723",
+            "e0b0a4ff-181e-48f5-9477-8f3491cb588c"
+          ],
+          "width": 1536,
+          "height": 864,
+          "steps": 30,
+          "seed": 985219
+        }
+      },
+      {
+        "backend": "qwen",
+        "name": "AX01_sim_try2",
+        "params": {
+          "prompt": "Source 1 is the actual 1024x768 GameDraft playable screenshot at night Chenghuang Temple, source 2 is the original GameDraft Guan sprite. Make a NEW simulated gameplay frame a few seconds later within precisely this fixed camera and zoom. Do not zoom out or alter the room dimensions. The rear altar remains about 480 pixels wide, the tall floor lamp about 240 pixels high, and Guan 160-170 pixels high in 768-pixel output. Move Guan a little to the right to look at the now-still flame, with one inert cadaver on same central table. Keep exact high 3/4 game perspective, practical candlelight, dark realistic handpainted texture, tiny compact HUD. Absolutely no added people, woman, ghost, magical swirls, new furniture, huge hero, or cinema bars. Text does not matter.",
+          "negative_prompt": "oversized person, giant person, portrait, woman, ghost woman, crowd, fantasy temple, glowing magic circle, blue flame, new furniture, different room, photoreal live action",
+          "images": [
+            "69ae51f6-13c7-4dfe-aaca-05fe7791afb9",
+            "e0b0a4ff-181e-48f5-9477-8f3491cb588c"
+          ],
+          "qwen_canvas": "first_reference",
+          "reference_resolution": 0,
+          "steps": 30,
+          "seed": 985220
+        }
+      }
+    ]
+  }
+}

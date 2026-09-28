@@ -1,0 +1,85 @@
+{
+  "gameplay": {
+    "path": "E:\\GameDev\\GameDraft\\artifact\\Screenshots_2026-09-15\\tour_码头白天.png",
+    "sha256": "35f3ce2e27f839b0e990c1f18b9d2b617dd428008c9c8642e5da9b5376e4610a",
+    "size": 1812314,
+    "file_id": "72601202-2920-4c5c-940f-a1a94c80854a",
+    "response": {
+      "id": "72601202-2920-4c5c-940f-a1a94c80854a",
+      "name": "tour_码头白天.png",
+      "mime": "image/png",
+      "size": 1812314,
+      "sha256": "35f3ce2e27f839b0e990c1f18b9d2b617dd428008c9c8642e5da9b5376e4610a",
+      "created": 1790278699.9586234,
+      "origin": "uploaded",
+      "producer_task_id": null,
+      "producer_backend": null,
+      "origin_basis": "registration",
+      "url": "/v1/files/72601202-2920-4c5c-940f-a1a94c80854a/content"
+    }
+  },
+  "background": {
+    "path": "E:\\GameDev\\GameDraft\\public\\resources\\runtime\\scenes\\码头白天\\background.png",
+    "sha256": "f7d79cf1247c9c46da27de424e1fc67ffbc6d4b912ea7a82b3ae6a25d8b0f881",
+    "size": 4033595,
+    "file_id": "f6c3539e-aca6-482b-8c96-7b9d896b25d1",
+    "response": {
+      "id": "f6c3539e-aca6-482b-8c96-7b9d896b25d1",
+      "name": "background.png",
+      "mime": "image/png",
+      "size": 4033595,
+      "sha256": "f7d79cf1247c9c46da27de424e1fc67ffbc6d4b912ea7a82b3ae6a25d8b0f881",
+      "created": 1790278700.2093232,
+      "origin": "uploaded",
+      "producer_task_id": null,
+      "producer_backend": null,
+      "origin_basis": "registration",
+      "url": "/v1/files/f6c3539e-aca6-482b-8c96-7b9d896b25d1/content"
+    }
+  },
+  "props": {
+    "path": "E:\\GameDev\\GameDraft\\public\\resources\\runtime\\images\\illustrations\\demo\\compass_silver_map_book.png",
+    "sha256": "a1e987042776ffbcb5b40cb2fc83a472493c75b22a49e544cedf7c45f567ffc3",
+    "size": 2176109,
+    "file_id": "b02b0fab-5d17-4ae4-85b0-9df196b67b8f",
+    "response": {
+      "id": "b02b0fab-5d17-4ae4-85b0-9df196b67b8f",
+      "name": "compass_silver_map_book.png",
+      "mime": "image/png",
+      "size": 2176109,
+      "sha256": "a1e987042776ffbcb5b40cb2fc83a472493c75b22a49e544cedf7c45f567ffc3",
+      "created": 1790278700.4209948,
+      "origin": "uploaded",
+      "producer_task_id": null,
+      "producer_backend": null,
+      "origin_basis": "registration",
+      "url": "/v1/files/b02b0fab-5d17-4ae4-85b0-9df196b67b8f/content"
+    }
+  },
+  "chest": {
+    "path": "E:\\GameDev\\GameDraft\\public\\resources\\runtime\\images\\illustrations\\道具\\箱子横.png",
+    "file_id": "f9d80960-5697-4a38-8975-08902cc23f0e",
+    "sha256": "b7ae60eeb3bf6ea5739861652bd3d2d9c5ec23547d94f103a2068e636d1a8e54",
+    "size": 453952
+  },
+  "guan": {
+    "path": "E:\\GameDev\\GameDraft\\public\\resources\\runtime\\character_setup_refs\\player_anim__guan_ergou_normal_ref.png",
+    "sha256": "e7b67c746a45fd50a013a65698a4e0b1a8a9d4455e281fa6546af6a5ab16395d",
+    "size": 2430277,
+    "file_id": "34a02fac-1dc7-4c7e-b433-04dc06ecd18b"
+  },
+  "warehouse_crop": {
+    "path": "E:\\GameDev\\FindingDogStory\\资料\\主线视觉图集_2026-09-25\\formal_late\\source_crops\\source_warehouse_crop.png",
+    "sha256": "2153b5fc4f3ba76d68cfabf08025df1d77161dbd15426aeb293882614ebf801b",
+    "size": 367239,
+    "file_id": "73521ab3-f1b0-4f9d-a00e-c74bf96770bb",
+    "source_crop_from": "tour_码头白天.png"
+  },
+  "dock_crop": {
+    "path": "E:\\GameDev\\FindingDogStory\\资料\\主线视觉图集_2026-09-25\\formal_late\\source_crops\\source_dock_crop.png",
+    "sha256": "3995822afe3ad20776aac3037fd0ac1774d10654f27945e526b1a2c624f595ec",
+    "size": 359725,
+    "file_id": "86574c4d-2bbb-4a05-99e4-095c224a0253",
+    "source_crop_from": "tour_码头白天.png"
+  }
+}

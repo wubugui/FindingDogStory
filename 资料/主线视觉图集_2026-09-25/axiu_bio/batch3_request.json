@@ -1,0 +1,38 @@
+{
+  "idempotency_key": "efb352a4-8f67-4b11-8de8-973c54e49dca",
+  "body": {
+    "name": "Axiu lamp cue precision reroll 3",
+    "jobs": [
+      {
+        "backend": "qwen",
+        "name": "AX01_concept_try3",
+        "params": {
+          "prompt": "Create a cinematic environmental concept frame focusing on the single freestanding tall oil lamp from this EXACT GameDraft Chenghuang Temple source crop. Keep the same lamp shape, stone floor, low corpse table and carved altar in the background. A much closer camera focused on the small perfectly steady flame, the altar and corpse table softly falling into darkness. Deeply quiet, cold and uncanny, no warm magic, no spell VFX. NO human figure, NO female ghost, NO extra lamp. Painterly realistic historical Chinese game concept, 16:9. Independent composition, not a wide full-room overhead shot.",
+          "negative_prompt": "big character, old man, Taoist robe, new character, second man, woman, ghost, new building, extra lamp, spell, blue glow, portrait, cinematic bars, text overlay",
+          "images": [
+            "4c1e1650-c800-4264-9ecd-3fe9faa8c723"
+          ],
+          "width": 1536,
+          "height": 864,
+          "steps": 30,
+          "seed": 685219
+        }
+      },
+      {
+        "backend": "qwen",
+        "name": "AX01_sim_try3",
+        "params": {
+          "prompt": "Using ONLY this actual GameDraft gameplay screenshot as visual reference, render the next moment in precisely the same 1024x768 game camera, exact zoom and level geometry. The small flame in the standing lamp has just become eerily steady and the practical shadows shift subtly. Preserve the SAME Guan Ergou in the SAME position, clothes, face, hair, pose and size (about 165 pixels high) and the SAME inert corpse on the same table; preserve altar width and lamp height. No camera zoom, no character redesign, no new people or objects. Make the scene look like an actual neighboring frame from this game, but redraw it as a fresh image. HUD remains compact.",
+          "negative_prompt": "big character, old man, Taoist robe, new character, second man, woman, ghost, new building, extra lamp, spell, blue glow, portrait, cinematic bars, text overlay",
+          "images": [
+            "69ae51f6-13c7-4dfe-aaca-05fe7791afb9"
+          ],
+          "qwen_canvas": "first_reference",
+          "reference_resolution": 0,
+          "steps": 25,
+          "seed": 685220
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "backend": "qwen",
+  "name": "F01 ground-level cinematic retry 9 far travelers correct gate scale",
+  "priority": 50,
+  "params": {
+    "prompt": "A NEW cinematic 16:9 film frame of the EXACT Wujin west city gate from GameDraft, photographed from HUMAN EYE HEIGHT 1.6m above the road with clear ground-level horizon and strong horizontal perspective. Reference 1 is the original EMPTY GameDraft gate art: use its weathered gray stone gate and crenellated walls, timber guard house on top, two open wood doors, cobbled forecourt, broken cart, bare trees and one rough road into fog; do not inherit its overhead camera. Reference 2 is Guan Ergou's original character design: patched charcoal fake-Taoist robe and a tall floppy DARK CLOTH/PAPER hat, not a straw hat. Composition: gate fills LEFT HALF of frame and its door opening is VERY TALL; road and fog fill RIGHT HALF. The ONLY three people are in the MID-DISTANCE on the road well beyond the gate, near the first bend at right center. No person stands beside or inside the door. Guan Ergou, Clara in brown field clothes and hat, and Edgar in brown field clothes and hat walk AWAY together as tiny distant figures. EXACTLY THREE FIGURES. Each person's full height in this 864px image is 75–100px, about ONE THIRD of gate door opening height; the doorway must be 2.5–3 times taller than them. Feet on the receding road, consistent perspective, no person in foreground. Misty gray dawn, GameDraft muted blue gray painterly realism, low-angle film still, no game UI. NO ISOMETRIC, AERIAL, TOP-DOWN, BIRD'S-EYE OR ELEVATED CAMERA. No extra guard, duplicate, fourth person, crowd, horse, porter, new buildings, shrine, village, monster or text.",
+    "images": ["98e90853-a122-46cf-b247-2ce52446e236", "9bbca5da-b065-4810-9ef1-302063f1699f"],
+    "width": 1536,
+    "height": 864,
+    "steps": 30,
+    "seed": 250925111
+  }
+}

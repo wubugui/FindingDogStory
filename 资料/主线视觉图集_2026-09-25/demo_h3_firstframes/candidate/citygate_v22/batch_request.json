@@ -1,0 +1,58 @@
+{
+  "jobs": [
+    {
+      "priority": 50,
+      "name": "Demo V22 west gate Taoist costume take 1",
+      "params": {
+        "seed": 250925130,
+        "steps": 28,
+        "images": [
+          "c28c487d-eddd-41d2-962f-7b73c1e3ddfb",
+          "a5c49002-5ff9-4d93-b16e-f28143ac83f7"
+        ],
+        "reference_resolution": 0,
+        "height": 768,
+        "prompt": "Original image 1 is an ACTUAL 1024x768 GameDraft gameplay screenshot of Wujin west gate and is the MAIN CANVAS. Make the SMALLEST POSSIBLE EDIT. Keep the exact elevated isometric camera, original masonry gate and wood doors, cobbles, ruined cart, cold dark lighting, fog, bottom-right inventory icons, upper-left HUD, and three original character positions. There are exactly THREE PEOPLE total. The player Guan Ergou is the small person in the FOREGROUND CENTER at x=515,y=575 (feet x=515,y=620). Change ONLY his clothing to the existing GameDraft fake Taoist costume: ragged charcoal robe with patches and one tall soft floppy dark cloth-paper Taoist cap. Original reference image 2 depicts the specific costume and face. Preserve Guan position, pose, and FULL BODY HEIGHT 90 to 105 pixels on the 768-pixel frame; the cap is included in this height and must not inflate his body. The two companion people on the upper-right road at x=675,y=360 and x=770,y=380 stay unchanged in position, size, clothing and identity. All three must remain small compared with the city gate door opening, which is more than twice their height. Do not move people, redraw the scene, crop, zoom, change camera, expand character scale, add a fourth person, duplicate Guan, add a horse, change UI, or invent any prop. This must look like a true GameDraft screenshot, not an illustration or poster.",
+        "qwen_canvas": "explicit",
+        "width": 1024
+      },
+      "backend": "qwen"
+    },
+    {
+      "priority": 50,
+      "name": "Demo V22 west gate Taoist costume take 2",
+      "params": {
+        "seed": 250925131,
+        "steps": 28,
+        "images": [
+          "c28c487d-eddd-41d2-962f-7b73c1e3ddfb",
+          "a5c49002-5ff9-4d93-b16e-f28143ac83f7"
+        ],
+        "reference_resolution": 0,
+        "height": 768,
+        "prompt": "Original image 1 is an ACTUAL 1024x768 GameDraft gameplay screenshot of Wujin west gate and is the MAIN CANVAS. Make the SMALLEST POSSIBLE EDIT. Keep the exact elevated isometric camera, original masonry gate and wood doors, cobbles, ruined cart, cold dark lighting, fog, bottom-right inventory icons, upper-left HUD, and three original character positions. There are exactly THREE PEOPLE total. The player Guan Ergou is the small person in the FOREGROUND CENTER at x=515,y=575 (feet x=515,y=620). Change ONLY his clothing to the existing GameDraft fake Taoist costume: ragged charcoal robe with patches and one tall soft floppy dark cloth-paper Taoist cap. Original reference image 2 depicts the specific costume and face. Preserve Guan position, pose, and FULL BODY HEIGHT 90 to 105 pixels on the 768-pixel frame; the cap is included in this height and must not inflate his body. The two companion people on the upper-right road at x=675,y=360 and x=770,y=380 stay unchanged in position, size, clothing and identity. All three must remain small compared with the city gate door opening, which is more than twice their height. Do not move people, redraw the scene, crop, zoom, change camera, expand character scale, add a fourth person, duplicate Guan, add a horse, change UI, or invent any prop. This must look like a true GameDraft screenshot, not an illustration or poster. This is an in-place costume swap, not a new composition. The other two people and the gate are locked.",
+        "qwen_canvas": "explicit",
+        "width": 1024
+      },
+      "backend": "qwen"
+    },
+    {
+      "priority": 50,
+      "name": "Demo V22 west gate Taoist costume take 3",
+      "params": {
+        "seed": 250925132,
+        "steps": 28,
+        "images": [
+          "c28c487d-eddd-41d2-962f-7b73c1e3ddfb"
+        ],
+        "reference_resolution": 0,
+        "height": 768,
+        "prompt": "ACTUAL GameDraft 1024x768 west city gate gameplay screenshot as only input. Keep scene, camera, UI, all three people, positions and scale pixel-close. Edit ONLY Guan Ergou: the single foreground-center player sprite at x515,y575, feet x515,y620. He changes from dark civilian clothing into the existing project fake Taoist outfit: patched dark charcoal long robe and soft tall dark paper hat with a small talisman, like GameDraft player_taoist_anim_v1. He remains 90-105 pixels from cap top to feet; companions at right remain exactly unchanged. Gate door still over twice his height. No extra people, no zoom, no new content.",
+        "qwen_canvas": "explicit",
+        "width": 1024
+      },
+      "backend": "qwen"
+    }
+  ],
+  "name": "Demo V22 original screenshot minimal Taoist costume edits"
+}

@@ -1,0 +1,126 @@
+{
+  "url": "http://127.0.0.1:5173/?mode=dev&ndbg=0&visualCapture=1&devScene=%E5%9F%8E%E9%97%A8%E5%8F%A3",
+  "chrome_pid": 34400,
+  "profile": "C:\\Users\\WEIRUA~1\\AppData\\Local\\Temp\\gamedraft-v22-chrome-337b29d7",
+  "port": 8736,
+  "target_id": "4409D920DC94965A178FEEFFA505575F",
+  "boot_id": "p9x632uz",
+  "before": {
+    "scene": "城门口",
+    "gameState": "Exploring",
+    "playerView": {
+      "mode": "exploring",
+      "scene": "城门口 · 拂晓",
+      "player": {
+        "x": 813.95,
+        "y": 944.77,
+        "facing": "right",
+        "posture": null
+      },
+      "entities": [
+        {
+          "kind": "hotspot",
+          "label": "门外那条进山的路",
+          "x": 1308.14,
+          "y": 218.02
+        },
+        {
+          "kind": "npc",
+          "label": "埃德加",
+          "x": 1017.44,
+          "y": 683.14
+        },
+        {
+          "kind": "npc",
+          "label": "克拉拉",
+          "x": 1133.72,
+          "y": 726.74
+        }
+      ],
+      "interactionPrompt": null,
+      "dialogue": {
+        "active": false,
+        "speaker": "",
+        "text": "",
+        "awaitingAdvance": false,
+        "choices": []
+      },
+      "hud": {
+        "coins": 0,
+        "questTracker": ""
+      },
+      "navTargetActive": false
+    },
+    "avatar": null
+  },
+  "command": {
+    "id": "v22-taoist-315e459a",
+    "type": "debugStartDialogueGraph",
+    "graphId": "线外_寻狗_城门汇合",
+    "entry": "apply_taoist_avatar",
+    "npcName": "埃德加",
+    "targetBootId": "p9x632uz",
+    "reason": "v22 native taoist avatar capture"
+  },
+  "post_response": {
+    "status": 200,
+    "text": "{\"ok\":true,\"count\":1}"
+  },
+  "command_result_observed": false,
+  "after": {
+    "scene": "城门口",
+    "gameState": "Exploring",
+    "playerView": {
+      "mode": "exploring",
+      "scene": "城门口 · 拂晓",
+      "player": {
+        "x": 813.95,
+        "y": 944.77,
+        "facing": "right",
+        "posture": null
+      },
+      "entities": [
+        {
+          "kind": "hotspot",
+          "label": "门外那条进山的路",
+          "x": 1308.14,
+          "y": 218.02
+        },
+        {
+          "kind": "npc",
+          "label": "埃德加",
+          "x": 1017.44,
+          "y": 683.14
+        },
+        {
+          "kind": "npc",
+          "label": "克拉拉",
+          "x": 1133.72,
+          "y": 726.74
+        }
+      ],
+      "interactionPrompt": null,
+      "dialogue": {
+        "active": false,
+        "speaker": "",
+        "text": "",
+        "awaitingAdvance": false,
+        "choices": []
+      },
+      "hud": {
+        "coins": 0,
+        "questTracker": ""
+      },
+      "navTargetActive": false
+    },
+    "avatar": null,
+    "runtimeCommands": {
+      "lastResults": []
+    }
+  },
+  "capture": {
+    "path": "E:\\GameDev\\FindingDogStory\\资料\\主线视觉图集_2026-09-25\\demo_h3_firstframes\\runtime_capture\\城门V22_假道士_原生对白节点_1024x768.png",
+    "bytes": 1264589,
+    "sha256": "8e34ac36a56c60edea5c95a0a2fac337d10aaa08f2d87a8ca2598aa457fa8d14"
+  }
+}

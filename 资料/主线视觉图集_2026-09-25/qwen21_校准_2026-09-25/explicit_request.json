@@ -1,0 +1,17 @@
+{
+  "name": "F02 explicit 1024 local edit calibration",
+  "params": {
+    "height": 768,
+    "images": [
+      "72601202-2920-4c5c-940f-a1a94c80854a"
+    ],
+    "steps": 40,
+    "width": 1024,
+    "reference_resolution": 0,
+    "guidance_scale": 1.0,
+    "prompt": "在原图右侧木码头的空木板上新增一只小型开盖木箱，箱高相当于原图近处站立人物小腿的一半，箱底贴在木板上并有自然接触阴影。把这只箱子绘入同一场景。原图其余建筑、人物、人物位置和大小、镜头、河水及界面保持不变。",
+    "qwen_canvas": "explicit",
+    "seed": 925801
+  },
+  "backend": "qwen"
+}

@@ -1,0 +1,48 @@
+{
+  "idempotency_key": "ax04-neutral-identity-20260925-01",
+  "source_neutral_ref_sha256": "e193ed152f7d188613d404e5b47bd24765b2450037129917a9ee2cf690918748",
+  "body": {
+    "name": "AX04 near drowning with canonical serious Guan",
+    "jobs": [
+      {
+        "backend": "qwen",
+        "name": "AX04_neutral_Guan_A",
+        "params": {
+          "images": [
+            "b23b5edc-51e6-4975-a0f8-89b56df9c0fa",
+            "f70500fa-22ba-48f9-9165-bc4883ce294e",
+            "c780fba4-e357-4301-9ef9-9a25d4927f91",
+            "f85da0be-e994-444a-ad10-a75cb4aa82a3"
+          ],
+          "prompt": "Create a NEW cinematic film shot of the existing Wujin dock underwater near-drowning incident. <image1> is the canonical serious-faced Guan Ergou, an adult man; use his same face, short untidy black hair and facial age. <image2> shows the same man's current normal clothes: a dark patched outer jacket, beige inner shirt, tan sleeve patch, pale ragged sleeve cuff, waist tie, brown patched trousers and wrapped cloth shoes. <image3> is the real game's murky Wujin riverbed; use its olive dark water, sediment and submerged debris. <image4> is the real broken small crate, half a meter wide. Build one continuous low oblique underwater scene. Guan is suspended horizontally at the same depth as the crate, his entire body separated from it by roughly one forearm length. His lower ankle is pulled sharply DOWN toward the riverbed by an unseen offscreen force; both feet are clearly off the crate and off the floor. His torso twists, one hand reaches toward faint daylight, the other slips away from the crate. His eyes are fearful and his open mouth releases only a few bubbles. The crate stays planted on the riverbed beside him, clearly much smaller than his adult body, with its original broken diagonal plank. No other figure is visible. Film drama comes from his body imbalance, water and mud, not a visible attacker. The final image is a single continuous film frame with no UI, panels or text.",
+          "negative_prompt": "smile, happy face, sitting on crate, standing on crate, feet touching crate, dry surface, oversized box, oversized person, duplicate person, visible grabbing hand, monster, woman, Axiu figure, picture inset, game HUD, caption",
+          "qwen_canvas": "explicit",
+          "reference_resolution": 0,
+          "width": 1536,
+          "height": 864,
+          "steps": 40,
+          "seed": 925903
+        }
+      },
+      {
+        "backend": "qwen",
+        "name": "AX04_neutral_Guan_B",
+        "params": {
+          "images": [
+            "b23b5edc-51e6-4975-a0f8-89b56df9c0fa",
+            "c780fba4-e357-4301-9ef9-9a25d4927f91",
+            "f85da0be-e994-444a-ad10-a75cb4aa82a3"
+          ],
+          "prompt": "Make a completely NEW realistic film image of Guan Ergou losing his last breath underwater at the existing Wujin dock. <image1> is his exact GameDraft serious expression, adult face, untidy short black hair and patched work outfit. <image2> gives the actual murky riverbed and submerged debris. <image3> gives the actual little broken chest. Frame at low side angle rather than from above: Guan floats helplessly in the upper-left half with his body arched diagonally and both feet hanging away from all objects. His eyes show panic, mouth slightly open with only three bubbles. The unseen force jerks one ankle down and a small swirl of silt rises beneath it. The little broken chest remains fixed at lower right, with its diagonal split timber intact; Guan has just lost touch with it. His full body reads as adult and is at least three times the chest's width at a similar distance from camera. Only original riverbed, chest and Guan are present. One uninterrupted image, no overlay, no UI, no lettering.",
+          "negative_prompt": "smile, cheerful face, sitting, standing, feet on box, giant crate, gigantic hero, another person, visible attacker, inset screenshot, interface, lettering",
+          "qwen_canvas": "explicit",
+          "reference_resolution": 0,
+          "width": 1536,
+          "height": 864,
+          "steps": 40,
+          "seed": 925904
+        }
+      }
+    ]
+  }
+}

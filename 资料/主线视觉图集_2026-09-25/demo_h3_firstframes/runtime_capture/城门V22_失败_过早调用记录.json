@@ -1,0 +1,147 @@
+{
+  "url": "http://127.0.0.1:5173/?ndbg=0&visualCapture=1&devScene=%E5%9F%8E%E9%97%A8%E5%8F%A3",
+  "chrome_pid": 15896,
+  "profile": "C:\\Users\\WEIRUA~1\\AppData\\Local\\Temp\\gamedraft-v22-chrome-ebd7dd7f",
+  "port": 9398,
+  "target_id": "F1F5028ED8DE00415D6C79570047082C",
+  "boot_id": "mdm1xv1o",
+  "before": {
+    "scene": "城门口",
+    "gameState": "Exploring",
+    "playerView": {
+      "mode": "exploring",
+      "scene": "城门口 · 拂晓",
+      "player": {
+        "x": 813.95,
+        "y": 944.77,
+        "facing": "right",
+        "posture": null
+      },
+      "entities": [
+        {
+          "kind": "hotspot",
+          "label": "门外那条进山的路",
+          "x": 1308.14,
+          "y": 218.02
+        },
+        {
+          "kind": "npc",
+          "label": "埃德加",
+          "x": 1017.44,
+          "y": 683.14
+        },
+        {
+          "kind": "npc",
+          "label": "克拉拉",
+          "x": 1133.72,
+          "y": 726.74
+        }
+      ],
+      "interactionPrompt": null,
+      "dialogue": {
+        "active": false,
+        "speaker": "",
+        "text": "",
+        "awaitingAdvance": false,
+        "choices": []
+      },
+      "hud": {
+        "coins": 0,
+        "questTracker": ""
+      },
+      "navTargetActive": false
+    },
+    "avatar": null
+  },
+  "native_call": {
+    "expression": "window.__game.graphDialogueManager.startDialogueGraph({graphId:\"\\u7ebf\\u5916_\\u5bfb\\u72d7_\\u57ce\\u95e8\\u6c47\\u5408\",entry:'apply_taoist_avatar',npcName:\"\\u57c3\\u5fb7\\u52a0\"})",
+    "result": {
+      "result": {
+        "type": "object",
+        "subtype": "error",
+        "className": "TypeError",
+        "description": "TypeError: Cannot read properties of undefined (reading 'graphDialogueManager')\n    at <anonymous>:1:15",
+        "objectId": "2353427814247317547.1.1"
+      },
+      "exceptionDetails": {
+        "exceptionId": 1,
+        "text": "Uncaught",
+        "lineNumber": 0,
+        "columnNumber": 14,
+        "scriptId": "54",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "",
+              "scriptId": "54",
+              "url": "",
+              "lineNumber": 0,
+              "columnNumber": 14
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "TypeError",
+          "description": "TypeError: Cannot read properties of undefined (reading 'graphDialogueManager')\n    at <anonymous>:1:15",
+          "objectId": "2353427814247317547.1.2"
+        }
+      }
+    }
+  },
+  "after": {
+    "scene": "城门口",
+    "gameState": "Exploring",
+    "playerView": {
+      "mode": "exploring",
+      "scene": "城门口 · 拂晓",
+      "player": {
+        "x": 813.95,
+        "y": 944.77,
+        "facing": "right",
+        "posture": null
+      },
+      "entities": [
+        {
+          "kind": "hotspot",
+          "label": "门外那条进山的路",
+          "x": 1308.14,
+          "y": 218.02
+        },
+        {
+          "kind": "npc",
+          "label": "埃德加",
+          "x": 1017.44,
+          "y": 683.14
+        },
+        {
+          "kind": "npc",
+          "label": "克拉拉",
+          "x": 1133.72,
+          "y": 726.74
+        }
+      ],
+      "interactionPrompt": null,
+      "dialogue": {
+        "active": false,
+        "speaker": "",
+        "text": "",
+        "awaitingAdvance": false,
+        "choices": []
+      },
+      "hud": {
+        "coins": 0,
+        "questTracker": ""
+      },
+      "navTargetActive": false
+    },
+    "bootId": "mdm1xv1o",
+    "reason": "scene:enter"
+  },
+  "capture": {
+    "path": "E:\\GameDev\\FindingDogStory\\资料\\主线视觉图集_2026-09-25\\demo_h3_firstframes\\runtime_capture\\城门V22_假道士_原生对白节点_1024x768.png",
+    "bytes": 42776,
+    "sha256": "cf16c4b2480b67ef1ab873b43c4c291bfb72b7d279341395738dc9cb7422fc97"
+  }
+}

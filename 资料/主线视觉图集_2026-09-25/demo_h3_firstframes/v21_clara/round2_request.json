@@ -1,0 +1,39 @@
+{
+  "name": "V21 Clara notebook local correction round2",
+  "jobs": [
+    {
+      "backend": "qwen",
+      "params": {
+        "images": [
+          "0cb6737c-9c84-50a5-8a8a-947fa28df32e"
+        ],
+        "width": 1024,
+        "seed": 925925,
+        "height": 768,
+        "steps": 40,
+        "prompt": "以<image1>作为完整的雾津街头固定俯斜实机画布，只修正三个小区域：1）克拉拉手中的打开的笔记本缩小到当前约六成宽度，仍在她双手前，像一本便携口袋笔记本；2）擦去两个人物上方的打哈欠气泡，下面恢复原石板路；3）擦去顶部最右侧写“调试”的单个按钮，下面恢复原屋顶。关二狗和克拉拉的完整头脚高度、鞋底坐标、服装、站位、街巷建筑及其他游戏HUD全部保持不变。单一1024×768连续画面，不要新增人物、场景、边框、画中画，也不要把本子移到关二狗手里。",
+        "reference_resolution": 0,
+        "guidance_scale": 1.0,
+        "qwen_canvas": "explicit"
+      },
+      "name": "V21 Clara book scale round2 A"
+    },
+    {
+      "backend": "qwen",
+      "params": {
+        "images": [
+          "0cb6737c-9c84-50a5-8a8a-947fa28df32e"
+        ],
+        "width": 1024,
+        "seed": 925926,
+        "height": 768,
+        "steps": 40,
+        "prompt": "以<image1>作为完整的雾津街头固定俯斜实机画布，只修正三个小区域：1）克拉拉手中的打开的笔记本缩小到当前约六成宽度，仍在她双手前，像一本便携口袋笔记本；2）擦去两个人物上方的打哈欠气泡，下面恢复原石板路；3）擦去顶部最右侧写“调试”的单个按钮，下面恢复原屋顶。关二狗和克拉拉的完整头脚高度、鞋底坐标、服装、站位、街巷建筑及其他游戏HUD全部保持不变。单一1024×768连续画面，不要新增人物、场景、边框、画中画，也不要把本子移到关二狗手里。",
+        "reference_resolution": 0,
+        "guidance_scale": 1.0,
+        "qwen_canvas": "explicit"
+      },
+      "name": "V21 Clara book scale round2 B"
+    }
+  ]
+}

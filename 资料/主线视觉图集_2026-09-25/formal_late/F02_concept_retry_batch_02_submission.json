@@ -1,0 +1,11 @@
+{
+  "idempotency_key": "9919db3d-6039-45c4-9617-344a187b9216",
+  "response": {
+    "batch_id": "a12ae148-09f1-45ae-bb9b-6381d7abf4ab",
+    "task_ids": [
+      "1bd27560-a9d1-42cc-8c5e-a502a36821d2",
+      "30c8dc22-85f3-486e-93c4-9caf199e29f2",
+      "76b09f46-e464-4ecc-8846-d368f8bd146b"
+    ]
+  }
+}

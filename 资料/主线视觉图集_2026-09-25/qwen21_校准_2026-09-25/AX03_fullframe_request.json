@@ -1,0 +1,17 @@
+{
+  "name": "AX03 full frame from original breathing illustration",
+  "backend": "qwen",
+  "params": {
+    "steps": 40,
+    "prompt": "把输入的原始盖脸纸演出插画扩展成一整幅四比三的游戏过场画面：保留男人脸上的纸、身上的寿衣布、木板与右侧油灯的原有相对大小，只向上方和下方自然延伸同一间暗屋。室内镜头从左到右连续完整，画面边缘由房间暗部填满。纸平伏在脸上，小调只存在于声音里。",
+    "images": [
+      "f39860db-5e1e-4994-887e-033ecc0e9441"
+    ],
+    "height": 768,
+    "width": 1024,
+    "guidance_scale": 1.0,
+    "qwen_canvas": "explicit",
+    "seed": 925803,
+    "reference_resolution": 1024
+  }
+}

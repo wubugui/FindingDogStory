@@ -1,0 +1,80 @@
+{
+  "id": "0055c122-1858-4831-bb07-58afadf1f051",
+  "batch_id": "9fc64971-1cc6-4cbe-beb5-1ddd64ef425f",
+  "name": "V21 small circle B",
+  "backend": "qwen",
+  "group_key": "qwen",
+  "priority": 50,
+  "params": {
+    "prompt": "编辑<image1>这张已有游戏截图，只允许改变红圈内约27×34像素的小区域。红圈内是右侧克拉拉的手：把红圈改成克拉拉握着一册小小的旧笔记本并翻页，翻开的书宽不超过20像素、高不超过15像素，擦除全部红圈痕迹。画面中每个人的身高、脸、帽子、服装、站位、地面透视及所有其他画面元素保持原截图一样。道具是角色双手拿着的游戏内小物件，不是覆盖图层、照片、巨大书页、对话面板。1024x768单一连续的GameDraft实机风格画面。",
+    "negative_prompt": "",
+    "width": 1024,
+    "height": 768,
+    "steps": 40,
+    "seed": 925928,
+    "images": [
+      "de2dd51b-95b5-4f7f-a599-69916bca296d"
+    ],
+    "reference_resolution": 0,
+    "qwen_canvas": "explicit",
+    "transparent_background": false,
+    "guidance_scale": 1.0,
+    "cache_device": "auto",
+    "cache_dtype": "default",
+    "mode": "fl2v",
+    "frames": 124,
+    "last_image": null,
+    "reference_videos": [],
+    "reference_audios": [],
+    "include_reference_video_audio": true,
+    "ref_image_size": "max",
+    "guides": [],
+    "video_format": "auto",
+    "video_codec": "auto",
+    "sigma_shift_video": null,
+    "sigma_shift_audio": null,
+    "margin": 0.0
+  },
+  "state": "succeeded",
+  "created": 1790310834.599283,
+  "started": 1790310857.1502404,
+  "finished": 1790310879.6762025,
+  "prompt_id": "aedaa750-9b48-4947-acfe-e7442521541a",
+  "phase": "完成",
+  "result": {
+    "files": [
+      {
+        "id": "b6f1d08a-3ec2-5091-b008-ee9de9958ad3",
+        "name": "result_00001_.png",
+        "mime": "image/png",
+        "size": 1163091,
+        "sha256": "41ca85611f072597b952b979ef666d6bd644cacb1cb8f789b4cec9a508aa271a",
+        "created": 1790310879.6724746,
+        "origin": "generated",
+        "producer_task_id": "0055c122-1858-4831-bb07-58afadf1f051",
+        "producer_backend": "qwen",
+        "origin_basis": "registration",
+        "url": "/v1/files/b6f1d08a-3ec2-5091-b008-ee9de9958ad3/content"
+      }
+    ],
+    "usage": {
+      "execution_ms": 20495,
+      "model": "qwen",
+      "input_tokens": null,
+      "output_tokens": null,
+      "token_basis": "not_reported_by_generation_backend"
+    }
+  },
+  "error": null,
+  "cancel_requested": 0,
+  "scheduling": "normal",
+  "dispatch_id": null,
+  "held": 0,
+  "attempt_id": "aedaa750-9b48-4947-acfe-e7442521541a",
+  "attempt_count": 1,
+  "retry_count": 0,
+  "next_retry": 0.0,
+  "last_progress": 1790310875.6204329,
+  "resource_held": 0,
+  "error_code": null
+}

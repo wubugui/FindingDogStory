@@ -1,0 +1,20 @@
+{
+  "idempotency_key": "7af26ab7-e6f2-4631-98ac-7d9a57fd51df",
+  "body": {
+    "backend": "qwen",
+    "name": "AX04_dock_underwater_near_drowning_concept",
+    "params": {
+      "prompt": "Use ONLY the three original GameDraft references: reference 1 is the CURRENT Wujin daytime dock gameplay screenshot, reference 2 is the CURRENT dock_crate_tutorial underwater gameplay screenshot, reference 3 is the current Guan Ergou player character sprite sheet. Make a NEW independent 16:9 cinematic folk-horror concept image of the exact dock A-route moment: Guan Ergou has dived into the dark murky water beside the original stone quay and diagonal wooden pier, touched one corner of the sunken cargo crate, and feels a sudden unseen downward tug at his ankle. He is near drowning and struggling to rise; show NO grabber, no hand, no water monster, no female figure. Keep the warehouse masonry, wooden pier planks, mooring posts, stacks of plain cargo crates and green-black water recognizable from the original dock, seen from a low oblique view just above and slightly through the water surface. Guan is the same young short-dark-haired man in his torn dull grey-brown work clothes and boots from the sprite, normal human scale against the original pier posts and warehouse, not a giant. A few extremely faint earthy gold dust flecks across the center suggest the existing axiu_faint cue for an instant, like subtle screen dust rather than magic; the death tether remains unseen, with no intentional rescue imagery. One sunken crate corner only, no opened box, no invented boat, no extra characters, no text, no UI. Restrained painterly realistic mood, dark water and daylight overcast stone dock.",
+      "negative_prompt": "new harbor, new ship, large ocean, fantasy temple, giant person, female ghost, Axiu person, woman, creature, visible grabbing hand, black inspection panel, magnifying glass, UI board, bright aura, golden beam, magical swirl, multiple crates underwater, modern buildings, text",
+      "images": [
+        "3222dabe-f464-4925-b67a-0fe834fdb2c7",
+        "e233220a-fd69-4352-ae85-4cd3721e1323",
+        "9d9d7112-e78e-4cfe-8ffb-4a8495586a54"
+      ],
+      "width": 1536,
+      "height": 864,
+      "steps": 30,
+      "seed": 918401
+    }
+  }
+}

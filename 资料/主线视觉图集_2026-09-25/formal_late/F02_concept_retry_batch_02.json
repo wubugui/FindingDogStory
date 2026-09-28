@@ -1,0 +1,59 @@
+{
+  "name": "FindingDogStory F02 cinematic dock retry from GameDraft originals",
+  "jobs": [
+    {
+      "backend": "qwen",
+      "name": "F02_concept_retry_A",
+      "priority": 50,
+      "params": {
+        "prompt": "Original cinematic concept frame of the confirmed Wujin dock chest inspection, using ONLY original GameDraft project images. The location is the gray stone riverside quay, timber wharf, dark river and continuous old tile-roofed warehouses in the supplied GameDraft dock background. The cargo chest has the exact small leather-and-wood design of the supplied GameDraft chest sprite. The only revealed objects are the supplied round geomantic compass, four torn mountain map pieces and stitched old book. Zero people. All objects natural size: chest around knee high, 40-50 cm tall, occupies less than 18 percent of frame height. No magical stone. No new structure, hill, temple or mountain vista. No UI, no text. Muted hand-painted folk-horror palette. Camera at standing human eye height on the dock, looking laterally ACROSS the quay. Strong horizontal horizon and upright vertical building facades, not an aerial view. Chest open on nearby wharf planks, its contents visible from oblique angle; camera is several meters from it, not a macro shot. Deep cinematic 16:9 framing, dock architecture fills two thirds of composition.",
+        "negative_prompt": "high angle, bird eye, isometric, overhead, top down, huge chest, giant map, product poster, invented scene, extra building, people, person, giant person, fantasy gem, text",
+        "images": [
+          "f9d80960-5697-4a38-8975-08902cc23f0e",
+          "f6c3539e-aca6-482b-8c96-7b9d896b25d1",
+          "b02b0fab-5d17-4ae4-85b0-9df196b67b8f"
+        ],
+        "width": 1536,
+        "height": 864,
+        "steps": 30,
+        "seed": 250925523
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "F02_concept_retry_B",
+      "priority": 50,
+      "params": {
+        "prompt": "Original cinematic concept frame of the confirmed Wujin dock chest inspection, using ONLY original GameDraft project images. The location is the gray stone riverside quay, timber wharf, dark river and continuous old tile-roofed warehouses in the supplied GameDraft dock background. The cargo chest has the exact small leather-and-wood design of the supplied GameDraft chest sprite. The only revealed objects are the supplied round geomantic compass, four torn mountain map pieces and stitched old book. Zero people. All objects natural size: chest around knee high, 40-50 cm tall, occupies less than 18 percent of frame height. No magical stone. No new structure, hill, temple or mountain vista. No UI, no text. Muted hand-painted folk-horror palette. Ground-level wide shot from end of timber pier toward the exact existing Wujin dock buildings. Camera approximately 1.5 meters above planks with level horizon; building facades are vertical, their roofs seen from below or side. Open chest mid-ground, small against wharf and warehouse scale. Compass, torn maps and book form subtle focal point in chest, not floating and not enlarged. Documentary cinematic lighting.",
+        "negative_prompt": "high angle, bird eye, isometric, overhead, top down, huge chest, giant map, product poster, invented scene, extra building, people, person, giant person, fantasy gem, text",
+        "images": [
+          "f6c3539e-aca6-482b-8c96-7b9d896b25d1",
+          "f9d80960-5697-4a38-8975-08902cc23f0e",
+          "b02b0fab-5d17-4ae4-85b0-9df196b67b8f"
+        ],
+        "width": 1536,
+        "height": 864,
+        "steps": 30,
+        "seed": 250925524
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "F02_concept_retry_C",
+      "priority": 50,
+      "params": {
+        "prompt": "Original cinematic concept frame of the confirmed Wujin dock chest inspection, using ONLY original GameDraft project images. The location is the gray stone riverside quay, timber wharf, dark river and continuous old tile-roofed warehouses in the supplied GameDraft dock background. The cargo chest has the exact small leather-and-wood design of the supplied GameDraft chest sprite. The only revealed objects are the supplied round geomantic compass, four torn mountain map pieces and stitched old book. Zero people. All objects natural size: chest around knee high, 40-50 cm tall, occupies less than 18 percent of frame height. No magical stone. No new structure, hill, temple or mountain vista. No UI, no text. Muted hand-painted folk-horror palette. Human-eye low oblique view along the existing stone quay and timber wharf. The small opened chest sits in foreground at lower left with the original map fragments and compass inside, but occupies no more than one fifth of entire frame. The same weathered warehouses and river occupy background. No diagonal top-down isometric view; camera almost parallel to planks, vertical wooden walls prominent. Restrained cinematic key art, no giant props.",
+        "negative_prompt": "high angle, bird eye, isometric, overhead, top down, huge chest, giant map, product poster, invented scene, extra building, people, person, giant person, fantasy gem, text",
+        "images": [
+          "b02b0fab-5d17-4ae4-85b0-9df196b67b8f",
+          "f6c3539e-aca6-482b-8c96-7b9d896b25d1",
+          "f9d80960-5697-4a38-8975-08902cc23f0e"
+        ],
+        "width": 1536,
+        "height": 864,
+        "steps": 30,
+        "seed": 250925525
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "backend": "qwen",
+  "name": "F01 cinematic retry 2 exactly three on original city gate background",
+  "priority": 50,
+  "params": {
+    "prompt": "Reference image 1 is the original EMPTY GameDraft west city gate background, with ZERO people. Use precisely this existing Wujin location and no other location. Reference 2 is Guan Ergou in his patched dark fake-Taoist robe and paper hat. Reference 3 is Clara in brown explorer hat and outfit. Reference 4 is Edgar with moustache in brown explorer hat and outfit. In the final image show EXACTLY THREE PEOPLE TOTAL: Guan Ergou once, Clara once, Edgar once. No guard, no extra explorer, no duplicated man or woman, no silhouette or crowd. Create an ORIGINAL cinematic story concept, camera from a slightly lower elevated angle than source, morning mist, quiet departure toward the road at upper right. The three figures walk in a loose line beyond the open stone gate, not standing for a portrait. Keep their full-body heights below 18 percent of frame height, natural scale against stone battlements and wooden gate. Keep the same gatehouse, cobbles, broken cart, rough road and brush. Project's muted charcoal and blue-gray painterly realism. No new architecture or landmarks, no mountain peak, no village, no horse or other animals, no text, no UI. Scene is a movie concept shot; redraw lighting and composition independently rather than reproducing reference pixels.",
+    "images": ["98e90853-a122-46cf-b247-2ce52446e236", "9bbca5da-b065-4810-9ef1-302063f1699f", "11f47ca3-e45b-4672-867f-043324c862fd", "6fd08324-93a8-4ba2-a66b-7d1513160bac"],
+    "width": 1536,
+    "height": 1024,
+    "steps": 30,
+    "seed": 250925103
+  }
+}

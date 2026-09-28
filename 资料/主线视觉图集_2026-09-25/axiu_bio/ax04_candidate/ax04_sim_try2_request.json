@@ -1,0 +1,16 @@
+{
+  "idempotency_key": "39d376c8-0f15-44e5-89ab-e8cfed07e3a0",
+  "body": {
+    "backend": "qwen",
+    "name": "AX04_dock_axiu_faint_sim_five_character_lock",
+    "params": {
+      "prompt": "The input is the ORIGINAL live GameDraft a_4 axiu_faint frame, not a generated image. Produce a fresh 1024x768 simulated adjacent frame of this EXACT dock scene and its subtle cue. Keep its same fixed 4:3 isometric gameplay camera and preserve all FIVE currently visible original people at the same small scale and near-identical positions: (1) Guan Ergou the young plain-clothed man at x512 y287-383, about 96 pixels tall; (2) the dark-clothed man beside the dock noticeboard at x413 y417-512, about 95 pixels tall; (3) the dark-clothed man beside the lower-left rickshaw at x286 y477-565, about 89 pixels tall; (4) the hat-wearing man at upper middle right x657 y187-284; (5) the dark-clothed man to his right x713 y191-284. Do not remove, merge, multiply or enlarge any of these five people. Guan remains standing on the stone quay because the water minigame has closed. Preserve warehouse, two rickshaws, signboard, wood pier, bollards, crate stacks, river, top-left small coin HUD and bottom-right item HUD at the source relative size; no black examination panel or underwater inset. The native axiu_faint effect is barely visible tiny pale yellow-white dust motes over the central stone pavement around Guan, confined to approximately x380-645 y250-455, not a luminous cloud. Independently render small differences in water ripples and mote positions only. Keep the same GameDraft painterly dark rustic style. All human sizes and camera proportions are more important than lettering, which can be approximate. No additional character or prop.",
+      "negative_prompt": "missing black-clothed NPC beside noticeboard, fewer than five people, sixth person, giant Guan, enlarged heads, underwater minigame, black inspect board, magical glow, gold haze, ghost woman, Axiu visible, new ship, new dock, zoomed camera, closeup, portrait, text block",
+      "images": ["e5464b8b-d256-4326-979b-0256e6c1ccb6"],
+      "qwen_canvas": "first_reference",
+      "reference_resolution": 0,
+      "steps": 25,
+      "seed": 918405
+    }
+  }
+}

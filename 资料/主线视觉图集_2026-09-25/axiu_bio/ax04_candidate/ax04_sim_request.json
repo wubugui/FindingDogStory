@@ -1,0 +1,18 @@
+{
+  "idempotency_key": "d36836b0-9b23-4fe5-8996-37b762d6b5ae",
+  "body": {
+    "backend": "qwen",
+    "name": "AX04_dock_axiu_faint_native_layout_sim",
+    "params": {
+      "prompt": "Use the FIRST reference as the exact current GameDraft NATIVE 1024x768 gameplay frame captured at dialogue node a_4 while axiu_faint plays. Make a NEW Qwen-rendered simulated 4:3 GameDraft gameplay screenshot at the next nearby instant, same fixed oblique camera, same REAL Wujin DAYTIME DOCK, same warehouse, stone quay, diagonal wooden pier, river, crate stacks, rickshaws, small original NPCs, item HUD, and coin HUD. Keep every human at the ORIGINAL SMALL GAME SCALE: Guan Ergou is the short dark-haired young male in plain grey-brown clothes standing at x about 512, his full height only about 95 pixels in the 768-pixel screen (roughly y288 to y383), less than one third the height of the nearby warehouse door; all other existing people similarly small and in their original positions. Do not place Guan in the water: the native minigame has already closed and dialogue resumed over the dock scene. The axiu_faint VFX is ONLY a very faint sparse scatter of tiny pale ochre dust specks near the central man and paving, about 26 percent of screen width centered near x512 y353, subtle enough to almost miss. No character portrait, no female figure, no magic halo, no rescue gesture. Keep the continuous scene and normal gameplay HUD, no black examination board, no underwater inset, no giant foreground figure or dialogue panel. A few ripples and specks may change slightly from the reference so this is an independently rendered neighboring frame, but all authored scene proportions and character identities must remain faithful. Output exactly 1024x768.",
+      "negative_prompt": "giant person, enlarged hero, woman in foreground, invented character, axiu ghost, black inspect panel, underwater minigame frame, second inset image, cutaway, glowing gold cloud, large VFX, new boat, new building, close-up portrait, full screen floating chest, new dialogue box",
+      "images": [
+        "e5464b8b-d256-4326-979b-0256e6c1ccb6"
+      ],
+      "qwen_canvas": "first_reference",
+      "reference_resolution": 0,
+      "steps": 28,
+      "seed": 918404
+    }
+  }
+}

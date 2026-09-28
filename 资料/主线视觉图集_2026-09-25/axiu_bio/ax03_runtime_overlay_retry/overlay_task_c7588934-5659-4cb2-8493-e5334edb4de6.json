@@ -1,0 +1,80 @@
+{
+  "id": "c7588934-5659-4cb2-8493-e5334edb4de6",
+  "batch_id": "ef131ad6-02fd-4809-a1d1-2afca12f7d08",
+  "name": "AX03 overlay breathing slight exhale A",
+  "backend": "qwen",
+  "group_key": "qwen",
+  "priority": 50,
+  "params": {
+    "prompt": "把<image1>作为当前 GameDraft 盖脸纸原生过场的完整画布。只把覆盖鼻梁和嘴部的白纸改成一次非常轻微的呼气末形态：纸的中央起伏稍稍回落，纸边自然贴合原脸部。保持原人物头身比例、侧卧姿态、油灯、中央过场影像的大小与位置、黑色外框、左上铜钱 HUD 和下方旁白框原样。整幅画面继续是同一张游戏过场截图，纸仍由老妇人按剧情盖在关二狗脸上，背景保持当前过场的黑底。",
+    "negative_prompt": "",
+    "width": 1024,
+    "height": 768,
+    "steps": 40,
+    "seed": 925933,
+    "images": [
+      "d1ba676c-18e5-4b8f-8cd8-fea882c7a671"
+    ],
+    "reference_resolution": 0,
+    "qwen_canvas": "explicit",
+    "transparent_background": false,
+    "guidance_scale": 1.0,
+    "cache_device": "auto",
+    "cache_dtype": "default",
+    "mode": "fl2v",
+    "frames": 124,
+    "last_image": null,
+    "reference_videos": [],
+    "reference_audios": [],
+    "include_reference_video_audio": true,
+    "ref_image_size": "max",
+    "guides": [],
+    "video_format": "auto",
+    "video_codec": "auto",
+    "sigma_shift_video": null,
+    "sigma_shift_audio": null,
+    "margin": 0.0
+  },
+  "state": "succeeded",
+  "created": 1790314036.617053,
+  "started": 1790314036.628786,
+  "finished": 1790314065.4648552,
+  "prompt_id": "9472caff-444a-4570-bb4b-7903e432500a",
+  "phase": "完成",
+  "result": {
+    "files": [
+      {
+        "id": "a4a4cd96-5eba-59ca-ba87-2528afe5ca2c",
+        "name": "result_00001_.png",
+        "mime": "image/png",
+        "size": 589084,
+        "sha256": "9457d96bbc731422c1b983e174b4ced556e8b576f6fb4aa21ee010a73d217096",
+        "created": 1790314065.4618452,
+        "origin": "generated",
+        "producer_task_id": "c7588934-5659-4cb2-8493-e5334edb4de6",
+        "producer_backend": "qwen",
+        "origin_basis": "registration",
+        "url": "/v1/files/a4a4cd96-5eba-59ca-ba87-2528afe5ca2c/content"
+      }
+    ],
+    "usage": {
+      "execution_ms": 27756,
+      "model": "qwen",
+      "input_tokens": null,
+      "output_tokens": null,
+      "token_basis": "not_reported_by_generation_backend"
+    }
+  },
+  "error": null,
+  "cancel_requested": 0,
+  "scheduling": "normal",
+  "dispatch_id": null,
+  "held": 0,
+  "attempt_id": "9472caff-444a-4570-bb4b-7903e432500a",
+  "attempt_count": 1,
+  "retry_count": 0,
+  "next_retry": 0.0,
+  "last_progress": 1790314063.1747792,
+  "resource_held": 0,
+  "error_code": null
+}

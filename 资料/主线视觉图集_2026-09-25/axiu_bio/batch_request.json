@@ -1,0 +1,50 @@
+{
+  "base_url": "http://denghong01:8765",
+  "idempotency_key": "6e3086b3-c50f-4b06-a1b3-aa520ec0b000",
+  "sources": {
+    "gameplay": "69ae51f6-13c7-4dfe-aaca-05fe7791afb9",
+    "background": "eb25fff9-baa4-487a-aa8d-4535c2f2209e",
+    "guan": "e0b0a4ff-181e-48f5-9477-8f3491cb588c"
+  },
+  "body": {
+    "name": "Axiu cold lamp cue, independent GameDraft originals",
+    "jobs": [
+      {
+        "backend": "qwen",
+        "name": "AX01_lamp_concept",
+        "priority": 50,
+        "params": {
+          "prompt": "Only the existing GameDraft night Chenghuang Temple from the supplied original game references: same dark timber room, carved altar and statue at rear, low corpse table, freestanding tall oil lamp on right. The character crop is the ONLY playable Guan Ergou, wearing grey-brown patched work clothes. One man only. One inert cadaver on table if visible. No Axiu body or ghost woman. No new character or architecture, no magic glyphs. The lamp flame steadies with a faint cold stillness, never warm protective aura. Historical Chinese folk horror. Make an independently composed cinematic concept image, closer oblique angle inside this exact room. The oil lamp flame and still air are focal; Guan is in middle distance and naturally proportioned. Architecture dominates. No UI or text. Painterly realistic game concept art. Wide 16:9.",
+          "negative_prompt": "giant person, oversized person, portrait, face closeup, woman, female ghost, second man, crowd, fantasy temple, huge flame, magic halo, blue light, photoreal live action",
+          "images": [
+            "eb25fff9-baa4-487a-aa8d-4535c2f2209e",
+            "69ae51f6-13c7-4dfe-aaca-05fe7791afb9",
+            "e0b0a4ff-181e-48f5-9477-8f3491cb588c"
+          ],
+          "width": 1536,
+          "height": 864,
+          "steps": 30,
+          "seed": 387219
+        }
+      },
+      {
+        "backend": "qwen",
+        "name": "AX01_lamp_sim",
+        "priority": 50,
+        "params": {
+          "prompt": "Only the existing GameDraft night Chenghuang Temple from the supplied original game references: same dark timber room, carved altar and statue at rear, low corpse table, freestanding tall oil lamp on right. The character crop is the ONLY playable Guan Ergou, wearing grey-brown patched work clothes. One man only. One inert cadaver on table if visible. No Axiu body or ghost woman. No new character or architecture, no magic glyphs. The lamp flame steadies with a faint cold stillness, never warm protective aura. Historical Chinese folk horror. Make an independently rendered simulated gameplay frame: 4:3, fixed high 3/4 camera, same game texture style and set geometry as reference screenshot. Place Guan by the tall oil lamp, 125-155 pixels tall within the 768-pixel picture. Keep person to furniture scale exactly like actual GameDraft screenshot. Flame is small and steady. Compact HUD top left and bottom right; UI text unimportant. New moment, not pixel copy of reference.",
+          "negative_prompt": "giant person, oversized person, portrait, face closeup, woman, female ghost, second man, crowd, fantasy temple, huge flame, magic halo, blue light, photoreal live action",
+          "images": [
+            "69ae51f6-13c7-4dfe-aaca-05fe7791afb9",
+            "eb25fff9-baa4-487a-aa8d-4535c2f2209e",
+            "e0b0a4ff-181e-48f5-9477-8f3491cb588c"
+          ],
+          "width": 1024,
+          "height": 768,
+          "steps": 30,
+          "seed": 387220
+        }
+      }
+    ]
+  }
+}

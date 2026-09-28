@@ -1,0 +1,50 @@
+{
+  "dock_runtime_screenshot": {
+    "source_path": "E:\\GameDev\\GameDraft\\artifact\\Screenshots_2026-09-15\\tour_码头白天.png",
+    "source_sha256": "35f3ce2e27f839b0e990c1f18b9d2b617dd428008c9c8642e5da9b5376e4610a",
+    "file_id": "3222dabe-f464-4925-b67a-0fe834fdb2c7",
+    "size": 1812314
+  },
+  "dock_underwater_runtime_screenshot": {
+    "source_path": "E:\\GameDev\\GameDraft\\artifact\\Screenshots_2026-09-15\\play_水下捞箱.png",
+    "source_sha256": "020338df913053f8077e84433e72a1f0e747a429bfef54e34641ec2eee9f3158",
+    "file_id": "e233220a-fd69-4352-ae85-4cd3721e1323",
+    "size": 1328592
+  },
+  "guan_original_sprite": {
+    "source_path": "E:\\GameDev\\GameDraft\\public\\resources\\runtime\\images\\characters\\player_hero.png",
+    "source_sha256": "b307248b1e2d60de49aed3d2cd59419578b2ad035e63a6ffed640d0f5258810b",
+    "file_id": "9d9d7112-e78e-4cfe-8ffb-4a8495586a54",
+    "size": 691746
+  },
+  "dock_original_background": {
+    "source_path": "E:\\GameDev\\GameDraft\\public\\resources\\runtime\\scenes\\码头白天\\background.png",
+    "source_sha256": "f7d79cf1247c9c46da27de424e1fc67ffbc6d4b912ea7a82b3ae6a25d8b0f881",
+    "file_id": "572e01f8-034a-453a-a5df-8df4ccb8df8b",
+    "size": 4033595
+  },
+  "dock_original_riverbed": {
+    "source_path": "E:\\GameDev\\GameDraft\\public\\resources\\runtime\\images\\minigames\\water\\riverbed_dock_murky.png",
+    "source_sha256": "77625f7406c0ebe393e96329881c7e1c5d5198f2360dbbdf9dcdc91f21f55025",
+    "file_id": "c780fba4-e357-4301-9ef9-9a25d4927f91",
+    "size": 2863965
+  },
+  "dock_original_sunken_crate": {
+    "source_path": "E:\\GameDev\\GameDraft\\public\\resources\\runtime\\images\\minigames\\water\\sunken_crate_gen.png",
+    "source_sha256": "5235e911522fee7a5d099614614391fba7ea003a6c0363d38a59e366d9edd177",
+    "file_id": "f85da0be-e994-444a-ad10-a75cb4aa82a3",
+    "size": 407115
+  },
+  "dock_axiu_faint_native_clean_capture": {
+    "source_path": "E:\\GameDev\\FindingDogStory\\资料\\主线视觉图集_2026-09-25\\axiu_bio\\runtime_capture\\码头跳水_a4_axiu_faint_原生播放_无通知_1024x768.png",
+    "source_sha256": "0f99ba55e9997d7384f46af5fe0668af88f883ff050627ef982b32d9da704faf",
+    "file_id": "e5464b8b-d256-4326-979b-0256e6c1ccb6",
+    "size": 1294508
+  },
+  "axiu_faint_original_vfx": {
+    "source_path": "E:\\GameDev\\GameDraft\\public\\resources\\runtime\\images\\ui_vfx\\axiu_signal_glow.png",
+    "source_sha256": "3df35e433059bfb38fe8e68e0a2b22bd1989bf9ebb447be8acdd655a8956d0d3",
+    "file_id": "162c46b8-e956-4a49-8879-cd68e86d1e43",
+    "size": 710758
+  }
+}

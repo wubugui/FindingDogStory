@@ -1,0 +1,11 @@
+{
+  "idempotency_key": "a6bbdb8c-29ac-4740-8f63-bdbf639e4f5b",
+  "response": {
+    "batch_id": "6c339973-7772-43dd-996c-19991369aec4",
+    "task_ids": [
+      "50a7b987-93c2-48b5-993d-721eaea402be",
+      "7268345d-bdcb-4540-8531-943585203f64"
+    ]
+  },
+  "batch_file": "E:\\GameDev\\FindingDogStory\\资料\\主线视觉图集_2026-09-25\\formal_late\\F02_batch_01.json"
+}

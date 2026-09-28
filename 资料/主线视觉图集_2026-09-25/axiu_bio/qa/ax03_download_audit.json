@@ -1,0 +1,14 @@
+{
+  "AX03_concept": {
+    "task_id": "fd985ad1-406a-4c29-81f4-4fae96cc08b7",
+    "file_id": "569dce8c-e33d-5b3d-9bc4-4654167dab5d",
+    "sha256": "6f756558c8cc9e0682c667aa90cac9840a02f7d3f6e75c6d923b5eab52484f42",
+    "size": 1797271
+  },
+  "AX03_sim": {
+    "task_id": "bda6efe7-8eaf-4bff-a97e-02bb097f0313",
+    "file_id": "687f4313-5189-55d3-bc3f-0992118b0761",
+    "sha256": "38b2817ed1b15f5002bfa27498d6f53b825f62560499a8455ead308d1cf54a0d",
+    "size": 908567
+  }
+}

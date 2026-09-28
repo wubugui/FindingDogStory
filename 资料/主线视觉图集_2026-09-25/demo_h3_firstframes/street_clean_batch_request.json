@@ -1,0 +1,39 @@
+{
+  "name": "Demo street Qwen21 minimal debug button cleanup",
+  "jobs": [
+    {
+      "params": {
+        "prompt": "以<image1>作为完整且唯一的雾津街头实机画布。只移除屏幕顶部最右边写着“调试”的单个开发按钮，补出被该按钮遮住的原街景。保留左上角铜钱、顶部其它菜单、底部方向键及动作键、中央三个人物、红灯笼、屋顶和石板路；所有人物的像素高度、站位、朝向和俯斜镜头必须与原图相同。单一连续画面，绝不生成边框、画中画、拼贴、额外人物或新的建筑。",
+        "qwen_canvas": "explicit",
+        "reference_resolution": 0,
+        "steps": 40,
+        "seed": 925901,
+        "images": [
+          "801a9386-2099-4626-aa1e-7c61913698e7"
+        ],
+        "height": 768,
+        "width": 1024,
+        "guidance_scale": 1.0
+      },
+      "name": "Demo street clean seed A",
+      "backend": "qwen"
+    },
+    {
+      "params": {
+        "prompt": "以<image1>作为完整且唯一的雾津街头实机画布。只移除屏幕顶部最右边写着“调试”的单个开发按钮，补出被该按钮遮住的原街景。保留左上角铜钱、顶部其它菜单、底部方向键及动作键、中央三个人物、红灯笼、屋顶和石板路；所有人物的像素高度、站位、朝向和俯斜镜头必须与原图相同。单一连续画面，绝不生成边框、画中画、拼贴、额外人物或新的建筑。",
+        "qwen_canvas": "explicit",
+        "reference_resolution": 0,
+        "steps": 40,
+        "seed": 925902,
+        "images": [
+          "801a9386-2099-4626-aa1e-7c61913698e7"
+        ],
+        "height": 768,
+        "width": 1024,
+        "guidance_scale": 1.0
+      },
+      "name": "Demo street clean seed B",
+      "backend": "qwen"
+    }
+  ]
+}

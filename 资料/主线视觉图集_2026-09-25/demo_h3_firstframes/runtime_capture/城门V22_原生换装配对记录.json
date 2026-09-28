@@ -1,0 +1,153 @@
+{
+  "url": "http://127.0.0.1:5173/?mode=dev&ndbg=0&visualCapture=1&devScene=%E5%9F%8E%E9%97%A8%E5%8F%A3",
+  "chrome_pid": 32068,
+  "profile": "C:\\Users\\WEIRUA~1\\AppData\\Local\\Temp\\gamedraft-v22-chrome-eaf5f525",
+  "port": 11775,
+  "target_id": "3AF4903E90F074C7C37D7F2493424EED",
+  "page_ready": {
+    "url": "http://127.0.0.1:5173/?mode=dev&ndbg=0&visualCapture=1&devScene=%E5%9F%8E%E9%97%A8%E5%8F%A3",
+    "hasGame": true,
+    "scene": "城门口",
+    "state": "Exploring",
+    "boot": "kk9elyd3"
+  },
+  "avatar_before": "{\"portrait\":\"player_carry_corpse_anim\",\"states\":[\"idle\",\"slow_walk\",\"run\",\"jump\",\"crouch\",\"lie_down\",\"stand\",\"walk\"]}",
+  "baseline_capture": {
+    "path": "E:\\GameDev\\FindingDogStory\\资料\\主线视觉图集_2026-09-25\\demo_h3_firstframes\\runtime_capture\\城门V22_换装前_原生基准_1024x768.png",
+    "bytes": 1271499,
+    "sha256": "8e2aa143210e19c7e8322f0cd5f4dbc203434aa62be1ef16cd3cc3003cc61797"
+  },
+  "boot_id": "kk9elyd3",
+  "before": {
+    "scene": "城门口",
+    "gameState": "Exploring",
+    "playerView": {
+      "mode": "exploring",
+      "scene": "城门口 · 拂晓",
+      "player": {
+        "x": 813.95,
+        "y": 944.77,
+        "facing": "right",
+        "posture": null
+      },
+      "entities": [
+        {
+          "kind": "hotspot",
+          "label": "门外那条进山的路",
+          "x": 1308.14,
+          "y": 218.02
+        },
+        {
+          "kind": "npc",
+          "label": "埃德加",
+          "x": 1017.44,
+          "y": 683.14
+        },
+        {
+          "kind": "npc",
+          "label": "克拉拉",
+          "x": 1133.72,
+          "y": 726.74
+        }
+      ],
+      "interactionPrompt": null,
+      "dialogue": {
+        "active": false,
+        "speaker": "",
+        "text": "",
+        "awaitingAdvance": false,
+        "choices": []
+      },
+      "hud": {
+        "coins": 0,
+        "questTracker": ""
+      },
+      "navTargetActive": false
+    },
+    "avatar": null
+  },
+  "native_call": {
+    "expression": "window.__game.graphDialogueManager.startDialogueGraph({graphId:\"\\u7ebf\\u5916_\\u5bfb\\u72d7_\\u57ce\\u95e8\\u6c47\\u5408\",entry:'apply_taoist_avatar',npcName:\"\\u57c3\\u5fb7\\u52a0\"})",
+    "result": {
+      "result": {
+        "type": "undefined"
+      }
+    }
+  },
+  "avatar_after_graph": "{\"portrait\":\"player_taoist_anim_v1\",\"states\":[\"idle\",\"slow_walk\",\"run\",\"jump\",\"crouch\",\"lie_down\",\"stand\",\"walk\"]}",
+  "after": {
+    "scene": "城门口",
+    "gameState": "Exploring",
+    "playerView": {
+      "mode": "exploring",
+      "scene": "城门口 · 拂晓",
+      "player": {
+        "x": 813.95,
+        "y": 944.77,
+        "facing": "right",
+        "posture": null
+      },
+      "entities": [
+        {
+          "kind": "hotspot",
+          "label": "门外那条进山的路",
+          "x": 1308.14,
+          "y": 218.02
+        },
+        {
+          "kind": "npc",
+          "label": "埃德加",
+          "x": 1017.44,
+          "y": 683.14
+        },
+        {
+          "kind": "npc",
+          "label": "克拉拉",
+          "x": 1133.72,
+          "y": 726.74
+        }
+      ],
+      "interactionPrompt": null,
+      "dialogue": {
+        "active": true,
+        "speaker": "埃德加",
+        "text": "Ah，我们的向导先生！Look at you——这身行头，very 专业！（他冲克拉拉挑了挑眉）",
+        "awaitingAdvance": true,
+        "choices": []
+      },
+      "hud": {
+        "coins": 0,
+        "questTracker": ""
+      },
+      "navTargetActive": false
+    },
+    "bootId": "kk9elyd3",
+    "reason": "dialogue:line"
+  },
+  "dialogue_close": {
+    "result": {
+      "type": "object",
+      "value": {
+        "active": false
+      }
+    }
+  },
+  "avatar_after_close": "{\"portrait\":\"player_taoist_anim_v1\",\"states\":[\"idle\",\"slow_walk\",\"run\",\"jump\",\"crouch\",\"lie_down\",\"stand\",\"walk\"]}",
+  "debug_pin_remaining": 0,
+  "after_close": {
+    "bootId": "kk9elyd3",
+    "scene": "城门口",
+    "dialogue": {
+      "active": false,
+      "speaker": "",
+      "text": "",
+      "awaitingAdvance": false,
+      "choices": []
+    }
+  },
+  "capture": {
+    "path": "E:\\GameDev\\FindingDogStory\\资料\\主线视觉图集_2026-09-25\\demo_h3_firstframes\\runtime_capture\\城门V22_假道士_原生换装_配对_1024x768.png",
+    "bytes": 1270485,
+    "sha256": "6411619a3ff06538667a614afe069c83eed4f2bd7120050d728b86ce9180eec7"
+  }
+}

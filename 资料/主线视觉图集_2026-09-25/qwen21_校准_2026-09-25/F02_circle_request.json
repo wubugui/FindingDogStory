@@ -1,0 +1,40 @@
+{
+  "name": "F02 Qwen21 circle guide scale calibration",
+  "jobs": [
+    {
+      "name": "F02 circle guided single reference",
+      "params": {
+        "seed": 925807,
+        "reference_resolution": 0,
+        "guidance_scale": 1.0,
+        "prompt": "输入图上的红色圆圈只是编辑范围标记。擦除红圈，并在原位置画一只开盖的小木箱：箱体与向后掀起的箱盖必须整体落在原红圈直径内，箱底接触码头木板，箱内暗色。圈外原有码头、人物大小和位置、固定机位、河水及游戏界面保持不变。",
+        "height": 768,
+        "qwen_canvas": "explicit",
+        "width": 1024,
+        "images": [
+          "5e9f14b3-ded4-42af-9b73-0737fbe4ad7b"
+        ],
+        "steps": 40
+      },
+      "backend": "qwen"
+    },
+    {
+      "name": "F02 circle guided with chest identity",
+      "params": {
+        "seed": 925808,
+        "reference_resolution": 0,
+        "guidance_scale": 1.0,
+        "prompt": "以<image1>作为原始码头实机画布，其中的红圈只是目标编辑范围，成品须擦除红圈。仅在原红圈范围内画一只小型开盖木箱，木纹、皮带和包角参照<image2>；箱体和后掀箱盖的整体大小都不超过红圈直径，箱底贴在木板上。<image1>红圈外所有人物及尺度、建筑、河水、镜头和界面保持不变。",
+        "height": 768,
+        "qwen_canvas": "explicit",
+        "width": 1024,
+        "images": [
+          "5e9f14b3-ded4-42af-9b73-0737fbe4ad7b",
+          "f9d80960-5697-4a38-8975-08902cc23f0e"
+        ],
+        "steps": 40
+      },
+      "backend": "qwen"
+    }
+  ]
+}

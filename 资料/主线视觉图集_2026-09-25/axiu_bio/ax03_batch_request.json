@@ -1,0 +1,44 @@
+{
+  "idempotency_key": "d617c835-4461-4ffd-9aa3-3bdac8c0202b",
+  "body": {
+    "name": "Axiu dream distant tune with no visual cue - original runtime assets",
+    "jobs": [
+      {
+        "backend": "qwen",
+        "name": "AX03_dream_tune_concept",
+        "params": {
+          "prompt": "Use ONLY the two original GameDraft runtime asset references. The dying-ritual dream shows Guan Ergou, a young Chinese man, lying in a dark coarse grey shroud on a wooden surface. A single thin yellowed rectangular face paper lies across his upper face; a tiny draft makes just its loose edge twitch once after a long stillness. One practical oil lamp at right, warm light belongs ONLY to the real lamp. The half-heard off-key tune is AUDIO ONLY: no visual signal, no glowing dust, no female apparition, no protective warmth, no extra human, no new location. Create an independently composed cinematic concept frame of this exact side-view paper and shrouded man, close but not giant distorted head. Low camera along the edge of the bier, a single paper corner lifting a finger-width, heavy darkness and held breath. Keep the plain wooden room and oil lamp from the references. 16:9 realistic painted folk-horror image, no UI or words.",
+          "negative_prompt": "woman, female ghost, angel, warm magic, gold dust VFX, aura, symbols, extra person, elaborate coffin, fantasy temple, giant face, old man, children, text on paper",
+          "images": [
+            "c8e7c096-7020-41c8-8797-3b3b8775f355",
+            "bafd2f88-f00a-4306-aa76-599906680142"
+          ],
+          "width": 1536,
+          "height": 864,
+          "steps": 30,
+          "seed": 918301
+        }
+      },
+      {
+        "backend": "qwen",
+        "name": "AX03_dream_tune_sim",
+        "params": {
+          "prompt": "Use ONLY the two original GameDraft runtime asset references. The dying-ritual dream shows Guan Ergou, a young Chinese man, lying in a dark coarse grey shroud on a wooden surface. A single thin yellowed rectangular face paper lies across his upper face; a tiny draft makes just its loose edge twitch once after a long stillness. One practical oil lamp at right, warm light belongs ONLY to the real lamp. The half-heard off-key tune is AUDIO ONLY: no visual signal, no glowing dust, no female apparition, no protective warmth, no extra human, no new location. Create a NEW simulated 4:3 1024x768 GameDraft gameplay/cutscene screenshot. The GameDraft breathing overlay is centered horizontally at 50% and vertically at 48%, 82% of screen width: show the side close-up of Guan under the face paper as an inset about 840 pixels wide and 470 pixels high, with dark inner-room background visible around it. Preserve the exact young male face, paper size, grey shroud and practical oil lamp from source. One tiny lifted paper edge, no other movement. Small in-game HUD top left; no subtitles needed. Do not use full-screen portrait or change person scale.",
+          "negative_prompt": "woman, female ghost, angel, warm magic, gold dust VFX, aura, symbols, extra person, elaborate coffin, fantasy temple, giant face, old man, children, text on paper",
+          "images": [
+            "c8e7c096-7020-41c8-8797-3b3b8775f355",
+            "bafd2f88-f00a-4306-aa76-599906680142"
+          ],
+          "width": 1024,
+          "height": 768,
+          "steps": 30,
+          "seed": 918302
+        }
+      }
+    ]
+  },
+  "sources": {
+    "original_face_paper_sheet": "c8e7c096-7020-41c8-8797-3b3b8775f355",
+    "original_dream_inner_room": "bafd2f88-f00a-4306-aa76-599906680142"
+  }
+}

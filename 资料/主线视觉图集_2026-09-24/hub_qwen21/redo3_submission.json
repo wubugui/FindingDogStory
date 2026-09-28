@@ -1,0 +1,9 @@
+{
+  "hub_url": "http://denghong01:8765",
+  "batch_id": "62ad2379-d2ff-4367-a219-1efd90d79fa8",
+  "request_file": "redo3_batch.json",
+  "idempotency_key": "b6bab63f-9d23-4748-9375-8095bcf16ef6",
+  "tasks": {
+    "D06_concept": "12d48831-1a12-4725-9508-0c8fb1bb5a62"
+  }
+}

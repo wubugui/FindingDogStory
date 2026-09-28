@@ -1,0 +1,13 @@
+{
+  "backend": "qwen",
+  "name": "F01 ground-level cinematic retry 8",
+  "priority": 50,
+  "params": {
+    "prompt": "Create an ORIGINAL widescreen 16:9 CINEMATIC FILM FRAME at HUMAN EYE HEIGHT, not a game camera. Camera lens is 1.6 METERS ABOVE THE COBBLESTONE ROAD, horizontal horizon in the upper third, near-ground foreground stones large with strong perspective convergence. Look diagonally past the exact existing Wujin west city gate toward the fog road. Reference image 1 is GameDraft's ORIGINAL EMPTY city-gate environment and is ONLY for architecture, material palette and set inventory, NOT for camera angle. It contains a weathered gray brick gate tower with a timber guardhouse above, two heavy OPEN wooden doors, cobbled ground, a broken wooden cart, sparse brush and leafless trees, rough road outside, with a short crenellated wall. Keep exactly these existing elements, no invented building or landmark. Reference image 2 is Guan Ergou's ORIGINAL patched dark fake-Daoist clothing and tall floppy DARK PAPER/FABRIC HAT; retain that identity. Three EXISTING STORY CHARACTERS ONLY, seen at modest human size near the gate: Guan Ergou in dark patched robe and paper hat, Clara one Western woman in brown explorer field hat and coat, Edgar one moustached Western man in brown explorer field hat and coat. Exactly three bodies, no duplication, no fourth person. The three are 15 meters from the camera; their heads reach below the middle of the gate opening and each person is about 14 percent of the image height, naturally scaled against the towering stone gate. They are moving out through the gate into fog, shown from behind at an oblique angle. A genuinely LOW, GROUND-LEVEL camera looking horizontally, with vertical wall perspective. NEVER isometric, overhead, aerial, top-down, bird's-eye, elevated, orthographic or three-quarter game view. Quiet gray dawn, muted GameDraft painterly realism, cinematic depth and contrast. No UI, no text, no horse, porter, crowd, monster, village or mountain peak.",
+    "images": ["98e90853-a122-46cf-b247-2ce52446e236", "9bbca5da-b065-4810-9ef1-302063f1699f"],
+    "width": 1536,
+    "height": 864,
+    "steps": 30,
+    "seed": 250925110
+  }
+}

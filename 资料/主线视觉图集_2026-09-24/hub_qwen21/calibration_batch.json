@@ -1,0 +1,47 @@
+{
+  "name": "FindingDogStory Qwen Image 2.1 form calibration",
+  "jobs": [
+    {
+      "backend": "qwen",
+      "name": "D05_sim back carry",
+      "priority": 50,
+      "params": {
+        "prompt": "Re-render reference image 1 as a Qwen-Image-2.1 variant of the SAME 4:3 actual-game-style isometric cliff tomb screenshot. Preserve the exact stone chamber, alcoves, fixed camera, bottom interaction progress panel, corner HUD, and restrained earthy color. Guan Ergou is a SMALL in-world sprite around one fifth of the frame height. He stoops under a long wrapped anonymous corpse carried across his BACK and shoulders, never cradled in his arms. Keep his feet and the wrapped body at the exact same position and scale as the reference. This is not Axiu. Make subtle painterly texture changes only. No new architecture, figures or camera zoom; small UI text is irrelevant.",
+        "negative_prompt": "giant person, large body, new tomb, corpse held in arms, woman portrait, close-up, movie camera",
+        "images": ["e2b379de-90f4-42ae-b3e1-a69e4c834610"],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 1505
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D07b_sim paper breath cutscene",
+      "priority": 50,
+      "params": {
+        "prompt": "Re-render reference image 1 as a Qwen-Image-2.1 variant of the SAME existing funeral-dream cutscene frame. Preserve the 4:3 canvas with large black cinematic letterbox bars, same dark farmhouse inner room, same human face covered by one light sheet of white paper, lying on the same wooden plank, same tiny oil lamp and hands in background. Keep the paper resting gently over the face and subtly lifted by breath. Preserve exact camera height and composition. This is a scripted cutscene, not free-roaming gameplay, so DO NOT add coins, toolbar or dialogue panels. No new person, monster or room. Subtle texture changes only.",
+        "negative_prompt": "isometric HUD, new character, different room, giant face, monster, multiple sheets, redesigned cutscene",
+        "images": ["c1bc309c-b8ca-4f1a-b638-94f66ab5c2c6"],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 1702
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "D17_concept city gate departure",
+      "priority": 50,
+      "params": {
+        "prompt": "Create a Qwen-Image-2.1 cinematic variant of reference image 1 while preserving its SAME existing Wujin city gate and exact story composition. Wide horizontal standing-human-eye-level film view, giant gray stone gate with open dark timber doors and tiled guardhouse, broken cart wheel, cobblestone path and low posts leading into predawn fog. Exactly three small full-body travelers in the same positions and costumes: Guan Ergou in patched fake Taoist robe and cloth cap, Clara in olive travel coat and brimmed hat, Edgar in black Western coat and bowler hat. They pause before the fog, Guan gestures toward the road. Keep the environment dominant and characters human-scale; do not enlarge them. No new temples, mountains, people, monsters, HUD or text. Subtle cinematic lighting variation is welcome but do not redesign the location.",
+        "negative_prompt": "extra traveler, close-up, huge characters, isometric game camera, temple, castle, mountain, new location",
+        "images": ["70efc93e-87d3-4053-bd38-591fefc47653"],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "steps": 25,
+        "seed": 1717
+      }
+    }
+  ]
+}

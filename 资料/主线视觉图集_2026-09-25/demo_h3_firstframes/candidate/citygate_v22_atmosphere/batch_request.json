@@ -1,0 +1,35 @@
+{
+  "name": "V22 original runtime city gate subtle exterior dawn mist",
+  "jobs": [
+    {
+      "name": "V22 subtle dawn mist A",
+      "backend": "qwen",
+      "priority": 50,
+      "params": {
+        "images": ["84893d0f-974f-477d-a93d-27c4c4db2c2f"],
+        "qwen_canvas": "explicit",
+        "reference_resolution": 0,
+        "width": 1024,
+        "height": 768,
+        "steps": 40,
+        "seed": 250925221,
+        "prompt": "Use the single reference image as the exact 1024x768 GameDraft gameplay canvas. Perform an extremely small environmental edit: deepen only the existing blue-gray dawn mist behind the sparse bare trees and stony road OUTSIDE the city gate, in the upper-right distance x620..1024,y35..285. Increase atmospheric haze by only about 5%, keep its current natural structure. Everything else should visually match the input: exact camera, stone gatehouse and open doors, wagon, cobblestones, fences, three existing people at the same screen positions and same pixel heights, Guan Ergou's small dark fake-Taoist cap and long robe at x515,y520..625, both companions at upper-right, top-left coin HUD and bottom inventory bar. Do not move, enlarge, restyle or obscure a person. No extra people or props. No camera crop, no text edits, no new light source."
+      }
+    },
+    {
+      "name": "V22 subtle dawn mist B",
+      "backend": "qwen",
+      "priority": 50,
+      "params": {
+        "images": ["84893d0f-974f-477d-a93d-27c4c4db2c2f"],
+        "qwen_canvas": "explicit",
+        "reference_resolution": 0,
+        "width": 1024,
+        "height": 768,
+        "steps": 40,
+        "seed": 250925222,
+        "prompt": "Edit the one provided ORIGINAL 1024x768 GameDraft runtime screenshot in place, without recomposition. Barely thicken the pre-existing predawn fog in the distant path beyond the gate, limited to upper-right background x620..1024,y0..300; faint cool gray translucent mist among the leafless trees, not a new fog bank or dramatic effect. Preserve all silhouettes and all clear foreground details. City gate masonry and timber, open doors, cart, foreground road, fences, all three people, Guan Ergou's existing tall dark Taoist hat and patched robe, their exact screen coordinates, scale and feet contacts, coin UI and inventory icons must remain the same as reference. Keep 4:3 isometric game camera and game rendering style. Do not add, remove, shift or enlarge any person or object."
+      }
+    }
+  ]
+}

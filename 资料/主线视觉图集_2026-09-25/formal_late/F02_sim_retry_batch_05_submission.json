@@ -1,0 +1,10 @@
+{
+  "idempotency_key": "9bf6ebf4-1526-4c09-bf45-de4fce2e6605",
+  "response": {
+    "batch_id": "54faeced-4c98-41fa-a5c0-9c481520d385",
+    "task_ids": [
+      "2f7176fe-d8f7-4e2e-bc8a-b98cbe7bd35e",
+      "622aa23a-5239-4153-8ab2-b70429717bed"
+    ]
+  }
+}

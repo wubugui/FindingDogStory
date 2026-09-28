@@ -1,0 +1,244 @@
+{
+  "url": "http://127.0.0.1:5173/?mode=dev&ndbg=0&visualCapture=1&devScene=码头白天",
+  "events": [
+    {
+      "label": "dock_loaded",
+      "state": {
+        "scene": "码头白天",
+        "dialogue": {
+          "active": false,
+          "graphSourceId": "",
+          "currentNodeId": "",
+          "choiceStage": "none",
+          "awaitingLineDismiss": false
+        },
+        "minigame": {
+          "active": false,
+          "scene": null
+        },
+        "gameState": "Exploring"
+      }
+    },
+    {
+      "label": "graph_started",
+      "state": {
+        "scene": "码头白天",
+        "dialogue": {
+          "active": true,
+          "graphSourceId": "线外_寻狗_码头选择",
+          "currentNodeId": "n1",
+          "choiceStage": "none",
+          "awaitingLineDismiss": true
+        },
+        "minigame": {
+          "active": false,
+          "scene": null
+        },
+        "gameState": "Exploring"
+      }
+    },
+    {
+      "label": "choice_prompt",
+      "state": {
+        "scene": "码头白天",
+        "dialogue": {
+          "active": true,
+          "graphSourceId": "线外_寻狗_码头选择",
+          "currentNodeId": "c1",
+          "choiceStage": "options",
+          "awaitingLineDismiss": false
+        },
+        "minigame": {
+          "active": false,
+          "scene": null
+        },
+        "gameState": "Exploring"
+      }
+    },
+    {
+      "label": "choice_options",
+      "state": {
+        "scene": "码头白天",
+        "dialogue": {
+          "active": true,
+          "graphSourceId": "线外_寻狗_码头选择",
+          "currentNodeId": "c1",
+          "choiceStage": "options",
+          "awaitingLineDismiss": false
+        },
+        "minigame": {
+          "active": false,
+          "scene": null
+        },
+        "gameState": "Exploring"
+      }
+    },
+    {
+      "label": "minigame_active",
+      "state": {
+        "scene": "码头白天",
+        "dialogue": {
+          "active": true,
+          "graphSourceId": "线外_寻狗_码头选择",
+          "currentNodeId": "a_1",
+          "choiceStage": "none",
+          "awaitingLineDismiss": false
+        },
+        "minigame": {
+          "active": true,
+          "scene": {
+            "phase": "search",
+            "bounds": {
+              "width": 720,
+              "height": 480
+            },
+            "renderTexture": {
+              "width": 942,
+              "height": 628
+            },
+            "surface": {
+              "time": 0.06539999999850989,
+              "murk": 0.32,
+              "darkness": 0,
+              "rain": 0,
+              "sigma": [
+                0.8500000238418579,
+                1.25,
+                1.75
+              ],
+              "minAlpha": 0.1,
+              "waterBottomDepth": 1.15
+            }
+          }
+        },
+        "gameState": "Minigame"
+      }
+    },
+    {
+      "label": "after_keyboard_escape",
+      "state": {
+        "scene": "码头白天",
+        "dialogue": {
+          "active": true,
+          "graphSourceId": "线外_寻狗_码头选择",
+          "currentNodeId": "a_1",
+          "choiceStage": "none",
+          "awaitingLineDismiss": false
+        },
+        "minigame": {
+          "active": true,
+          "scene": {
+            "phase": "search",
+            "bounds": {
+              "width": 720,
+              "height": 480
+            },
+            "renderTexture": {
+              "width": 942,
+              "height": 628
+            },
+            "surface": {
+              "time": 0.6667999999970193,
+              "murk": 0.32,
+              "darkness": 0,
+              "rain": 0,
+              "sigma": [
+                0.8500000238418579,
+                1.25,
+                1.75
+              ],
+              "minAlpha": 0.1,
+              "waterBottomDepth": 1.15
+            }
+          }
+        },
+        "gameState": "Minigame"
+      }
+    },
+    {
+      "label": "after_ui_exit_click",
+      "state": {
+        "scene": "码头白天",
+        "dialogue": {
+          "active": true,
+          "graphSourceId": "线外_寻狗_码头选择",
+          "currentNodeId": "a_3",
+          "choiceStage": "none",
+          "awaitingLineDismiss": true
+        },
+        "minigame": {
+          "active": false,
+          "scene": null
+        },
+        "gameState": "Exploring"
+      }
+    },
+    {
+      "label": "minigame_exited_a3_line",
+      "state": {
+        "scene": "码头白天",
+        "dialogue": {
+          "active": true,
+          "graphSourceId": "线外_寻狗_码头选择",
+          "currentNodeId": "a_3",
+          "choiceStage": "none",
+          "awaitingLineDismiss": true
+        },
+        "minigame": {
+          "active": false,
+          "scene": null
+        },
+        "gameState": "Exploring"
+      }
+    },
+    {
+      "label": "a4_cue_300ms",
+      "state": {
+        "scene": "码头白天",
+        "dialogue": {
+          "active": true,
+          "graphSourceId": "线外_寻狗_码头选择",
+          "currentNodeId": "a_4",
+          "choiceStage": "none",
+          "awaitingLineDismiss": false
+        },
+        "minigame": {
+          "active": false,
+          "scene": null
+        },
+        "gameState": "ActionSequence"
+      }
+    },
+    {
+      "label": "a4_cue_end",
+      "state": {
+        "scene": "码头白天",
+        "dialogue": {
+          "active": true,
+          "graphSourceId": "线外_寻狗_码头选择",
+          "currentNodeId": "a_6",
+          "choiceStage": "none",
+          "awaitingLineDismiss": true
+        },
+        "minigame": {
+          "active": false,
+          "scene": null
+        },
+        "gameState": "Exploring"
+      }
+    }
+  ],
+  "screenshots": [
+    "码头跳水_a1_小游戏仍在画面_复核_1024x768.png",
+    "码头跳水_a3_小游戏退出后旁白_复核_1024x768.png",
+    "码头跳水_a4_axiu_faint_原生播放_无通知_1024x768.png",
+    "码头跳水_a5_抓痕叠层_复核_1024x768.png"
+  ],
+  "errors": [
+    "console:Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "console:Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "choiceSettled": true,
+  "advanceSettled": true,
+  "advanceError": null
+}

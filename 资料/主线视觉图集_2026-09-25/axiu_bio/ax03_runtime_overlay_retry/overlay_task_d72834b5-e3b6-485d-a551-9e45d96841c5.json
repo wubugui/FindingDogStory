@@ -1,0 +1,80 @@
+{
+  "id": "d72834b5-e3b6-485d-a551-9e45d96841c5",
+  "batch_id": "ef131ad6-02fd-4809-a1d1-2afca12f7d08",
+  "name": "AX03 overlay paper pause B",
+  "backend": "qwen",
+  "group_key": "qwen",
+  "priority": 50,
+  "params": {
+    "prompt": "以<image1>所示真实游戏过场为基础，表现脸纸呼吸停下后的静止一瞬：白纸自然覆盖同一张脸，只有纸面细小褶皱略有变化。中央过场影像继续保持原有约八成画宽的矩形位置，四周是游戏本来就有的黑色画面，下方旁白框和左上角铜钱 HUD 保持原样。保持人物的头脚尺度、衣服、油灯和暗房背景连续，呈现一个可信的相邻动画帧。",
+    "negative_prompt": "",
+    "width": 1024,
+    "height": 768,
+    "steps": 40,
+    "seed": 925934,
+    "images": [
+      "d1ba676c-18e5-4b8f-8cd8-fea882c7a671"
+    ],
+    "reference_resolution": 0,
+    "qwen_canvas": "explicit",
+    "transparent_background": false,
+    "guidance_scale": 1.0,
+    "cache_device": "auto",
+    "cache_dtype": "default",
+    "mode": "fl2v",
+    "frames": 124,
+    "last_image": null,
+    "reference_videos": [],
+    "reference_audios": [],
+    "include_reference_video_audio": true,
+    "ref_image_size": "max",
+    "guides": [],
+    "video_format": "auto",
+    "video_codec": "auto",
+    "sigma_shift_video": null,
+    "sigma_shift_audio": null,
+    "margin": 0.0
+  },
+  "state": "succeeded",
+  "created": 1790314036.617054,
+  "started": 1790314065.4740064,
+  "finished": 1790314087.8619297,
+  "prompt_id": "cd0614f5-3f75-4bec-8a5b-9a240003daa0",
+  "phase": "完成",
+  "result": {
+    "files": [
+      {
+        "id": "08a933b3-2e51-5c75-94ed-1a31586e9976",
+        "name": "result_00001_.png",
+        "mime": "image/png",
+        "size": 592268,
+        "sha256": "5501b734472c2bf59705f49aec7475c2477d692bbd20ab080b5ee2810cc76c93",
+        "created": 1790314087.8597043,
+        "origin": "generated",
+        "producer_task_id": "d72834b5-e3b6-485d-a551-9e45d96841c5",
+        "producer_backend": "qwen",
+        "origin_basis": "registration",
+        "url": "/v1/files/08a933b3-2e51-5c75-94ed-1a31586e9976/content"
+      }
+    ],
+    "usage": {
+      "execution_ms": 21004,
+      "model": "qwen",
+      "input_tokens": null,
+      "output_tokens": null,
+      "token_basis": "not_reported_by_generation_backend"
+    }
+  },
+  "error": null,
+  "cancel_requested": 0,
+  "scheduling": "normal",
+  "dispatch_id": null,
+  "held": 0,
+  "attempt_id": "cd0614f5-3f75-4bec-8a5b-9a240003daa0",
+  "attempt_count": 1,
+  "retry_count": 0,
+  "next_retry": 0.0,
+  "last_progress": 1790314083.5965142,
+  "resource_held": 0,
+  "error_code": null
+}

@@ -1,0 +1,39 @@
+{
+  "jobs": [
+    {
+      "params": {
+        "qwen_canvas": "explicit",
+        "seed": 925923,
+        "width": 1024,
+        "height": 768,
+        "guidance_scale": 1.0,
+        "prompt": "以<image1>这张GameDraft原始实机截图为唯一画布。截图是在现有雾津街头、关二狗与克拉拉按场景JSON的原始位置同框。只做三个很小的剧情瞬间修改：克拉拉双手间出现一本宽约20像素的旧笔记本并翻开；擦去两人上方的无关打哈欠气泡；擦去顶部最右边“调试”开发按钮。其余人物头脚位置、各自像素高度、帽子和衣服、原街道房屋、固定俯斜游戏镜头、铜钱/其它菜单/方向键与动作键保持原样。输出一张1024×768连续的模拟实机截图；不要重画或放大人物，不要加入新角色、室内场景、画中画、黑框或照片。",
+        "images": [
+          "f55955cd-6b62-47ac-8672-df5a4d086aed"
+        ],
+        "steps": 40,
+        "reference_resolution": 0
+      },
+      "backend": "qwen",
+      "name": "V21 correct camera raw edit A"
+    },
+    {
+      "params": {
+        "qwen_canvas": "explicit",
+        "seed": 925924,
+        "width": 1024,
+        "height": 768,
+        "guidance_scale": 1.0,
+        "prompt": "以<image1>这张真实GameDraft雾津街头截图作为完整画布。红圈只是克拉拉双手前面的局部编辑标记，成品须擦除红圈。只在红圈区域画一本克拉拉正翻看的小旧笔记本，展开宽度不超过红圈半径；她本人的头脚像素位置和高度不变，关二狗也不变。擦去上方与招募无关的打哈欠气泡及顶部最右侧“调试”按钮；保留原有屋顶、石板路、其它游戏HUD与固定俯斜镜头。1024×768单一连续的模拟实机画面，不扩大人物、不新添角色或场景、不贴独立道具图、不画面板。",
+        "images": [
+          "f997dd1f-1c69-461b-b218-a82a1e22679f"
+        ],
+        "steps": 40,
+        "reference_resolution": 0
+      },
+      "backend": "qwen",
+      "name": "V21 correct camera hand circle edit B"
+    }
+  ],
+  "name": "V21 correct authored street camera"
+}

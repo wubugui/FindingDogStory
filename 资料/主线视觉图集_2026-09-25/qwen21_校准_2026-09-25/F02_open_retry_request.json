@@ -1,0 +1,39 @@
+{
+  "name": "F02 exact canvas opened chest QA retry",
+  "jobs": [
+    {
+      "params": {
+        "reference_resolution": 0,
+        "width": 1024,
+        "height": 768,
+        "images": [
+          "72601202-2920-4c5c-940f-a1a94c80854a"
+        ],
+        "steps": 40,
+        "guidance_scale": 1.0,
+        "prompt": "在原图右侧木码头空出的木板位置放一只刚从水里捞出的矮木箱。箱盖向后掀开成约直角，能看见箱内暗色空腔，箱体高度约为前景站立人物的小腿长度。箱底贴在木板上，地面接触阴影和光照与原场景一致。原图其他人物及其比例、建筑、河水、货箱、镜头与界面保持原位。",
+        "qwen_canvas": "explicit",
+        "seed": 925804
+      },
+      "backend": "qwen",
+      "name": "F02 explicit opened chest retry A"
+    },
+    {
+      "params": {
+        "reference_resolution": 0,
+        "width": 1024,
+        "height": 768,
+        "images": [
+          "72601202-2920-4c5c-940f-a1a94c80854a"
+        ],
+        "steps": 40,
+        "guidance_scale": 1.0,
+        "prompt": "只修改原图右侧码头木板上的一小块空地：出现一只已打开的浅木箱，后翻的箱盖清楚地立在箱体后缘，箱口朝上，内里露出少量旧纸片。木箱小于周边货箱，高度不到附近人物的一半。其余原图像素构图、人物身份和尺度、建筑、河水及游戏界面保持不变。",
+        "qwen_canvas": "explicit",
+        "seed": 925805
+      },
+      "backend": "qwen",
+      "name": "F02 explicit opened chest retry B"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "jobs": [
+    {
+      "priority": 50,
+      "backend": "qwen",
+      "name": "Demo V22 circled edit take 4",
+      "params": {
+        "seed": 250925140,
+        "images": [
+          "c28c487d-eddd-41d2-962f-7b73c1e3ddfb",
+          "690fcbae-cb4c-4a03-97db-99e482427448"
+        ],
+        "width": 1024,
+        "steps": 28,
+        "height": 768,
+        "prompt": "Reference 1 is the ORIGINAL 1024x768 GameDraft city gate gameplay screenshot and is the exact image canvas. Reference 2 is the SAME screenshot with a temporary RED CIRCLE around the foreground-center player Guan Ergou; the red circle is only an EDITING ANNOTATION and MUST BE ERASED from the final image. Edit ONLY the person INSIDE THE RED CIRCLE, located x=482..545,y=502..636. Guan is already at the correct spot and scale. Dress this same sprite in the existing GameDraft patched dark fake-Taoist robe with soft tall charcoal paper cap and a tiny paper talisman, while keeping body, face, stance, feet and x/y position unchanged. The ENTIRE costume including cap must fit INSIDE THE EXISTING RED-CIRCLE BOUNDS. Finished figure should be 100-115 pixels tall, not larger; feet exactly at y=625. Do not change the two other human figures at x670,y350 and x767,y375. Keep original stone gate, wooden doors, road, cart, brush, lighting and UI pixel-close. The gate door opening remains more than twice player height. No other changes anywhere. NO RED CIRCLE VISIBLE IN OUTPUT. Exactly three people, no extra people. 4:3 isometric GameDraft screenshot, not illustration.",
+        "qwen_canvas": "explicit",
+        "reference_resolution": 0
+      }
+    },
+    {
+      "priority": 50,
+      "backend": "qwen",
+      "name": "Demo V22 circled edit take 5",
+      "params": {
+        "seed": 250925141,
+        "images": [
+          "c28c487d-eddd-41d2-962f-7b73c1e3ddfb",
+          "690fcbae-cb4c-4a03-97db-99e482427448"
+        ],
+        "width": 1024,
+        "steps": 28,
+        "height": 768,
+        "prompt": "Reference 1 is the ORIGINAL 1024x768 GameDraft city gate gameplay screenshot and is the exact image canvas. Reference 2 is the SAME screenshot with a temporary RED CIRCLE around the foreground-center player Guan Ergou; the red circle is only an EDITING ANNOTATION and MUST BE ERASED from the final image. Edit ONLY the person INSIDE THE RED CIRCLE, located x=482..545,y=502..636. Guan is already at the correct spot and scale. Dress this same sprite in the existing GameDraft patched dark fake-Taoist robe with soft tall charcoal paper cap and a tiny paper talisman, while keeping body, face, stance, feet and x/y position unchanged. The ENTIRE costume including cap must fit INSIDE THE EXISTING RED-CIRCLE BOUNDS. Finished figure should be 100-115 pixels tall, not larger; feet exactly at y=625. Do not change the two other human figures at x670,y350 and x767,y375. Keep original stone gate, wooden doors, road, cart, brush, lighting and UI pixel-close. The gate door opening remains more than twice player height. No other changes anywhere. NO RED CIRCLE VISIBLE IN OUTPUT. Exactly three people, no extra people. 4:3 isometric GameDraft screenshot, not illustration. Treat the circle as a strict edit boundary; do not let any part of the replacement person or hat cross it. Only repaint garment pixels and remove red line.",
+        "qwen_canvas": "explicit",
+        "reference_resolution": 0
+      }
+    },
+    {
+      "priority": 50,
+      "backend": "qwen",
+      "name": "Demo V22 circled edit take 6",
+      "params": {
+        "seed": 250925142,
+        "images": [
+          "c28c487d-eddd-41d2-962f-7b73c1e3ddfb",
+          "690fcbae-cb4c-4a03-97db-99e482427448",
+          "a5c49002-5ff9-4d93-b16e-f28143ac83f7"
+        ],
+        "width": 1024,
+        "steps": 28,
+        "height": 768,
+        "prompt": "Reference 1 is the ORIGINAL 1024x768 GameDraft city gate gameplay screenshot and is the exact image canvas. Reference 2 is the SAME screenshot with a temporary RED CIRCLE around the foreground-center player Guan Ergou; the red circle is only an EDITING ANNOTATION and MUST BE ERASED from the final image. Edit ONLY the person INSIDE THE RED CIRCLE, located x=482..545,y=502..636. Guan is already at the correct spot and scale. Dress this same sprite in the existing GameDraft patched dark fake-Taoist robe with soft tall charcoal paper cap and a tiny paper talisman, while keeping body, face, stance, feet and x/y position unchanged. The ENTIRE costume including cap must fit INSIDE THE EXISTING RED-CIRCLE BOUNDS. Finished figure should be 100-115 pixels tall, not larger; feet exactly at y=625. Do not change the two other human figures at x670,y350 and x767,y375. Keep original stone gate, wooden doors, road, cart, brush, lighting and UI pixel-close. The gate door opening remains more than twice player height. No other changes anywhere. NO RED CIRCLE VISIBLE IN OUTPUT. Exactly three people, no extra people. 4:3 isometric GameDraft screenshot, not illustration. Reference 3 is the original project full-body costume image for Guan; use ONLY its clothing and cap details, never its portrait scale. Foreground player must remain tiny like reference 1.",
+        "qwen_canvas": "explicit",
+        "reference_resolution": 0
+      }
+    }
+  ],
+  "name": "Demo V22 red-circle guided costume edit"
+}

@@ -1,0 +1,16 @@
+{
+  "AX01_concept_try2": {
+    "task_id": "33e7d0a0-e0a7-438e-b918-095fd09c418a",
+    "file_id": "c2bb9397-f760-5d5f-98b7-da7159b29043",
+    "sha256": "ddd2c0adb5dd828449155249847cc7a4dd6919f1b547d8b468c471260706f30b",
+    "size": 2380010,
+    "path": "E:\\GameDev\\FindingDogStory\\\u8d44\u6599\\\u4e3b\u7ebf\u89c6\u89c9\u56fe\u96c6_2026-09-25\\axiu_bio\\qa\\AX01_concept_try2.png"
+  },
+  "AX01_sim_try2": {
+    "task_id": "f1169afb-ffd7-443c-9bab-4a9afc146010",
+    "file_id": "44b06365-3ad8-5dc0-8e04-ba8b5b97364f",
+    "sha256": "4e932e3dccad816fcb72b6e2f82f876e76642c2a3de13c30e7c1fd8aede1149b",
+    "size": 1398465,
+    "path": "E:\\GameDev\\FindingDogStory\\\u8d44\u6599\\\u4e3b\u7ebf\u89c6\u89c9\u56fe\u96c6_2026-09-25\\axiu_bio\\qa\\AX01_sim_try2.png"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "name": "FindingDogStory F02 cinematic recapture within original screenshot bounds",
+  "jobs": [
+    {
+      "backend": "qwen",
+      "name": "F02_concept_scene_faithful_H",
+      "priority": 50,
+      "params": {
+        "prompt": "Original cinematic game concept frame of the CONFIRMED GameDraft Wujin dock chest-opening scene. ALL references are ORIGINAL GameDraft sources, especially reference 4 which is an ACTUAL gameplay screenshot and is the HARD location boundary. Reframe its SAME visible structures from a human-eye movie camera: the gray stone quay, the existing flat timber wharf platform to the right, the left freight-house shopfront with tiled roof, the same cobblestone edge. Face the camera TOWARD THE EXISTING SHOPFRONT AND STONE QUAY, so the river and all boats are OFFSCREEN. Do not reveal or extend beyond the background shown in the source gameplay frame. Exactly one Guan Ergou from ref 1 wearing his original patched gray-brown work clothes. Exactly one knee-high wood-and-leather cargo chest from ref 2, lid visibly open. Guan crouches and lifts one torn mountain map fragment from it; original brown compass and stitched book from ref 3 remain inside. Chest human-scale, maps hand-scale. Muted dark hand-painted folk horror. A NEW human-eye cinematic angle, not the high-angle gameplay screenshot, no UI, no title. Existing dock architecture must dominate the setting. Medium-wide ground-level shot from the timber platform looking back at the existing freight-house and stone quay. Guan crouches in left foreground with chest at his knees. The old building front and stone landing remain recognizable, but no boat, mast, sail or extra dock platform is visible.",
+        "negative_prompt": "boat, ship, barge, canoe, sail, mast, new pier, new building, extra dock structure, invented riverbank, altered warehouse, giant chest, two chests, extra character, giant person, aerial camera, high-angle isometric, top-down, poster",
+        "images": [
+          "34a02fac-1dc7-4c7e-b433-04dc06ecd18b",
+          "f9d80960-5697-4a38-8975-08902cc23f0e",
+          "b02b0fab-5d17-4ae4-85b0-9df196b67b8f",
+          "72601202-2920-4c5c-940f-a1a94c80854a"
+        ],
+        "width": 1536,
+        "height": 864,
+        "steps": 32,
+        "seed": 250925534
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "F02_concept_scene_faithful_I",
+      "priority": 50,
+      "params": {
+        "prompt": "Original cinematic game concept frame of the CONFIRMED GameDraft Wujin dock chest-opening scene. ALL references are ORIGINAL GameDraft sources, especially reference 4 which is an ACTUAL gameplay screenshot and is the HARD location boundary. Reframe its SAME visible structures from a human-eye movie camera: the gray stone quay, the existing flat timber wharf platform to the right, the left freight-house shopfront with tiled roof, the same cobblestone edge. Face the camera TOWARD THE EXISTING SHOPFRONT AND STONE QUAY, so the river and all boats are OFFSCREEN. Do not reveal or extend beyond the background shown in the source gameplay frame. Exactly one Guan Ergou from ref 1 wearing his original patched gray-brown work clothes. Exactly one knee-high wood-and-leather cargo chest from ref 2, lid visibly open. Guan crouches and lifts one torn mountain map fragment from it; original brown compass and stitched book from ref 3 remain inside. Chest human-scale, maps hand-scale. Muted dark hand-painted folk horror. A NEW human-eye cinematic angle, not the high-angle gameplay screenshot, no UI, no title. Existing dock architecture must dominate the setting. Tight film insert from just above the opened chest at Guan chest height, looking over his shoulder toward the exact existing left-side freight house and stone embankment. His hand with torn map is focal. Chest and map do not enlarge beyond his body. No visible river, boat or invented architecture.",
+        "negative_prompt": "boat, ship, barge, canoe, sail, mast, new pier, new building, extra dock structure, invented riverbank, altered warehouse, giant chest, two chests, extra character, giant person, aerial camera, high-angle isometric, top-down, poster",
+        "images": [
+          "34a02fac-1dc7-4c7e-b433-04dc06ecd18b",
+          "f9d80960-5697-4a38-8975-08902cc23f0e",
+          "b02b0fab-5d17-4ae4-85b0-9df196b67b8f",
+          "72601202-2920-4c5c-940f-a1a94c80854a"
+        ],
+        "width": 1536,
+        "height": 864,
+        "steps": 32,
+        "seed": 250925535
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "F02_concept_scene_faithful_J",
+      "priority": 50,
+      "params": {
+        "prompt": "Original cinematic game concept frame of the CONFIRMED GameDraft Wujin dock chest-opening scene. ALL references are ORIGINAL GameDraft sources, especially reference 4 which is an ACTUAL gameplay screenshot and is the HARD location boundary. Reframe its SAME visible structures from a human-eye movie camera: the gray stone quay, the existing flat timber wharf platform to the right, the left freight-house shopfront with tiled roof, the same cobblestone edge. Face the camera TOWARD THE EXISTING SHOPFRONT AND STONE QUAY, so the river and all boats are OFFSCREEN. Do not reveal or extend beyond the background shown in the source gameplay frame. Exactly one Guan Ergou from ref 1 wearing his original patched gray-brown work clothes. Exactly one knee-high wood-and-leather cargo chest from ref 2, lid visibly open. Guan crouches and lifts one torn mountain map fragment from it; original brown compass and stitched book from ref 3 remain inside. Chest human-scale, maps hand-scale. Muted dark hand-painted folk horror. A NEW human-eye cinematic angle, not the high-angle gameplay screenshot, no UI, no title. Existing dock architecture must dominate the setting. Eye-level side view parallel to the existing stone waterfront: Guan crouches by the opened chest on the SAME flat dock platform visible in reference 4. The original tiled freight house behind him, its existing cart and crates at a distance. Crop before any area outside the original screenshot; show no boats.",
+        "negative_prompt": "boat, ship, barge, canoe, sail, mast, new pier, new building, extra dock structure, invented riverbank, altered warehouse, giant chest, two chests, extra character, giant person, aerial camera, high-angle isometric, top-down, poster",
+        "images": [
+          "34a02fac-1dc7-4c7e-b433-04dc06ecd18b",
+          "f9d80960-5697-4a38-8975-08902cc23f0e",
+          "b02b0fab-5d17-4ae4-85b0-9df196b67b8f",
+          "72601202-2920-4c5c-940f-a1a94c80854a"
+        ],
+        "width": 1536,
+        "height": 864,
+        "steps": 32,
+        "seed": 250925536
+      }
+    }
+  ]
+}

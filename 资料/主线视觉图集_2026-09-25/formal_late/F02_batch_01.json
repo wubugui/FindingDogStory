@@ -1,0 +1,35 @@
+{
+  "name": "FindingDogStory F02 dock map foreshadowing from original GameDraft assets",
+  "jobs": [
+    {
+      "backend": "qwen",
+      "name": "F02_concept_dock_map_reveal",
+      "priority": 50,
+      "params": {
+        "prompt": "Create an ORIGINAL wide cinematic game concept image for the confirmed Wujin dock moment when the salvaged expedition cargo is opened and a fragmentary mountain map is first revealed. References are ONLY original GameDraft project assets. Reference 1 is the exact existing Wujin dock background: stone riverside quay, timber wharf and dark river, tiled old-town warehouses, muted gray-brown hand-painted materials. Reference 2 is the original prop artwork: a Chinese geomantic compass, four rough torn mountain-map fragments, old silver coins and a weathered stitched book. Reference 3 is the original small wood and leather bound cargo chest design. Show the chest OPEN at a modest natural size on the existing timber wharf with compass, torn map fragments and book visible inside or just beside it. Low human-eye cinematic camera angled across dock planks toward the same old riverside houses, physically credible environment and muted overcast daylight. No people. No new landmarks, no mountain scene, no temple, no magical stone, no ghosts, no title text. The focus is the first discovery of the mountain-map clues, not a product poster; environment must remain recognizable as the exact GameDraft dock. No UI. 16:9 concept art.",
+        "negative_prompt": "oversized chest, giant compass, giant map, indoor room, new building, fantasy temple, invented mountain landscape, yin stone artifact, people, portrait, bright colors, large written labels, top-down gameplay camera",
+        "images": ["f6c3539e-aca6-482b-8c96-7b9d896b25d1", "b02b0fab-5d17-4ae4-85b0-9df196b67b8f", "f9d80960-5697-4a38-8975-08902cc23f0e"],
+        "width": 1536,
+        "height": 864,
+        "steps": 30,
+        "seed": 250925521
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "F02_sim_dock_map_reveal",
+      "priority": 50,
+      "params": {
+        "prompt": "Generate an ORIGINAL 4:3 SIMULATED GAMEPLAY SCREENSHOT of the same Wujin dock discovery, based ONLY on the original GameDraft references. Reference 1 is an actual 1024x768 GameDraft gameplay screenshot and defines the exact high three-quarter fixed camera, dock architecture, dark hand-painted palette, tiny human scale, top-left money HUD and bottom-right inventory toolbar. Reference 2 is the original in-game inspection overlay artwork: geomantic compass, silver coins, four torn mountain map pieces, stitched book. Reference 3 is the original small wooden cargo chest sprite. Preserve the original stone quay, dark timber pier to the right, riverside buildings, boats/water only where shown, and all figure heights at 60-90 pixels in the 768-pixel frame. New gameplay moment: a small cargo chest on the wharf has been inspected and a dark translucent inspection panel in the screen center displays the compass, torn map and book at around half the screen width; enough actual dock remains visible behind it. The overlay uses the supplied prop shapes, not new objects. This is a gameplay view with original camera angle and believable object-to-person scale, not a cinematic image. Keep UI small; text fidelity unimportant. No yin stone, no other new artifact, no added person, no giant character, no new architecture, no title card.",
+        "negative_prompt": "giant person, enlarged person, close-up face, poster, concept art, huge cargo chest, full-screen props, invented buildings, fantasy map, magical gem, text-heavy screen",
+        "images": ["72601202-2920-4c5c-940f-a1a94c80854a", "b02b0fab-5d17-4ae4-85b0-9df196b67b8f", "f9d80960-5697-4a38-8975-08902cc23f0e"],
+        "qwen_canvas": "first_reference",
+        "reference_resolution": 0,
+        "width": 1024,
+        "height": 768,
+        "steps": 30,
+        "seed": 250925522
+      }
+    }
+  ]
+}

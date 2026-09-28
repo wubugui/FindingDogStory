@@ -1,0 +1,11 @@
+{
+  "hub_url": "http://denghong01:8765",
+  "request_file": "calibration_batch.json",
+  "batch_id": "0132ca8c-c543-4702-909e-1ff5ae4fd2db",
+  "idempotency_key": "30e1c47a-3670-4511-a997-aa9837a3c873",
+  "tasks": {
+    "D05_sim": "b1ae8ed6-1dbe-4658-9a83-e2d074af4aa8",
+    "D07b_sim": "8a73572b-cf02-4364-9919-d9d7879ad1b4",
+    "D17_concept": "4a442a83-de0e-47f7-95ac-64bd9b12af1f"
+  }
+}

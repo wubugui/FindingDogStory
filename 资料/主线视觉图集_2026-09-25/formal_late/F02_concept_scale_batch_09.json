@@ -1,0 +1,47 @@
+{
+  "jobs": [
+    {
+      "backend": "qwen",
+      "name": "F02 cinematic wide door-scale A",
+      "params": {
+        "height": 864,
+        "guidance_scale": 1.0,
+        "qwen_canvas": "explicit",
+        "width": 1536,
+        "images": [
+          "73521ab3-f1b0-4f9d-a00e-c74bf96770bb",
+          "34a02fac-1dc7-4c7e-b433-04dc06ecd18b",
+          "f9d80960-5697-4a38-8975-08902cc23f0e",
+          "b02b0fab-5d17-4ae4-85b0-9df196b67b8f"
+        ],
+        "steps": 40,
+        "negative_prompt": "oversized human, human taller than doorway while crouching, giant chest, new building, river, ship, boat, isometric, overhead, game screenshot, duplicate character, collage, inset, black panel",
+        "reference_resolution": 0,
+        "seed": 250925901,
+        "prompt": "以<image1>的雾津码头原货栈为唯一场景依据：同一木质货栈立面、门、格窗、瓦檐与门前石地；不画河、船、别的建筑。<image2>只提供关二狗的身份和旧衣；<image3>只提供一只木箱的外形；<image4>只提供地图纸片和小罗盘。电影摄影，地面人眼高度，横向看向货栈门，不是俯视游戏机位。人物与货栈门位于同一片门前石地：若他站起，身高应低于门洞；现在他蹲下，头顶只到门洞高度约一半。木箱整体高度低于他蹲下时的膝，只有一只，盖子打开，箱底落地；一小片地图纸和掌心罗盘由他拿起。原场景之外全部在画外。16:9，写实民俗恐怖电影概念图，无UI。 宽镜头，镜头距离货栈约六米，完整门框和部分瓦檐入画；关二狗在门旁蹲下，人物画面高度约三分之一，货栈门洞比蹲下的人明显高。开箱与地图动作清晰可见。"
+      }
+    },
+    {
+      "backend": "qwen",
+      "name": "F02 cinematic wide door-scale B",
+      "params": {
+        "height": 864,
+        "guidance_scale": 1.0,
+        "qwen_canvas": "explicit",
+        "width": 1536,
+        "images": [
+          "73521ab3-f1b0-4f9d-a00e-c74bf96770bb",
+          "34a02fac-1dc7-4c7e-b433-04dc06ecd18b",
+          "f9d80960-5697-4a38-8975-08902cc23f0e",
+          "b02b0fab-5d17-4ae4-85b0-9df196b67b8f"
+        ],
+        "steps": 40,
+        "negative_prompt": "oversized human, human taller than doorway while crouching, giant chest, new building, river, ship, boat, isometric, overhead, game screenshot, duplicate character, collage, inset, black panel",
+        "reference_resolution": 0,
+        "seed": 250925902,
+        "prompt": "以<image1>的雾津码头原货栈为唯一场景依据：同一木质货栈立面、门、格窗、瓦檐与门前石地；不画河、船、别的建筑。<image2>只提供关二狗的身份和旧衣；<image3>只提供一只木箱的外形；<image4>只提供地图纸片和小罗盘。电影摄影，地面人眼高度，横向看向货栈门，不是俯视游戏机位。人物与货栈门位于同一片门前石地：若他站起，身高应低于门洞；现在他蹲下，头顶只到门洞高度约一半。木箱整体高度低于他蹲下时的膝，只有一只，盖子打开，箱底落地；一小片地图纸和掌心罗盘由他拿起。原场景之外全部在画外。16:9，写实民俗恐怖电影概念图，无UI。 稍远的地面侧面中景，货栈门正中清楚可见，人物靠门前左侧蹲下；门洞底到顶在画面中明显超过蹲下人物高度的两倍。人物始终接触地面，木箱与手和小地图形成前景动作，但箱子不超过人物小腿高度。"
+      }
+    }
+  ],
+  "name": "F02 cinematic scale calibration original refs"
+}
